@@ -1,2 +1,2 @@
-# UniStudent-Tracker
-A system that helps students understand and improve their university life.
+# ClinicalQA
+AI-Powered Laboratory Quality Assurance and Anomaly Detection Platform
