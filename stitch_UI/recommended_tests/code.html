@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="en"><plasmo-csui id="g0-textarea-recorder"></plasmo-csui><head><style data-styled="" data-styled-version="4.3.1"></style></head><body class="bg-background text-on-background min-h-screen"><plasmo-csui id="g0-textarea-recorder"></plasmo-csui>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Recommended Lab Tests Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-surface-variant": "#43474d",
+                "outline-variant": "#c4c6ce",
+                "warning": "#F59E0B",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#e2dfff",
+                "surface": "#f7f9fb",
+                "on-primary": "#ffffff",
+                "primary-container": "#0a2540",
+                "outline": "#74777e",
+                "inverse-primary": "#b0c8eb",
+                "secondary-fixed": "#85f8c4",
+                "surface-container-low": "#f2f4f6",
+                "on-primary-fixed-variant": "#314865",
+                "background": "#f7f9fb",
+                "surface-bright": "#f7f9fb",
+                "tertiary-fixed-dim": "#c3c0ff",
+                "error-container": "#ffdad6",
+                "surface-variant": "#e0e3e5",
+                "on-error-container": "#93000a",
+                "inverse-on-surface": "#eff1f3",
+                "on-secondary": "#ffffff",
+                "on-primary-container": "#768dad",
+                "card-bg": "#FFFFFF",
+                "on-tertiary-container": "#7f7bff",
+                "on-secondary-fixed": "#002114",
+                "tertiary": "#060045",
+                "inverse-surface": "#2d3133",
+                "on-background": "#191c1e",
+                "secondary-container": "#82f5c1",
+                "primary-fixed-dim": "#b0c8eb",
+                "surface-container-highest": "#e0e3e5",
+                "on-surface": "#191c1e",
+                "on-secondary-container": "#00714e",
+                "on-error": "#ffffff",
+                "text-tertiary": "#94A3B8",
+                "on-secondary-fixed-variant": "#005137",
+                "error": "#ba1a1a",
+                "surface-dim": "#d8dadc",
+                "primary-fixed": "#d2e4ff",
+                "text-secondary": "#475569",
+                "success": "#10B981",
+                "secondary-fixed-dim": "#68dba9",
+                "on-primary-fixed": "#001c37",
+                "danger": "#EF4444",
+                "surface-container": "#eceef0",
+                "text-primary": "#0F172A",
+                "secondary": "#006c4a",
+                "surface-tint": "#49607e",
+                "on-tertiary-fixed-variant": "#321ed2",
+                "tertiary-container": "#150082",
+                "surface-container-high": "#e6e8ea",
+                "primary": "#000f22",
+                "on-tertiary-fixed": "#0f0069",
+                "on-tertiary": "#ffffff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "container-max": "1280px",
+                "margin-desktop": "48px",
+                "section-gap": "64px",
+                "margin-mobile": "16px",
+                "gutter": "24px",
+                "base": "8px"
+        },
+        "fontFamily": {
+                "label-sm": [
+                        "Inter"
+                ],
+                "label-md": [
+                        "Inter"
+                ],
+                "headline-lg-mobile": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "display-lg": [
+                        "Plus Jakarta Sans"
+                ]
+        },
+        "fontSize": {
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.03em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "letterSpacing": "0.01em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "60px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+<style data-styled="" data-styled-version="4.3.1"></style>
+
+<!-- Shared Component Base -->
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-[#f8fafb] group/design-root overflow-x-hidden" style="font-family: &quot;Plus Jakarta Sans&quot;, &quot;Noto Sans&quot;, sans-serif;">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8edf2] px-10 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-[#0e141a]">
+<div class="size-4">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#0e141a] text-lg font-bold leading-tight tracking-[-0.015em]">Recommended Tests</h2>
+</div>
+<div class="flex items-center gap-9"></div>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#517394] flex border-none bg-[#e8edf2] items-center justify-center pl-4 rounded-l-lg border-r-0" data-icon="MagnifyingGlass" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0e141a] focus:outline-0 focus:ring-0 border-none bg-[#e8edf2] focus:border-none h-full placeholder:text-[#517394] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search" value="">
+</div>
+</label>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#e8edf2] text-[#0e141a] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+<div class="text-[#0e141a]" data-icon="MagnifyingGlass" data-size="20px" data-weight="regular">
+<svg fill="currentColor" height="20px" viewBox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+</div>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuB6oUpZfVnDSc7eDYbKoSF-tbJ2rwJMsZxoib1ILqeC_4v727SoT5hbChma_NGXD9ViT8CXJgtP-R0-_mNAmblO0txTNog-96sjnDFM3a951mBg52Gvk5JBv_SXQCKqWdvYedeRAfGWuDgvDciafaPlO5iNhuGB2RJC_D3h3bOqcaTOFSAb_yJb8GNqGcsriBcRv25FPqj3jhF8-XXwxEuuvCBSsCTAwfYpepD14dKm48mACi55Z6yo2dwGp0MI9O9I7eF-NRW-SmQ&quot;);"></div>
+</div>
+</header>
+<div class="flex px-4 py-3">
+<div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-[#e8edf2] p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-[#f8fafb] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#0e141a] text-[#517394] text-sm font-medium leading-normal">
+<span class="truncate">Recommended</span>
+<input checked="" class="invisible w-0" name="79107ffa-5314-455d-92c1-21410a0d264b" type="radio" value="Recommended">
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-[#f8fafb] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#0e141a] text-[#517394] text-sm font-medium leading-normal">
+<span class="truncate">Optional</span>
+<input class="invisible w-0" name="79107ffa-5314-455d-92c1-21410a0d264b" type="radio" value="Optional">
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-[#f8fafb] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#0e141a] text-[#517394] text-sm font-medium leading-normal">
+<span class="truncate">Preventive</span>
+<input class="invisible w-0" name="79107ffa-5314-455d-92c1-21410a0d264b" type="radio" value="Preventive">
+</label>
+</div>
+</div>
+<div class="pb-3">
+<div class="flex border-b border-[#d1dbe6] px-4 justify-between">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-[#0a2540] text-[#0e141a] pb-[13px] pt-4 flex-1" href="#">
+<p class="text-[#0e141a] text-sm font-bold leading-normal tracking-[0.015em]">Blood</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#517394] pb-[13px] pt-4 flex-1" href="#">
+<p class="text-[#517394] text-sm font-bold leading-normal tracking-[0.015em]">Urine</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#517394] pb-[13px] pt-4 flex-1" href="#">
+<p class="text-[#517394] text-sm font-bold leading-normal tracking-[0.015em]">Hormones</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#517394] pb-[13px] pt-4 flex-1" href="#">
+<p class="text-[#517394] text-sm font-bold leading-normal tracking-[0.015em]">Heart</p>
+</a>
+</div>
+</div>
+<h3 class="text-[#0e141a] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Complete Blood Count</h3>
+<div class="p-4 grid grid-cols-2">
+<div class="flex flex-col gap-1 border-t border-solid border-t-[#d1dbe6] py-4 pr-2">
+<p class="text-[#517394] text-sm font-normal leading-normal">Priority</p>
+<p class="text-[#0e141a] text-sm font-normal leading-normal">High</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-t-[#d1dbe6] py-4 pl-2">
+<p class="text-[#517394] text-sm font-normal leading-normal">Reason</p>
+<p class="text-[#0e141a] text-sm font-normal leading-normal">General Health Check</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-t-[#d1dbe6] py-4 pr-2">
+<p class="text-[#517394] text-sm font-normal leading-normal">Clinical Explanation</p>
+<p class="text-[#0e141a] text-sm font-normal leading-normal">Measures different parts and features of your blood.</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-t-[#d1dbe6] py-4 pl-2">
+<p class="text-[#517394] text-sm font-normal leading-normal">Required for</p>
+<p class="text-[#0e141a] text-sm font-normal leading-normal">Annual physical exam</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Template for dynamically injecting additional Apple Health styled cards seamlessly into the shared component's flow -->
+<div class="hidden" id="dynamic-content-source">
+<!-- Buttons to append to the shared CBC section to complete its requirements -->
+<div class="px-4 pb-8 flex gap-3 border-b border-[#e8edf2] mb-6">
+<button class="flex-1 bg-primary text-on-primary py-3 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm">Book Test</button>
+<button class="flex-1 bg-surface-container-highest text-on-surface py-3 rounded-xl font-semibold text-sm hover:bg-surface-dim transition-colors shadow-sm">Upload Report</button>
+</div>
+<!-- Apple Health Style Card: Lipid Profile -->
+<div class="px-4 mb-6">
+<div class="bg-surface-container-lowest rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-outline-variant/20">
+<div class="flex items-center justify-between mb-5">
+<h3 class="text-headline-md text-on-surface font-semibold tracking-tight">Lipid Profile</h3>
+<span class="bg-warning/10 text-warning px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Medium Priority</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-6 mb-6">
+<div class="flex flex-col gap-1.5 border-t border-surface-container-highest pt-4">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Reason</p>
+<p class="text-on-surface text-base">Cholesterol Monitoring</p>
+</div>
+<div class="flex flex-col gap-1.5 border-t border-surface-container-highest pt-4">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Fasting Required</p>
+<p class="text-on-surface text-base">Yes (8-12 hours)</p>
+</div>
+<div class="flex flex-col gap-1.5 border-t border-surface-container-highest pt-4 md:col-span-2">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Clinical Explanation</p>
+<p class="text-on-surface text-base leading-relaxed">Measures the amount of specific fat molecules (lipids) in your blood, crucial for assessing cardiovascular health and risks.</p>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 bg-primary text-on-primary py-3.5 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm">Book Test</button>
+<button class="flex-1 bg-surface-container-highest text-on-surface py-3.5 rounded-xl font-semibold text-sm hover:bg-surface-dim transition-colors shadow-sm">Upload Report</button>
+</div>
+</div>
+</div>
+<!-- Apple Health Style Card: Thyroid Panel -->
+<div class="px-4 mb-10">
+<div class="bg-surface-container-lowest rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-outline-variant/20">
+<div class="flex items-center justify-between mb-5">
+<h3 class="text-headline-md text-on-surface font-semibold tracking-tight">Thyroid Panel</h3>
+<span class="bg-surface-container-highest text-text-secondary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Low Priority</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-6 mb-6">
+<div class="flex flex-col gap-1.5 border-t border-surface-container-highest pt-4">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Reason</p>
+<p class="text-on-surface text-base">Fatigue Assessment</p>
+</div>
+<div class="flex flex-col gap-1.5 border-t border-surface-container-highest pt-4">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Includes</p>
+<p class="text-on-surface text-base">TSH, Free T3, Free T4</p>
+</div>
+<div class="flex flex-col gap-1.5 border-t border-surface-container-highest pt-4 md:col-span-2">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Clinical Explanation</p>
+<p class="text-on-surface text-base leading-relaxed">Evaluates how well your thyroid gland is working to help diagnose conditions like hyperthyroidism or hypothyroidism.</p>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 bg-primary text-on-primary py-3.5 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm">Book Test</button>
+<button class="flex-1 bg-surface-container-highest text-on-surface py-3.5 rounded-xl font-semibold text-sm hover:bg-surface-dim transition-colors shadow-sm">Upload Report</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Safely inject the new elements into the shared layout container to ensure proper structural flow
+    document.addEventListener("DOMContentLoaded", () => {
+        const container = document.querySelector('.layout-content-container');
+        const source = document.getElementById('dynamic-content-source');
+        
+        if (container && source) {
+            while (source.children.length > 0) {
+                container.appendChild(source.children[0]);
+            }
+            source.remove();
+        }
+    });
+</script>
+</body></html>
