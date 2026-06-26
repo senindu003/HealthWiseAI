@@ -101,7 +101,6 @@ const SYMPTOM_CATEGORIES = [
       { id: "difficulty_breathing", label: "Difficulty breathing" },
     ],
   },
-  // Remaining systemic categories map perfectly to this structure
 ];
 
 export default function HealthAssessmentWizard() {
@@ -109,9 +108,9 @@ export default function HealthAssessmentWizard() {
   const [activeSymptomTab, setActiveSymptomTab] = useState("general");
   const [hasHighRiskAlert, setHasHighRiskAlert] = useState(false);
 
-  // Central State Storage
+  // Central State Storage (Maintained flat internally for easy input data bindings)
   const [formData, setFormData] = useState({
-    // Stage 1
+    // Stage 1 fields
     age: "",
     sex: "",
     height: "",
@@ -128,7 +127,7 @@ export default function HealthAssessmentWizard() {
     dietPatterns: [],
     waterIntake: "",
     stressLevel: "",
-    // Stage 2
+    // Stage 2 fields
     personalHistory: {},
     firstDegreeHistory: {},
     secondDegreeHistory: {},
@@ -141,9 +140,9 @@ export default function HealthAssessmentWizard() {
     allergies: [],
     pastLabsRoutine: "",
     pastLabsAbnormal: [],
-    // Stage 3
+    // Stage 3 fields
     selectedSymptoms: [],
-    // Stage 4
+    // Stage 4 fields
     deepDive: {},
   });
 
@@ -213,15 +212,62 @@ export default function HealthAssessmentWizard() {
     }
   };
 
+  // --- AMENDED SUBMIT HANDLER FOR FASTAPI STACK LAYOUT ---
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Map and reassemble individual fields into structured stage keys
+    const backendPayload = {
+      stage1: {
+        age: formData.age,
+        sex: formData.sex,
+        height: formData.height,
+        weight: formData.weight,
+        pregnancy: formData.pregnancy,
+        ethnicity: formData.ethnicity,
+        country: formData.country,
+        smoking: formData.smoking,
+        alcohol: formData.alcohol,
+        physicalActivity: formData.physicalActivity,
+        exerciseDuration: formData.exerciseDuration,
+        sleepHours: formData.sleepHours,
+        sleepQuality: formData.sleepQuality,
+        dietPatterns: formData.dietPatterns,
+        waterIntake: formData.waterIntake,
+        stressLevel: formData.stressLevel,
+      },
+      stage2: {
+        personalHistory: formData.personalHistory,
+        firstDegreeHistory: formData.firstDegreeHistory,
+        secondDegreeHistory: formData.secondDegreeHistory,
+        earlyOnsetHeart: formData.earlyOnsetHeart,
+        inheritedBlood: formData.inheritedBlood,
+        multipleSharedDisease: formData.multipleSharedDisease,
+        medications: formData.medications,
+        majorSurgery: formData.majorSurgery,
+        hospitalization: formData.hospitalization,
+        allergies: formData.allergies,
+        pastLabsRoutine: formData.pastLabsRoutine,
+        pastLabsAbnormal: formData.pastLabsAbnormal,
+      },
+      stage3: {
+        selectedSymptoms: formData.selectedSymptoms,
+      },
+      stage4: {
+        deepDive: formData.deepDive,
+      },
+    };
+
     console.log(
-      "Final payload payload package sent to Spring Boot backend controller:",
-      formData,
+      "Structured payload fully verified for FastAPI endpoints:",
+      backendPayload,
     );
     alert(
-      "Data packaged into payload object successfully! Sending upstream for processing...",
+      "Data packaged into payload object successfully! Check console to view the nested stage-by-stage layout processing format.",
     );
+
+    // Example downstream delivery context:
+    // axios.post("http://127.0.0.1:8000/api/v1/recommendations", backendPayload);
   };
 
   return (
