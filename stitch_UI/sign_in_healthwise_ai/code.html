@@ -1,0 +1,294 @@
+<!DOCTYPE html><html class="light" lang="en"><plasmo-csui id="g0-textarea-recorder"></plasmo-csui><head><style data-styled="" data-styled-version="4.3.1"></style></head><body class="bg-background min-h-screen flex text-text-primary antialiased"><plasmo-csui id="g0-textarea-recorder"></plasmo-csui><style data-styled="" data-styled-version="4.3.1"></style><plasmo-csui id="g0-textarea-recorder"></plasmo-csui>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>HealthWise AI - Login</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#150082",
+                    "danger": "#EF4444",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-primary-fixed-variant": "#314865",
+                    "on-primary-container": "#768dad",
+                    "on-surface": "#191c1e",
+                    "background": "#f7f9fb",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#d2e4ff",
+                    "outline": "#74777e",
+                    "inverse-primary": "#b0c8eb",
+                    "on-secondary-container": "#00714e",
+                    "text-secondary": "#475569",
+                    "tertiary": "#060045",
+                    "on-tertiary-fixed-variant": "#321ed2",
+                    "primary-fixed-dim": "#b0c8eb",
+                    "card-bg": "#FFFFFF",
+                    "surface-bright": "#f7f9fb",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#82f5c1",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#e2dfff",
+                    "on-background": "#191c1e",
+                    "outline-variant": "#c4c6ce",
+                    "error-container": "#ffdad6",
+                    "secondary": "#006c4a",
+                    "text-tertiary": "#94A3B8",
+                    "on-error-container": "#93000a",
+                    "text-primary": "#0F172A",
+                    "primary-container": "#0a2540",
+                    "primary": "#000f22",
+                    "on-primary-fixed": "#001c37",
+                    "warning": "#F59E0B",
+                    "inverse-surface": "#2d3133",
+                    "secondary-fixed": "#85f8c4",
+                    "success": "#10B981",
+                    "surface-tint": "#49607e",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface-variant": "#e0e3e5",
+                    "on-tertiary-fixed": "#0f0069",
+                    "on-secondary-fixed": "#002114",
+                    "tertiary-fixed-dim": "#c3c0ff",
+                    "on-secondary-fixed-variant": "#005137",
+                    "on-surface-variant": "#43474d",
+                    "surface": "#f7f9fb",
+                    "on-tertiary-container": "#7f7bff",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#68dba9",
+                    "surface-dim": "#d8dadc",
+                    "surface-container": "#eceef0",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#e6e8ea"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "container-max": "1280px",
+                    "margin-desktop": "48px",
+                    "section-gap": "64px",
+                    "gutter": "24px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg-mobile": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "display-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label-sm": [
+                            "Inter"
+                    ],
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "60px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.03em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style data-styled="" data-styled-version="4.3.1"></style>
+
+<!-- Split Layout Container -->
+<div class="flex flex-col lg:flex-row w-full min-h-screen">
+<!-- Left Side: Image/Illustration -->
+<div class="hidden lg:flex lg:w-1/2 relative bg-surface-container-low overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Medical Illustration" class="w-full h-full object-cover opacity-90 mix-blend-multiply" data-alt="A highly polished, abstract 3D medical illustration featuring sleek, interconnected neural networks and data streams glowing in deep blues and emerald greens. The scene is rendered with ray-traced lighting on a pristine, ultra-clean white studio background. The aesthetic represents advanced AI-driven healthcare, emphasizing clinical precision, modern corporate minimalism, and high-end technological sophistication." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9jThoHnGjpBQSP96Pj5FIi2ddxqws28SmfAkCygVxBjWrgYwJzSkL7J-IjlrMkAFsAYrRK2ECCl503obOHiHHy_e97B2LocG5fHDFWW8wnuGog9BYtsS0EPdwLN_T-FYEIjNxWr7v9QFYbiNLLW_8TEwzIX3gSCu5A9nhq67fOgd9xxnjg-GIp-6tesVVS2ivxytfGj_vDjQwPIk7Rsk8tm_sjRTht_kvBITSERD9yQFqZf9uZBiXOOYWec-UYnoMXm4KDZEa33E">
+</div>
+<!-- Overlay Content on Image (Optional branding) -->
+<div class="relative z-10 flex flex-col justify-between p-section-gap h-full text-primary">
+<div>
+<div class="flex items-center gap-2 mb-gutter">
+<span class="material-symbols-outlined text-[32px] text-tertiary-container">health_and_safety</span>
+<span class="font-headline-md text-headline-md tracking-tight">HealthWise AI</span>
+</div>
+</div>
+<div class="max-w-md">
+<h2 class="font-display-lg text-display-lg mb-gutter leading-tight">Clinical Precision Meets Human Elegance.</h2>
+<p class="font-body-lg text-body-lg text-text-secondary">Empowering medical professionals with intelligent insights and seamless data management.</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Login Card -->
+<div class="w-full lg:w-1/2 flex items-center justify-center p-margin-mobile md:p-margin-desktop bg-background relative">
+<!-- Mobile Brand Header (Visible only on mobile) -->
+<div class="absolute top-margin-mobile left-margin-mobile lg:hidden flex items-center gap-2">
+<span class="material-symbols-outlined text-[24px] text-tertiary-container">health_and_safety</span>
+<span class="font-headline-md text-headline-md tracking-tight">HealthWise AI</span>
+</div>
+<div class="w-full max-w-[440px] bg-card-bg rounded-[24px] p-gutter md:p-section-gap shadow-[0px_12px_32px_rgba(0,0,0,0.08)] border border-outline-variant/30 relative z-10 transition-all duration-300 hover:shadow-[0px_20px_48px_rgba(0,0,0,0.12)]">
+<div class="text-center mb-section-gap">
+<h1 class="font-headline-lg text-headline-lg mb-2">Welcome Back</h1>
+<p class="font-body-md text-body-md text-text-secondary">Sign in to access your dashboard</p>
+</div>
+<form class="space-y-gutter">
+<!-- Email Input -->
+<div>
+<label class="block font-label-md text-label-md text-text-secondary mb-2" for="email">Email Address</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">mail</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-3 bg-surface-container-low border-outline-variant/50 rounded-lg text-text-primary font-body-md focus:ring-2 focus:ring-tertiary-container focus:border-tertiary-container transition-colors" id="email" placeholder="name@medicalcenter.com" required="" type="email">
+</div>
+</div>
+<!-- Password Input -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="block font-label-md text-label-md text-text-secondary" for="password">Password</label>
+<a class="font-label-md text-label-md text-tertiary-container hover:text-tertiary transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+<input class="block w-full pl-12 pr-12 py-3 bg-surface-container-low border-outline-variant/50 rounded-lg text-text-primary font-body-md focus:ring-2 focus:ring-tertiary-container focus:border-tertiary-container transition-colors" id="password" placeholder="••••••••" required="" type="password">
+<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-text-primary transition-colors" type="button">
+<span class="material-symbols-outlined">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center">
+<input class="h-4 w-4 text-tertiary-container border-outline-variant/50 rounded focus:ring-tertiary-container" id="remember-me" type="checkbox">
+<label class="ml-2 block font-label-md text-label-md text-text-secondary" for="remember-me">
+                            Remember me for 30 days
+                        </label>
+</div>
+<!-- Primary Action -->
+<button class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-on-primary bg-primary hover:bg-primary-container focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-label-md text-label-md transition-all duration-200 transform hover:-translate-y-0.5" type="submit">
+                        Sign In
+                    </button>
+</form>
+<div class="mt-section-gap">
+<div class="relative">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/30"></div>
+</div>
+<div class="relative flex justify-center text-sm">
+<span class="px-2 bg-card-bg text-text-tertiary font-label-sm text-label-sm uppercase tracking-wider">Or continue with</span>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-outline-variant/50 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-outline-variant transition-colors duration-200 font-label-md text-label-md text-text-secondary">
+<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                            Google
+                        </button>
+</div>
+</div>
+<p class="mt-8 text-center font-body-md text-body-md text-text-secondary">
+                    Don't have an account? 
+                    <a class="font-label-md text-label-md text-tertiary-container hover:text-tertiary transition-colors" href="#">Create Account</a>
+</p>
+</div>
+<!-- Footer Links (Bottom of right side) -->
+<div class="absolute bottom-margin-mobile md:bottom-margin-desktop w-full text-center px-margin-mobile">
+<p class="font-label-sm text-label-sm text-text-tertiary space-x-4">
+<a class="hover:text-text-secondary transition-colors" href="#">Privacy Policy</a>
+<span>•</span>
+<a class="hover:text-text-secondary transition-colors" href="#">Terms of Service</a>
+<span>•</span>
+<a class="hover:text-text-secondary transition-colors" href="#">Clinical Disclaimers</a>
+</p>
+</div>
+</div>
+</div>
+</body></html>

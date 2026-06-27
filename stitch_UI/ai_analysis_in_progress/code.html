@@ -1,0 +1,265 @@
+<!DOCTYPE html><html class="light" lang="en"><plasmo-csui id="g0-textarea-recorder"></plasmo-csui><head><style data-styled="" data-styled-version="4.3.1"></style></head><body class="bg-background min-h-screen flex flex-col font-body-md text-text-primary antialiased overflow-hidden"><plasmo-csui id="g0-textarea-recorder"></plasmo-csui><style data-styled="" data-styled-version="4.3.1"></style><plasmo-csui id="g0-textarea-recorder"></plasmo-csui>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>HealthWise AI - Processing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "tertiary-container": "#150082",
+                            "danger": "#EF4444",
+                            "inverse-on-surface": "#eff1f3",
+                            "on-primary-fixed-variant": "#314865",
+                            "on-primary-container": "#768dad",
+                            "on-surface": "#191c1e",
+                            "background": "#f7f9fb",
+                            "surface-container-lowest": "#ffffff",
+                            "primary-fixed": "#d2e4ff",
+                            "outline": "#74777e",
+                            "inverse-primary": "#b0c8eb",
+                            "on-secondary-container": "#00714e",
+                            "text-secondary": "#475569",
+                            "tertiary": "#060045",
+                            "on-tertiary-fixed-variant": "#321ed2",
+                            "primary-fixed-dim": "#b0c8eb",
+                            "card-bg": "#FFFFFF",
+                            "surface-bright": "#f7f9fb",
+                            "surface-container-low": "#f2f4f6",
+                            "on-secondary": "#ffffff",
+                            "error": "#ba1a1a",
+                            "secondary-container": "#82f5c1",
+                            "on-primary": "#ffffff",
+                            "tertiary-fixed": "#e2dfff",
+                            "on-background": "#191c1e",
+                            "outline-variant": "#c4c6ce",
+                            "error-container": "#ffdad6",
+                            "secondary": "#006c4a",
+                            "text-tertiary": "#94A3B8",
+                            "on-error-container": "#93000a",
+                            "text-primary": "#0F172A",
+                            "primary-container": "#0a2540",
+                            "primary": "#000f22",
+                            "on-primary-fixed": "#001c37",
+                            "warning": "#F59E0B",
+                            "inverse-surface": "#2d3133",
+                            "secondary-fixed": "#85f8c4",
+                            "success": "#10B981",
+                            "surface-tint": "#49607e",
+                            "surface-container-highest": "#e0e3e5",
+                            "surface-variant": "#e0e3e5",
+                            "on-tertiary-fixed": "#0f0069",
+                            "on-secondary-fixed": "#002114",
+                            "tertiary-fixed-dim": "#c3c0ff",
+                            "on-secondary-fixed-variant": "#005137",
+                            "on-surface-variant": "#43474d",
+                            "surface": "#f7f9fb",
+                            "on-tertiary-container": "#7f7bff",
+                            "on-tertiary": "#ffffff",
+                            "secondary-fixed-dim": "#68dba9",
+                            "surface-dim": "#d8dadc",
+                            "surface-container": "#eceef0",
+                            "on-error": "#ffffff",
+                            "surface-container-high": "#e6e8ea"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "margin-mobile": "16px",
+                            "container-max": "1280px",
+                            "margin-desktop": "48px",
+                            "section-gap": "64px",
+                            "gutter": "24px",
+                            "base": "8px"
+                    },
+                    "fontFamily": {
+                            "headline-md": ["Plus Jakarta Sans"],
+                            "headline-lg-mobile": ["Plus Jakarta Sans"],
+                            "body-md": ["Plus Jakarta Sans"],
+                            "body-lg": ["Plus Jakarta Sans"],
+                            "display-lg": ["Plus Jakarta Sans"],
+                            "label-sm": ["Inter"],
+                            "label-md": ["Inter"],
+                            "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                            "display-lg": ["48px", {"lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600"}],
+                            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .ai-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .timeline-step {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fade-in-up 0.5s ease forwards;
+        }
+        @keyframes fade-in-up {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .step-1 { animation-delay: 0.5s; }
+        .step-2 { animation-delay: 2.0s; }
+        .step-3 { animation-delay: 3.5s; }
+        .step-4 { animation-delay: 5.0s; }
+        
+        .progress-bar-fill {
+            width: 0%;
+            transition: width 6.5s linear;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+<style data-styled="" data-styled-version="4.3.1"></style>
+
+<!-- Top Navigation (Suppressed - Transactional/Processing Screen) -->
+<main class="flex-grow flex items-center justify-center relative p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto h-screen">
+<!-- Background Decor -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none flex items-center justify-center">
+<div class="w-[800px] h-[800px] bg-tertiary-container/5 rounded-full blur-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+<div class="w-[600px] h-[600px] bg-primary-fixed/20 rounded-full blur-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+</div>
+<div class="z-10 w-full max-w-3xl flex flex-col items-center gap-section-gap">
+<!-- AI Core Animation Area -->
+<div class="relative w-64 h-64 flex items-center justify-center">
+<!-- Outer Pulse Rings -->
+<div class="absolute inset-0 rounded-full border border-tertiary-container/20 ai-pulse" style="animation-delay: 0s;"></div>
+<div class="absolute inset-4 rounded-full border border-tertiary-container/30 ai-pulse" style="animation-delay: 0.5s;"></div>
+<div class="absolute inset-8 rounded-full border border-tertiary-container/40 ai-pulse" style="animation-delay: 1s;"></div>
+<!-- Central Core -->
+<div class="relative w-32 h-32 bg-surface-container-lowest rounded-full shadow-[0px_12px_32px_rgba(0,0,0,0.08)] border border-outline-variant/30 flex items-center justify-center z-20">
+<div class="absolute inset-0 bg-gradient-to-tr from-tertiary-container to-primary-container rounded-full opacity-10"></div>
+<span class="material-symbols-outlined text-[48px] text-tertiary-container" data-weight="fill" style="font-variation-settings: 'FILL' 1;">
+                        psychology
+                    </span>
+</div>
+</div>
+<!-- Status Header -->
+<div class="text-center space-y-4">
+<h1 class="font-display-lg text-display-lg text-primary hidden md:block">Analyzing Profile</h1>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary md:hidden">Analyzing Profile</h1>
+<p class="font-body-lg text-body-lg text-text-secondary">HealthWise AI is synthesizing clinical data...</p>
+</div>
+<!-- Global Progress Bar -->
+<div class="w-full max-w-md bg-surface-container-high rounded-full h-2 overflow-hidden shadow-inner">
+<div class="bg-tertiary-container h-full progress-bar-fill rounded-full" id="main-progress"></div>
+</div>
+<!-- Timeline Steps -->
+<div class="w-full max-w-lg glass-panel rounded-2xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)]">
+<div class="relative pl-6 space-y-6 before:absolute before:inset-y-0 before:left-[11px] before:w-[2px] before:bg-surface-container-high">
+<!-- Step 1 -->
+<div class="relative timeline-step step-1 flex items-start gap-4">
+<div class="absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-lowest border-2 border-success flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[12px] text-success font-bold">check</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-primary font-bold">Reading Profile</h3>
+<p class="font-label-sm text-label-sm text-text-secondary mt-1">Aggregating patient history and vitals</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative timeline-step step-2 flex items-start gap-4">
+<div class="absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-lowest border-2 border-tertiary-container flex items-center justify-center shadow-sm" id="indicator-2">
+<div class="w-2 h-2 rounded-full bg-tertiary-container animate-ping"></div>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-primary font-bold">Evaluating Risks</h3>
+<p class="font-label-sm text-label-sm text-text-secondary mt-1">Cross-referencing biomarkers with known patterns</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative timeline-step step-3 flex items-start gap-4 opacity-50" id="step-3-content">
+<div class="absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center" id="indicator-3">
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-text-secondary font-bold">Checking Guidelines</h3>
+<p class="font-label-sm text-label-sm text-text-tertiary mt-1">Aligning with latest clinical protocols</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative timeline-step step-4 flex items-start gap-4 opacity-50" id="step-4-content">
+<div class="absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center" id="indicator-4">
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-text-secondary font-bold">Generating Recommendations</h3>
+<p class="font-label-sm text-label-sm text-text-tertiary mt-1">Formulating personalized insights</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple script to handle the visual progression of steps
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('main-progress');
+            
+            // Start progress bar
+            setTimeout(() => {
+                progressBar.style.width = '100%';
+            }, 100);
+
+            // Step 2 complete -> Step 3 active
+            setTimeout(() => {
+                document.getElementById('indicator-2').innerHTML = '<span class="material-symbols-outlined text-[12px] text-success font-bold">check</span>';
+                document.getElementById('indicator-2').className = 'absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-lowest border-2 border-success flex items-center justify-center shadow-sm';
+                
+                document.getElementById('indicator-3').innerHTML = '<div class="w-2 h-2 rounded-full bg-tertiary-container animate-ping"></div>';
+                document.getElementById('indicator-3').className = 'absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-lowest border-2 border-tertiary-container flex items-center justify-center shadow-sm';
+                
+                const s3 = document.getElementById('step-3-content');
+                s3.classList.remove('opacity-50');
+                s3.querySelector('h3').classList.replace('text-text-secondary', 'text-primary');
+                s3.querySelector('p').classList.replace('text-text-tertiary', 'text-text-secondary');
+            }, 3500);
+
+            // Step 3 complete -> Step 4 active
+            setTimeout(() => {
+                document.getElementById('indicator-3').innerHTML = '<span class="material-symbols-outlined text-[12px] text-success font-bold">check</span>';
+                document.getElementById('indicator-3').className = 'absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-lowest border-2 border-success flex items-center justify-center shadow-sm';
+                
+                document.getElementById('indicator-4').innerHTML = '<div class="w-2 h-2 rounded-full bg-tertiary-container animate-ping"></div>';
+                document.getElementById('indicator-4').className = 'absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-lowest border-2 border-tertiary-container flex items-center justify-center shadow-sm';
+                
+                const s4 = document.getElementById('step-4-content');
+                s4.classList.remove('opacity-50');
+                s4.querySelector('h3').classList.replace('text-text-secondary', 'text-primary');
+                s4.querySelector('p').classList.replace('text-text-tertiary', 'text-text-secondary');
+            }, 5000);
+
+            // Simulation complete -> Redirect (simulated)
+            setTimeout(() => {
+                document.getElementById('indicator-4').innerHTML = '<span class="material-symbols-outlined text-[12px] text-success font-bold">check</span>';
+                document.getElementById('indicator-4').className = 'absolute -left-[27px] mt-1 w-5 h-5 rounded-full bg-surface-container-lowest border-2 border-success flex items-center justify-center shadow-sm';
+                // In a real app, window.location.href = '/results' would happen here
+            }, 6500);
+        });
+    </script>
+</body></html>

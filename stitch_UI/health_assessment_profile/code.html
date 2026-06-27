@@ -1,0 +1,419 @@
+<!DOCTYPE html><html class="light" lang="en"><plasmo-csui id="g0-textarea-recorder"></plasmo-csui><head><style data-styled="" data-styled-version="4.3.1"></style></head><body class="text-text-primary min-h-screen flex flex-col"><plasmo-csui id="g0-textarea-recorder"></plasmo-csui><style data-styled="" data-styled-version="4.3.1"></style><plasmo-csui id="g0-textarea-recorder"></plasmo-csui>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Health Assessment Wizard - Basic Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#150082",
+                        "danger": "#EF4444",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-fixed-variant": "#314865",
+                        "on-primary-container": "#768dad",
+                        "on-surface": "#191c1e",
+                        "background": "#f7f9fb",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d2e4ff",
+                        "outline": "#74777e",
+                        "inverse-primary": "#b0c8eb",
+                        "on-secondary-container": "#00714e",
+                        "text-secondary": "#475569",
+                        "tertiary": "#060045",
+                        "on-tertiary-fixed-variant": "#321ed2",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "card-bg": "#FFFFFF",
+                        "surface-bright": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#82f5c1",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#e2dfff",
+                        "on-background": "#191c1e",
+                        "outline-variant": "#c4c6ce",
+                        "error-container": "#ffdad6",
+                        "secondary": "#006c4a",
+                        "text-tertiary": "#94A3B8",
+                        "on-error-container": "#93000a",
+                        "text-primary": "#0F172A",
+                        "primary-container": "#0a2540",
+                        "primary": "#000f22",
+                        "on-primary-fixed": "#001c37",
+                        "warning": "#F59E0B",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed": "#85f8c4",
+                        "success": "#10B981",
+                        "surface-tint": "#49607e",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-variant": "#e0e3e5",
+                        "on-tertiary-fixed": "#0f0069",
+                        "on-secondary-fixed": "#002114",
+                        "tertiary-fixed-dim": "#c3c0ff",
+                        "on-secondary-fixed-variant": "#005137",
+                        "on-surface-variant": "#43474d",
+                        "surface": "#f7f9fb",
+                        "on-tertiary-container": "#7f7bff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#68dba9",
+                        "surface-dim": "#d8dadc",
+                        "surface-container": "#eceef0",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e6e8ea"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "margin-desktop": "48px",
+                        "section-gap": "64px",
+                        "gutter": "24px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+        .ambient-shadow { box-shadow: 0px 4px 20px rgba(0,0,0,0.04); }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        .form-input { 
+            @apply w-full h-12 px-4 rounded-lg border border-outline-variant/50 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-body-md text-body-md text-text-primary placeholder:text-text-tertiary;
+        }
+        .form-select {
+            @apply w-full h-12 px-4 rounded-lg border border-outline-variant/50 bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-body-md text-body-md text-text-primary appearance-none cursor-pointer;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+    </style>
+<style data-styled="" data-styled-version="4.3.1"></style>
+
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-on-background shadow-sm flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20 sticky top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" style="font-variation-settings: 'FILL' 1;">monitor_heart</span>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed hidden md:block">HealthWise AI</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-text-secondary dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-md text-label-md" href="#">Dashboard</a>
+<a class="text-primary dark:text-primary-fixed font-bold border-b-2 border-primary dark:border-primary-fixed pb-1 font-label-md text-label-md" href="#">Assessment</a>
+<a class="text-text-secondary dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-md text-label-md" href="#">Recommendations</a>
+<a class="text-text-secondary dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-md text-label-md" href="#">Reports</a>
+<a class="text-text-secondary dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-md text-label-md" href="#">History</a>
+<a class="text-text-secondary dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-md text-label-md" href="#">Insights</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="scale-95 transition-transform duration-200 text-text-secondary hover:text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-outline-variant/30">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="Close up professional headshot of a middle aged woman with short brown hair, wearing a white blouse, smiling warmly against a soft grey background. Light mode corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYgipUT3HkDVz4zRNncVhQbrV3wTr2TfGaeQv8xxjI50PoWq0sD-A-D4zRG05wz_dII1IYbCNY0qqTnXR_dSncb1Sk5Ee5aWzs6o189nYzK6BWt5f1smhw-JKbtbH0C_9UhK2DdN8FQ-j8hS3o9pDTKEZVkJnlqV5B4MW_wr6mWbvP6mQZSuHJjFMd7HOKp3ssfhhkxNJ4Lw-Y2U-a6WnajcqmqR89qZ5Pyh2KVlcb5EL20wsSH48PnTfuhIBaejL5S3aQfdlHwEs">
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 md:py-12 flex flex-col gap-section-gap pb-32 md:pb-12">
+<!-- Header & Stepper -->
+<section class="flex flex-col gap-8">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Health Assessment</h1>
+<p class="font-body-md text-body-md text-text-secondary">Let's build your comprehensive health profile.</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label-sm text-label-sm text-text-tertiary uppercase tracking-wider">15% Complete</span>
+<button class="px-4 py-2 rounded-lg border border-outline-variant/50 font-label-md text-label-md text-text-secondary hover:bg-surface-container-low transition-colors duration-200 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">save</span> Save Draft
+                    </button>
+</div>
+</div>
+<!-- Stepper -->
+<div class="w-full">
+<div class="flex items-center justify-between relative">
+<!-- Progress Bar Background -->
+<div class="absolute top-1/2 left-0 w-full h-1 bg-surface-container-highest -translate-y-1/2 rounded-full z-0"></div>
+<!-- Active Progress -->
+<div class="absolute top-1/2 left-0 w-[15%] h-1 bg-secondary -translate-y-1/2 rounded-full z-0 transition-all duration-500"></div>
+<!-- Steps -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-secondary text-surface-container-lowest flex items-center justify-center shadow-sm">
+<span class="font-label-md text-label-md font-bold">1</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary hidden md:block">Basic Profile</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-text-tertiary flex items-center justify-center border-2 border-surface">
+<span class="font-label-md text-label-md font-bold">2</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-tertiary hidden md:block">Medical History</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-text-tertiary flex items-center justify-center border-2 border-surface">
+<span class="font-label-md text-label-md font-bold">3</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-tertiary hidden md:block">Symptoms</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-text-tertiary flex items-center justify-center border-2 border-surface">
+<span class="font-label-md text-label-md font-bold">4</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-tertiary hidden md:block">Review</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Form Area -->
+<div class="lg:col-span-8 flex flex-col gap-8">
+<!-- Biometrics Section -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 ambient-shadow border border-outline-variant/20">
+<div class="flex items-center gap-3 mb-6 pb-4 border-b border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary">Biometrics</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-secondary">Age</label>
+<input class="form-input" id="input-age" placeholder="e.g. 34" type="number">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-secondary">Gender</label>
+<select class="form-select">
+<option disabled="" selected="" value="">Select Gender</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="other">Other / Prefer not to say</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-secondary">Height (cm)</label>
+<input class="form-input" id="input-height" placeholder="e.g. 175" type="number">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-secondary">Weight (kg)</label>
+<input class="form-input" id="input-weight" placeholder="e.g. 70" type="number">
+</div>
+</div>
+</div>
+<!-- Lifestyle Section -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 ambient-shadow border border-outline-variant/20">
+<div class="flex items-center gap-3 mb-6 pb-4 border-b border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">directions_run</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary">Lifestyle Factors</h2>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-secondary">Smoking Status</label>
+<select class="form-select">
+<option disabled="" selected="" value="">Select Status</option>
+<option value="never">Never Smoked</option>
+<option value="former">Former Smoker</option>
+<option value="current">Current Smoker</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-secondary">Alcohol Consumption</label>
+<select class="form-select">
+<option disabled="" selected="" value="">Select Frequency</option>
+<option value="none">None</option>
+<option value="occasional">Occasional (1-2/week)</option>
+<option value="moderate">Moderate (3-5/week)</option>
+<option value="heavy">Heavy (Daily)</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-4 pt-2">
+<label class="font-label-md text-label-md text-text-secondary">Average Weekly Exercise (Hours)</label>
+<div class="flex items-center gap-4">
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary" id="exercise-range" max="15" min="0" type="range" value="3">
+<span class="font-label-md text-label-md font-bold text-primary w-12 text-center" id="exercise-val">3 hrs</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-secondary">Average Sleep (Hours/Night)</label>
+<input class="form-input" max="24" min="0" placeholder="e.g. 7" type="number">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-secondary">General Stress Level</label>
+<select class="form-select">
+<option disabled="" selected="" value="">Select Level</option>
+<option value="low">Low</option>
+<option value="moderate">Moderate</option>
+<option value="high">High</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Buttons -->
+<div class="flex justify-end gap-4 mt-4">
+<button class="px-6 py-3 rounded-lg font-label-md text-label-md text-surface-container-lowest bg-primary hover:-translate-y-0.5 transition-transform duration-200 shadow-sm flex items-center gap-2">
+                        Continue to History <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Right Sidebar Area (Live BMI) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-2xl p-6 ambient-shadow border border-outline-variant/20 sticky top-28">
+<h3 class="font-label-md text-label-md text-text-secondary uppercase tracking-wider mb-4">Live Analysis</h3>
+<div class="flex flex-col items-center justify-center py-6 bg-surface-container-low rounded-xl mb-6 relative overflow-hidden">
+<!-- Decorative background element -->
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-secondary-container/30 rounded-full blur-2xl"></div>
+<div class="absolute -left-10 -bottom-10 w-32 h-32 bg-primary-fixed/30 rounded-full blur-2xl"></div>
+<div class="relative z-10 flex flex-col items-center">
+<span class="font-display-lg text-display-lg text-primary" id="bmi-value">--</span>
+<span class="font-label-sm text-label-sm text-text-tertiary">Estimated BMI</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-text-secondary">Status</span>
+<span class="px-3 py-1 bg-surface-container-highest text-text-secondary rounded-full font-label-sm text-label-sm font-bold" id="bmi-status">Awaiting Input</span>
+</div>
+<!-- BMI Scale -->
+<div class="w-full mt-2">
+<div class="h-2 w-full flex rounded-full overflow-hidden">
+<div class="h-full bg-inverse-primary w-[18.5%]" title="Underweight"></div>
+<div class="h-full bg-secondary w-[25%]" title="Healthy Weight"></div>
+<div class="h-full bg-warning w-[20%]" title="Overweight"></div>
+<div class="h-full bg-danger w-[36.5%]" title="Obesity"></div>
+</div>
+<div class="flex justify-between mt-2 font-label-sm text-label-sm text-text-tertiary text-[10px]">
+<span>18.5</span>
+<span>25</span>
+<span>30</span>
+</div>
+</div>
+<div class="p-4 bg-primary-fixed/20 rounded-xl mt-4 flex gap-3">
+<span class="material-symbols-outlined text-primary-container text-[20px]">info</span>
+<p class="font-body-md text-body-md text-primary-container text-sm">
+                                BMI is a general indicator. Muscle mass, age, and other factors influence actual health status. We'll refine this in later steps.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-16 bg-surface dark:bg-inverse-surface shadow-[0px_-4px_20px_rgba(0,0,0,0.04)] shadow-lg rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm-mobile">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:bg-surface-container-high scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-sm text-label-sm-mobile">Wizard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-sm text-label-sm-mobile">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-sm text-label-sm-mobile">AI Insights</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-on-background border-t border-outline-variant/20 full-width mt-section-gap hidden md:block">
+<div class="flex flex-col md:flex-row justify-between items-center py-base px-margin-desktop max-w-container-max mx-auto">
+<span class="font-label-md text-label-md font-bold text-primary">© 2024 HealthWise AI. Clinical use only.</span>
+<div class="flex gap-4">
+<a class="font-label-sm text-label-sm text-text-tertiary hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Clinical Disclaimers</a>
+<a class="font-label-sm text-label-sm text-text-tertiary hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">System Status</a>
+<a class="font-label-sm text-label-sm text-text-tertiary hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple BMI Calculator logic
+        const heightInput = document.getElementById('input-height');
+        const weightInput = document.getElementById('input-weight');
+        const bmiValueDisplay = document.getElementById('bmi-value');
+        const bmiStatusDisplay = document.getElementById('bmi-status');
+        
+        const exerciseRange = document.getElementById('exercise-range');
+        const exerciseVal = document.getElementById('exercise-val');
+
+        exerciseRange.addEventListener('input', (e) => {
+            exerciseVal.textContent = e.target.value + (e.target.value == 15 ? '+ hrs' : ' hrs');
+        });
+
+        function calculateBMI() {
+            const h = parseFloat(heightInput.value);
+            const w = parseFloat(weightInput.value);
+
+            if (h > 0 && w > 0) {
+                const heightInMeters = h / 100;
+                const bmi = (w / (heightInMeters * heightInMeters)).toFixed(1);
+                bmiValueDisplay.textContent = bmi;
+                
+                bmiStatusDisplay.className = "px-3 py-1 rounded-full font-label-sm text-label-sm font-bold text-surface-container-lowest";
+                
+                if (bmi < 18.5) {
+                    bmiStatusDisplay.textContent = "Underweight";
+                    bmiStatusDisplay.classList.add("bg-inverse-primary");
+                    bmiStatusDisplay.classList.replace("text-surface-container-lowest", "text-on-primary-container");
+                } else if (bmi >= 18.5 && bmi < 25) {
+                    bmiStatusDisplay.textContent = "Healthy";
+                    bmiStatusDisplay.classList.add("bg-secondary");
+                } else if (bmi >= 25 && bmi < 30) {
+                    bmiStatusDisplay.textContent = "Overweight";
+                    bmiStatusDisplay.classList.add("bg-warning");
+                    bmiStatusDisplay.classList.replace("text-surface-container-lowest", "text-on-surface");
+                } else {
+                    bmiStatusDisplay.textContent = "Obesity";
+                    bmiStatusDisplay.classList.add("bg-danger");
+                }
+            } else {
+                bmiValueDisplay.textContent = "--";
+                bmiStatusDisplay.textContent = "Awaiting Input";
+                bmiStatusDisplay.className = "px-3 py-1 bg-surface-container-highest text-text-secondary rounded-full font-label-sm text-label-sm font-bold";
+            }
+        }
+
+        heightInput.addEventListener('input', calculateBMI);
+        weightInput.addEventListener('input', calculateBMI);
+    </script>
+</body></html>
