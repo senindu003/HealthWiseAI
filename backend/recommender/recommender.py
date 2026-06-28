@@ -100,6 +100,7 @@ async def run_recommendation_pipeline(payload_dict: dict) -> dict:
 
     except Exception:
         # Fallback routines intercept smoothly if LLM rates cap out or throw formats issues
+        print('''LLM API call failed, falling back to deterministic rules...''')
         return generate_safe_fallback(mandatory_tests)
 
 

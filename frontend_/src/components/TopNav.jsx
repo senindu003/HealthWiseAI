@@ -12,18 +12,28 @@ export default function TopNav() {
     { label: "Recommendations", to: "/recommendations" },
   ];
 
-  // Helper function to resolve structural path active states
+  // Robust route verification matching dynamic parameters strings
   const isActivePath = (path) => {
     if (path === "/dashboard" && location.pathname === "/dashboard")
       return true;
     if (path.includes("assessment") && location.pathname.includes("assessment"))
       return true;
     if (
-      path.includes("recommended") &&
-      location.pathname.includes("recommended")
+      path.includes("recommendations") &&
+      location.pathname.includes("recommendations")
     )
       return true;
     return false;
+  };
+
+  const handleLogoutActionSequence = () => {
+    // Completely purge both volatile memory cells and authorization flags tracking frameworks
+    sessionStorage.clear();
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("isDemoMode");
+
+    setShowProfileMenu(false);
+    navigate("/");
   };
 
   return (
@@ -32,28 +42,26 @@ export default function TopNav() {
         {/* Core Application Branding */}
         <Link
           to="/dashboard"
-          className="flex items-center gap-3 group focus:outline-none"
+          className="flex items-center gap-2.5 text-xs font-black uppercase tracking-wider text-white"
         >
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-emerald-400 flex items-center justify-center font-bold text-sm shadow-sm transition-transform group-hover:scale-105">
+          <div className="w-7 h-7 rounded-lg bg-white text-slate-950 flex items-center justify-center font-bold text-xs shadow-md">
             🧠
           </div>
-          <span className="text-sm font-black uppercase tracking-wider text-white select-none">
-            HealthWise AI
-          </span>
+          <span>HealthWise AI</span>
         </Link>
 
-        {/* Desktop Iterative Navigation Menu Link Trays */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Center Desktop Context Nav Links Navigation Bar Links Links */}
+        <nav className="hidden md:flex items-center gap-1.5 h-full">
           {navLinks.map((link) => {
             const active = isActivePath(link.to);
             return (
               <Link
-                key={link.label}
+                key={link.to}
                 to={link.to}
-                className={`text-[11px] font-black uppercase tracking-widest transition-all pb-1 border-b-2 ${
+                className={`px-4 py-2 rounded-xl text-xs font-bold tracking-wide transition-all ${
                   active
-                    ? "text-indigo-400 border-indigo-500"
-                    : "text-slate-400 border-transparent hover:text-white hover:border-slate-700"
+                    ? "bg-white/10 text-white shadow-xs"
+                    : "text-slate-400 hover:text-white hover:bg-white/5"
                 }`}
               >
                 {link.label}
@@ -62,54 +70,67 @@ export default function TopNav() {
           })}
         </nav>
 
-        {/* System Diagnostics & Utilities Interface Grid */}
+        {/* Right Side Workflow Utility Control Stack Panel Row Elements */}
         <div className="flex items-center gap-4">
-          {/* Diagnostic Notification Flag Hub */}
-          <button className="relative p-2 text-slate-400 hover:text-white transition-colors rounded-xl hover:bg-slate-900 focus:outline-none">
-            <span className="text-base select-none">🔔</span>
-            <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse"></span>
+          {/* Explicit Quick Logout Button Icon directly placed in the navbar frame track */}
+          <button
+            onClick={handleLogoutActionSequence}
+            title="Terminate Session"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-800 hover:border-rose-900/50 hover:bg-rose-950/20 text-slate-400 hover:text-rose-400 rounded-xl text-xs font-bold transition-all"
+          >
+            <span className="material-symbols-outlined text-[16px]">
+              logout
+            </span>
+            <span className="hidden sm:inline">Logout</span>
           </button>
 
-          {/* User Account Session Context Dropdown Container */}
+          {/* Interactive User Profile Profile Avatar Cluster */}
           <div className="relative">
             <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-400 to-purple-500 shadow-md focus:ring-2 focus:ring-indigo-500/50 outline-none transition-transform hover:scale-102"
+              className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs hover:border-indigo-400 transition-colors focus:outline-none"
             >
-              <span className="sr-only">Toggle Profile Menu</span>
+              SD
             </button>
 
+            {/* Dropdown Menu Overlay Structure Box */}
             {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200/80 rounded-2xl shadow-xl py-2 text-xs font-semibold text-slate-700 animate-fadeIn z-50">
-                <div className="px-4 py-2 border-b border-slate-100 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                  Session Token Access
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200/80 rounded-2xl shadow-xl text-xs font-semibold text-slate-700 animate-fadeIn z-50 overflow-hidden">
+                <div className="px-4 py-2 border-b border-slate-100 text-[10px] text-slate-400 font-bold uppercase tracking-wider bg-slate-50">
+                  Active Session
                 </div>
                 <button
                   onClick={() => {
                     setShowProfileMenu(false);
                     navigate("/dashboard");
                   }}
-                  className="w-full text-left px-4 py-2.5 hover:bg-slate-50 transition-colors"
+                  className="w-full text-left px-4 py-2.5 hover:bg-slate-50 transition-colors flex items-center gap-2"
                 >
-                  My Summary Board
+                  <span className="material-symbols-outlined text-[14px]">
+                    space_dashboard
+                  </span>{" "}
+                  My Dashboard
                 </button>
                 <button
                   onClick={() => {
                     setShowProfileMenu(false);
                     navigate("/assessment/profile");
                   }}
-                  className="w-full text-left px-4 py-2.5 hover:bg-slate-50 transition-colors"
+                  className="w-full text-left px-4 py-2.5 hover:bg-slate-50 transition-colors flex items-center gap-2"
                 >
-                  Intake Gate Checklist
+                  <span className="material-symbols-outlined text-[14px]">
+                    edit_note
+                  </span>{" "}
+                  Intake Wizard
                 </button>
                 <div className="h-px bg-slate-100 my-1"></div>
                 <button
-                  onClick={() => {
-                    setShowProfileMenu(false);
-                    navigate("/");
-                  }}
-                  className="w-full text-left px-4 py-2.5 text-rose-600 hover:bg-rose-50/50 transition-colors font-bold"
+                  onClick={handleLogoutActionSequence}
+                  className="w-full text-left px-4 py-2.5 text-rose-600 hover:bg-rose-50/50 transition-colors font-bold flex items-center gap-2"
                 >
+                  <span className="material-symbols-outlined text-[14px] text-rose-600">
+                    logout
+                  </span>{" "}
                   Terminate Session
                 </button>
               </div>
