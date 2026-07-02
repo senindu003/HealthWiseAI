@@ -4,6 +4,10 @@ import TopNav from '../components/TopNav';
 import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import AssessmentStepper from '../components/AssessmentStepper';
+import Spinner from '../components/Spinner';
+import { useAssessmentSession } from '../context/AssessmentSessionContext';
+import { useAutoSave } from '../hooks/useAutoSave';
+import { validateStage3 } from '../utils/assessmentValidation';
 
 type Category = 'General' | 'Heart' | 'Respiratory' | 'Digestive' | 'Neurological';
 
@@ -32,27 +36,36 @@ const emergencySymptoms = ['Chest Pain', 'Shortness of Breath'];
 
 export default function AssessmentSymptoms() {
   const navigate = useNavigate();
+  const { assessmentData, updateSection, sessionId, saveStage } = useAssessmentSession();
+  useAutoSave(sessionId, 'STAGE_3_SYMPTOMS', assessmentData);
+  const { symptoms } = assessmentData;
+
+  // Active tab stays local (ephemeral UI state); selections are sourced from the
+  // shared assessment session (autosaved).
   const [activeCategory, setActiveCategory] = useState<Category>('General');
-  const [selectedSymptoms, setSelectedSymptoms] = useState<Record<Category, string[]>>({
-    General: [],
-    Heart: [],
-    Respiratory: [],
-    Digestive: [],
-    Neurological: [],
-  });
+  // Not persisted to the session - it's a one-time UX gate for this visit, not
+  // assessment data, and simply re-prompts if the user leaves and comes back.
+  const [emergencyAcknowledged, setEmergencyAcknowledged] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isContinuing, setIsContinuing] = useState(false);
+  const selectedSymptoms: Record<Category, string[]> = {
+    General: symptoms.symptomsByCategory.General ?? [],
+    Heart: symptoms.symptomsByCategory.Heart ?? [],
+    Respiratory: symptoms.symptomsByCategory.Respiratory ?? [],
+    Digestive: symptoms.symptomsByCategory.Digestive ?? [],
+    Neurological: symptoms.symptomsByCategory.Neurological ?? [],
+  };
 
   const toggleSymptom = (category: Category, symptom: string) => {
-    setSelectedSymptoms((prev) => {
-      const current = prev[category];
-      const updated = current.includes(symptom)
-        ? current.filter((s) => s !== symptom)
-        : [...current, symptom];
-      return { ...prev, [category]: updated };
-    });
+    const current = selectedSymptoms[category];
+    const updated = current.includes(symptom)
+      ? current.filter((s) => s !== symptom)
+      : [...current, symptom];
+    updateSection('symptoms', { symptomsByCategory: { ...selectedSymptoms, [category]: updated } });
   };
 
   const clearCategory = () => {
-    setSelectedSymptoms((prev) => ({ ...prev, [activeCategory]: [] }));
+    updateSection('symptoms', { symptomsByCategory: { ...selectedSymptoms, [activeCategory]: [] } });
   };
 
   const allSelected = Object.values(selectedSymptoms).flat();
@@ -200,9 +213,26 @@ export default function AssessmentSymptoms() {
                     currently experiencing these symptoms, please call emergency services or visit the nearest
                     emergency room immediately.
                   </p>
+                  <label className="flex items-start gap-2 mt-3 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={emergencyAcknowledged}
+                      onChange={(e) => {
+                        setEmergencyAcknowledged(e.target.checked);
+                        if (e.target.checked) setErrors((prev) => ({ ...prev, emergencyAcknowledged: '' }));
+                      }}
+                      className="mt-1"
+                    />
+                    <span className="font-label-md text-label-md font-semibold">
+                      I understand and will seek appropriate medical attention if needed.
+                    </span>
+                  </label>
                 </div>
               </div>
             </div>
+            {errors.emergencyAcknowledged && (
+              <p className="font-label-sm text-label-sm text-danger mt-3">{errors.emergencyAcknowledged}</p>
+            )}
 
             {/* Navigation Buttons */}
             <div className="flex justify-between mt-6">
@@ -214,9 +244,24 @@ export default function AssessmentSymptoms() {
                 Back
               </Link>
               <button
-                onClick={() => navigate('/assessment/review')}
-                className="font-label-md text-label-md bg-primary text-on-primary rounded-xl px-6 py-3 flex items-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md"
+                disabled={isContinuing}
+                onClick={async () => {
+                  const validation = validateStage3(assessmentData, emergencyAcknowledged);
+                  setErrors(validation.errors);
+                  if (!validation.valid) return;
+                  setIsContinuing(true);
+                  try {
+                    await saveStage('STAGE_3_SYMPTOMS', true);
+                    navigate('/assessment/review');
+                  } catch {
+                    // toast + retry action already surfaced by AssessmentSessionContext
+                  } finally {
+                    setIsContinuing(false);
+                  }
+                }}
+                className="font-label-md text-label-md bg-primary text-on-primary rounded-xl px-6 py-3 flex items-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-60"
               >
+                {isContinuing ? <Spinner size={18} /> : null}
                 Continue to Review
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </button>

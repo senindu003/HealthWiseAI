@@ -4,6 +4,11 @@ import TopNav from '../components/TopNav';
 import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import AssessmentStepper from '../components/AssessmentStepper';
+import Spinner from '../components/Spinner';
+import { useAssessmentSession } from '../context/AssessmentSessionContext';
+import { useAutoSave } from '../hooks/useAutoSave';
+import { validateStage2 } from '../utils/assessmentValidation';
+import type { MedicalHistory } from '../types/assessmentSession';
 
 interface Condition {
   id: string;
@@ -51,29 +56,35 @@ const labChips = [
 
 export default function AssessmentMedicalHistory() {
   const navigate = useNavigate();
+  const { assessmentData, updateSection, sessionId, saveStage } = useAssessmentSession();
+  const { saveStatus, saveNow } = useAutoSave(sessionId, 'STAGE_2_MEDICAL_HISTORY', assessmentData);
+  const { medicalHistory, basicProfile } = assessmentData;
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isContinuing, setIsContinuing] = useState(false);
 
-  // Personal conditions (Hypertension pre-selected)
-  const [selectedConditions, setSelectedConditions] = useState<Set<string>>(new Set(['hypertension']));
-  // Family history (Cardiovascular pre-selected)
-  const [selectedFamilyHistory, setSelectedFamilyHistory] = useState<Set<string>>(new Set(['cardiovascular']));
-  // Medications (Lisinopril pre-selected)
-  const [selectedMedications, setSelectedMedications] = useState<Set<string>>(new Set(['Lisinopril 10mg']));
+  // Selections below are sourced from the shared assessment session (autosaved) rather
+  // than local state; search inputs stay local since they're ephemeral UI filter state.
+  const selectedConditions = new Set(medicalHistory.personalConditions);
+  const selectedFamilyHistory = new Set(medicalHistory.familyHistory);
+  const selectedMedications = new Set(medicalHistory.medications);
   const [medicationSearch, setMedicationSearch] = useState('');
-  // Procedures
-  const [majorSurgery, setMajorSurgery] = useState(true);
-  const [hospitalization, setHospitalization] = useState(false);
-  // Allergies (Peanuts pre-selected)
-  const [selectedAllergies, setSelectedAllergies] = useState<Set<string>>(new Set(['Peanuts']));
+  const majorSurgery = medicalHistory.majorSurgery ?? false;
+  const hospitalization = medicalHistory.hospitalization ?? false;
+  const selectedAllergies = new Set(medicalHistory.allergies);
   const [allergySearch, setAllergySearch] = useState('');
-  // Lab history
-  const [hasAbnormalLabs, setHasAbnormalLabs] = useState<boolean | null>(null);
-  const [selectedLabs, setSelectedLabs] = useState<Set<string>>(new Set(['Blood Sugar']));
+  const hasAbnormalLabs = medicalHistory.hasAbnormalLabs;
+  const selectedLabs = new Set(medicalHistory.abnormalLabAreas);
+  const isPregnant = medicalHistory.isPregnant;
 
-  const toggleItem = (set: Set<string>, id: string, setter: React.Dispatch<React.SetStateAction<Set<string>>>) => {
+  const toggleItem = (
+    set: Set<string>,
+    id: string,
+    field: 'personalConditions' | 'familyHistory' | 'medications' | 'allergies' | 'abnormalLabAreas',
+  ) => {
     const next = new Set(set);
     if (next.has(id)) next.delete(id);
     else next.add(id);
-    setter(next);
+    updateSection('medicalHistory', { [field]: Array.from(next) } as Partial<MedicalHistory>);
   };
 
   // Sidebar computed values
@@ -117,8 +128,13 @@ export default function AssessmentMedicalHistory() {
             </div>
             <div className="flex items-center gap-4">
               <span className="font-label-sm text-label-sm text-text-tertiary uppercase tracking-wider">40% Complete</span>
-              <button className="px-4 py-2 rounded-lg border border-outline-variant/50 font-label-md text-label-md text-text-secondary hover:bg-surface-container-low transition-colors duration-200 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">save</span> Save Draft
+              <button
+                onClick={() => saveNow()}
+                disabled={saveStatus === 'saving'}
+                className="px-4 py-2 rounded-lg border border-outline-variant/50 font-label-md text-label-md text-text-secondary hover:bg-surface-container-low transition-colors duration-200 flex items-center gap-2 disabled:opacity-60"
+              >
+                {saveStatus === 'saving' ? <Spinner size={16} /> : <span className="material-symbols-outlined text-[18px]">save</span>}
+                {saveStatus === 'saving' ? 'Saving…' : 'Save Draft'}
               </button>
             </div>
           </div>
@@ -148,7 +164,7 @@ export default function AssessmentMedicalHistory() {
                   return (
                     <button
                       key={condition.id}
-                      onClick={() => toggleItem(selectedConditions, condition.id, setSelectedConditions)}
+                      onClick={() => toggleItem(selectedConditions, condition.id, 'personalConditions')}
                       className={`p-4 rounded-xl text-left transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? 'border-2 border-secondary bg-secondary/10'
@@ -195,7 +211,7 @@ export default function AssessmentMedicalHistory() {
                   return (
                     <button
                       key={condition.id}
-                      onClick={() => toggleItem(selectedFamilyHistory, condition.id, setSelectedFamilyHistory)}
+                      onClick={() => toggleItem(selectedFamilyHistory, condition.id, 'familyHistory')}
                       className={`p-4 rounded-xl text-left transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? 'border-2 border-secondary bg-secondary/10'
@@ -253,7 +269,7 @@ export default function AssessmentMedicalHistory() {
                   return (
                     <button
                       key={med}
-                      onClick={() => toggleItem(selectedMedications, med, setSelectedMedications)}
+                      onClick={() => toggleItem(selectedMedications, med, 'medications')}
                       className={`px-4 py-2 rounded-full font-label-md text-label-md transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                         isSelected
                           ? 'border-2 border-secondary bg-secondary/10 text-secondary font-semibold'
@@ -290,7 +306,7 @@ export default function AssessmentMedicalHistory() {
                     <span className="font-body-md text-body-md text-text-primary">Major Surgery</span>
                   </div>
                   <div
-                    onClick={() => setMajorSurgery(!majorSurgery)}
+                    onClick={() => updateSection('medicalHistory', { majorSurgery: !majorSurgery })}
                     className={`relative w-12 h-7 rounded-full cursor-pointer transition-colors duration-200 ${
                       majorSurgery ? 'bg-secondary' : 'bg-outline-variant/50'
                     }`}
@@ -311,7 +327,7 @@ export default function AssessmentMedicalHistory() {
                     <span className="font-body-md text-body-md text-text-primary">Hospitalization</span>
                   </div>
                   <div
-                    onClick={() => setHospitalization(!hospitalization)}
+                    onClick={() => updateSection('medicalHistory', { hospitalization: !hospitalization })}
                     className={`relative w-12 h-7 rounded-full cursor-pointer transition-colors duration-200 ${
                       hospitalization ? 'bg-secondary' : 'bg-outline-variant/50'
                     }`}
@@ -354,7 +370,7 @@ export default function AssessmentMedicalHistory() {
                   return (
                     <button
                       key={allergy}
-                      onClick={() => toggleItem(selectedAllergies, allergy, setSelectedAllergies)}
+                      onClick={() => toggleItem(selectedAllergies, allergy, 'allergies')}
                       className={`px-4 py-2 rounded-full font-label-md text-label-md transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                         isSelected
                           ? 'border-2 border-secondary bg-secondary/10 text-secondary font-semibold'
@@ -387,7 +403,7 @@ export default function AssessmentMedicalHistory() {
 
               <div className="flex gap-3 mb-6">
                 <button
-                  onClick={() => setHasAbnormalLabs(true)}
+                  onClick={() => updateSection('medicalHistory', { hasAbnormalLabs: true })}
                   className={`px-6 py-2.5 rounded-xl font-label-md text-label-md transition-all duration-200 cursor-pointer ${
                     hasAbnormalLabs === true
                       ? 'bg-primary text-on-primary'
@@ -397,7 +413,7 @@ export default function AssessmentMedicalHistory() {
                   Yes
                 </button>
                 <button
-                  onClick={() => setHasAbnormalLabs(false)}
+                  onClick={() => updateSection('medicalHistory', { hasAbnormalLabs: false })}
                   className={`px-6 py-2.5 rounded-xl font-label-md text-label-md transition-all duration-200 cursor-pointer ${
                     hasAbnormalLabs === false
                       ? 'bg-primary text-on-primary'
@@ -407,6 +423,9 @@ export default function AssessmentMedicalHistory() {
                   No
                 </button>
               </div>
+              {errors.hasAbnormalLabs && (
+                <p className="font-label-sm text-label-sm text-danger -mt-3 mb-3">{errors.hasAbnormalLabs}</p>
+              )}
 
               {hasAbnormalLabs && (
                 <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20">
@@ -417,7 +436,7 @@ export default function AssessmentMedicalHistory() {
                       return (
                         <button
                           key={lab}
-                          onClick={() => toggleItem(selectedLabs, lab, setSelectedLabs)}
+                          onClick={() => toggleItem(selectedLabs, lab, 'abnormalLabAreas')}
                           className={`px-4 py-2 rounded-full font-label-md text-label-md transition-all duration-200 cursor-pointer ${
                             isSelected
                               ? 'border-2 border-secondary bg-secondary/10 text-secondary font-semibold'
@@ -429,9 +448,53 @@ export default function AssessmentMedicalHistory() {
                       );
                     })}
                   </div>
+                  {errors.abnormalLabAreas && (
+                    <p className="font-label-sm text-label-sm text-danger mt-3">{errors.abnormalLabAreas}</p>
+                  )}
                 </div>
               )}
             </div>
+
+            {/* 7. Pregnancy Status - conditional, only relevant when gender is female */}
+            {basicProfile.gender === 'female' && (
+              <div className="bg-surface-container-lowest rounded-2xl p-6 md:p-8 ambient-shadow">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center">
+                    <span className="material-symbols-outlined text-primary">pregnant_woman</span>
+                  </div>
+                  <div>
+                    <h2 className="font-headline-md text-headline-md text-primary">Pregnancy Status</h2>
+                    <p className="font-label-sm text-label-sm text-text-tertiary">Relevant for certain lab reference ranges</p>
+                  </div>
+                </div>
+
+                <p className="font-body-md text-body-md text-text-primary mb-4">Are you currently pregnant?</p>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => updateSection('medicalHistory', { isPregnant: true })}
+                    className={`px-6 py-2.5 rounded-xl font-label-md text-label-md transition-all duration-200 cursor-pointer ${
+                      isPregnant === true
+                        ? 'bg-primary text-on-primary'
+                        : 'border-2 border-outline-variant/30 text-text-primary hover:border-outline-variant/60'
+                    }`}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    onClick={() => updateSection('medicalHistory', { isPregnant: false })}
+                    className={`px-6 py-2.5 rounded-xl font-label-md text-label-md transition-all duration-200 cursor-pointer ${
+                      isPregnant === false
+                        ? 'bg-primary text-on-primary'
+                        : 'border-2 border-outline-variant/30 text-text-primary hover:border-outline-variant/60'
+                    }`}
+                  >
+                    No
+                  </button>
+                </div>
+                {errors.isPregnant && <p className="font-label-sm text-label-sm text-danger mt-3">{errors.isPregnant}</p>}
+              </div>
+            )}
 
             {/* Navigation buttons */}
             <div className="flex justify-between">
@@ -443,9 +506,24 @@ export default function AssessmentMedicalHistory() {
                 Back to Profile
               </Link>
               <button
-                onClick={() => navigate('/assessment/symptoms')}
-                className="px-8 py-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
+                disabled={isContinuing}
+                onClick={async () => {
+                  const validation = validateStage2(assessmentData);
+                  setErrors(validation.errors);
+                  if (!validation.valid) return;
+                  setIsContinuing(true);
+                  try {
+                    await saveStage('STAGE_2_MEDICAL_HISTORY', true);
+                    navigate('/assessment/symptoms');
+                  } catch {
+                    // toast + retry action already surfaced by AssessmentSessionContext
+                  } finally {
+                    setIsContinuing(false);
+                  }
+                }}
+                className="px-8 py-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-90 transition-opacity duration-200 flex items-center gap-2 disabled:opacity-60"
               >
+                {isContinuing ? <Spinner size={18} /> : null}
                 Continue to Symptoms
                 <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
               </button>

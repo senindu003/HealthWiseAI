@@ -1,25 +1,43 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import AssessmentStepper from '../components/AssessmentStepper';
+import Spinner from '../components/Spinner';
+import { useAssessmentSession } from '../context/AssessmentSessionContext';
+import { useAutoSave } from '../hooks/useAutoSave';
+import { validateStage1 } from '../utils/assessmentValidation';
 
 export default function AssessmentProfile() {
   const navigate = useNavigate();
+  const { assessmentData, updateSection, sessionId, saveStage } = useAssessmentSession();
+  const { saveStatus, saveNow } = useAutoSave(sessionId, 'STAGE_1_BASIC_PROFILE', assessmentData);
+  const { basicProfile, lifestyle } = assessmentData;
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isContinuing, setIsContinuing] = useState(false);
 
-  // Biometrics state
-  const [age, setAge] = useState<number | ''>('');
-  const [gender, setGender] = useState('');
-  const [height, setHeight] = useState<number | ''>('');
-  const [weight, setWeight] = useState<number | ''>('');
+  // Biometrics state (sourced from the shared assessment session, autosaved)
+  const age = basicProfile.age ?? '';
+  const gender = basicProfile.gender ?? '';
+  const height = basicProfile.height ?? '';
+  const weight = basicProfile.weight ?? '';
+  const setAge = (v: number | '') => updateSection('basicProfile', { age: v === '' ? null : v });
+  const setGender = (v: string) => updateSection('basicProfile', { gender: v || null });
+  const setHeight = (v: number | '') => updateSection('basicProfile', { height: v === '' ? null : v });
+  const setWeight = (v: number | '') => updateSection('basicProfile', { weight: v === '' ? null : v });
 
-  // Lifestyle state
-  const [smokingStatus, setSmokingStatus] = useState('');
-  const [alcoholConsumption, setAlcoholConsumption] = useState('');
-  const [exerciseHours, setExerciseHours] = useState(3);
-  const [sleepHours, setSleepHours] = useState<number | ''>('');
-  const [stressLevel, setStressLevel] = useState('');
+  // Lifestyle state (sourced from the shared assessment session, autosaved)
+  const smokingStatus = lifestyle.smokingStatus ?? '';
+  const alcoholConsumption = lifestyle.alcoholConsumption ?? '';
+  const exerciseHours = lifestyle.exerciseHoursPerWeek ?? 3;
+  const sleepHours = lifestyle.sleepHours ?? '';
+  const stressLevel = lifestyle.stressLevel ?? '';
+  const setSmokingStatus = (v: string) => updateSection('lifestyle', { smokingStatus: v || null });
+  const setAlcoholConsumption = (v: string) => updateSection('lifestyle', { alcoholConsumption: v || null });
+  const setExerciseHours = (v: number) => updateSection('lifestyle', { exerciseHoursPerWeek: v });
+  const setSleepHours = (v: number | '') => updateSection('lifestyle', { sleepHours: v === '' ? null : v });
+  const setStressLevel = (v: string) => updateSection('lifestyle', { stressLevel: v || null });
 
   // BMI calculation
   const bmi = useMemo(() => {
@@ -52,8 +70,13 @@ export default function AssessmentProfile() {
             </div>
             <div className="flex items-center gap-4">
               <span className="font-label-sm text-label-sm text-text-tertiary uppercase tracking-wider">15% Complete</span>
-              <button className="px-4 py-2 rounded-lg border border-outline-variant/50 font-label-md text-label-md text-text-secondary hover:bg-surface-container-low transition-colors duration-200 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">save</span> Save Draft
+              <button
+                onClick={() => saveNow()}
+                disabled={saveStatus === 'saving'}
+                className="px-4 py-2 rounded-lg border border-outline-variant/50 font-label-md text-label-md text-text-secondary hover:bg-surface-container-low transition-colors duration-200 flex items-center gap-2 disabled:opacity-60"
+              >
+                {saveStatus === 'saving' ? <Spinner size={16} /> : <span className="material-symbols-outlined text-[18px]">save</span>}
+                {saveStatus === 'saving' ? 'Saving…' : 'Save Draft'}
               </button>
             </div>
           </div>
@@ -81,19 +104,20 @@ export default function AssessmentProfile() {
                   <label className="font-label-md text-label-md text-text-secondary">Age</label>
                   <input
                     type="number"
-                    className="form-input"
+                    className={`form-input ${errors.age ? 'border-danger' : ''}`}
                     placeholder="Enter your age"
                     value={age}
                     onChange={(e) => setAge(e.target.value ? Number(e.target.value) : '')}
                     min={0}
                     max={150}
                   />
+                  {errors.age && <p className="font-label-sm text-label-sm text-danger">{errors.age}</p>}
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="font-label-md text-label-md text-text-secondary">Gender</label>
                   <select
-                    className="form-select"
+                    className={`form-select ${errors.gender ? 'border-danger' : ''}`}
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                   >
@@ -103,32 +127,35 @@ export default function AssessmentProfile() {
                     <option value="other">Other</option>
                     <option value="prefer-not">Prefer not to say</option>
                   </select>
+                  {errors.gender && <p className="font-label-sm text-label-sm text-danger">{errors.gender}</p>}
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="font-label-md text-label-md text-text-secondary">Height (cm)</label>
                   <input
                     type="number"
-                    className="form-input"
+                    className={`form-input ${errors.height ? 'border-danger' : ''}`}
                     placeholder="e.g. 175"
                     value={height}
                     onChange={(e) => setHeight(e.target.value ? Number(e.target.value) : '')}
                     min={0}
                     max={300}
                   />
+                  {errors.height && <p className="font-label-sm text-label-sm text-danger">{errors.height}</p>}
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="font-label-md text-label-md text-text-secondary">Weight (kg)</label>
                   <input
                     type="number"
-                    className="form-input"
+                    className={`form-input ${errors.weight ? 'border-danger' : ''}`}
                     placeholder="e.g. 70"
                     value={weight}
                     onChange={(e) => setWeight(e.target.value ? Number(e.target.value) : '')}
                     min={0}
                     max={500}
                   />
+                  {errors.weight && <p className="font-label-sm text-label-sm text-danger">{errors.weight}</p>}
                 </div>
               </div>
             </div>
@@ -229,9 +256,24 @@ export default function AssessmentProfile() {
             {/* Continue button */}
             <div className="flex justify-end">
               <button
-                onClick={() => navigate('/assessment/medical-history')}
-                className="px-8 py-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
+                disabled={isContinuing}
+                onClick={async () => {
+                  const validation = validateStage1(assessmentData);
+                  setErrors(validation.errors);
+                  if (!validation.valid) return;
+                  setIsContinuing(true);
+                  try {
+                    await saveStage('STAGE_1_BASIC_PROFILE', true);
+                    navigate('/assessment/medical-history');
+                  } catch {
+                    // toast + retry action already surfaced by AssessmentSessionContext
+                  } finally {
+                    setIsContinuing(false);
+                  }
+                }}
+                className="px-8 py-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-90 transition-opacity duration-200 flex items-center gap-2 disabled:opacity-60"
               >
+                {isContinuing ? <Spinner size={18} /> : null}
                 Continue to History
                 <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
               </button>
