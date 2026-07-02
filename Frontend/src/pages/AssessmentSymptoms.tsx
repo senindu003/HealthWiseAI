@@ -246,7 +246,7 @@ export default function AssessmentSymptoms() {
               <button
                 disabled={isContinuing}
                 onClick={async () => {
-                  const validation = validateStage3(assessmentData, emergencyAcknowledged);
+                  const validation = validateStage3(hasEmergency, emergencyAcknowledged);
                   setErrors(validation.errors);
                   if (!validation.valid) return;
                   setIsContinuing(true);

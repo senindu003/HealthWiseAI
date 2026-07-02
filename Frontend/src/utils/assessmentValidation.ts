@@ -45,12 +45,15 @@ export function validateStage2(data: AssessmentData): ValidationResult {
   return result(errors);
 }
 
-export function validateStage3(data: AssessmentData, emergencyAcknowledged: boolean): ValidationResult {
-  const { symptoms } = data;
+// Takes the locally-derived `hasEmergency` flag (computed straight from the selected
+// symptoms in the component) rather than reading assessmentData.symptoms.hasEmergency,
+// which is only refreshed after a server round-trip and can lag a few hundred ms behind
+// the debounced autosave - using the stale value would let this gate be bypassed if the
+// user clicks Continue immediately after selecting an emergency symptom.
+export function validateStage3(hasEmergency: boolean, emergencyAcknowledged: boolean): ValidationResult {
   const errors: Record<string, string> = {};
 
-  // Dynamic: this field only becomes required if an emergency-flagged symptom was selected.
-  if (symptoms.hasEmergency && !emergencyAcknowledged) {
+  if (hasEmergency && !emergencyAcknowledged) {
     errors.emergencyAcknowledged = 'Please acknowledge the emergency warning before continuing.';
   }
 

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import AssessmentStepper from '../components/AssessmentStepper';
+import Spinner from '../components/Spinner';
 import { useAssessmentSession } from '../context/AssessmentSessionContext';
 import { useAutoSave } from '../hooks/useAutoSave';
 
@@ -13,10 +15,11 @@ function capitalize(value: string | null): string {
 
 export default function AssessmentReview() {
   const navigate = useNavigate();
-  const { assessmentData, sessionId, saveStage, completeAssessment } = useAssessmentSession();
-  const { saveStatus, saveNow } = useAutoSave(sessionId, 'STAGE_4_REVIEW', assessmentData);
+  const { assessmentData, sessionId, saveStage, saveDraft, saveStatus, completeAssessment } = useAssessmentSession();
+  useAutoSave(sessionId, 'STAGE_4_REVIEW', assessmentData);
   const { basicProfile, medicalHistory, symptoms } = assessmentData;
   const allSymptoms = Object.values(symptoms.symptomsByCategory).flat();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <div className="text-text-primary min-h-screen flex flex-col" style={{ backgroundColor: '#F8FAFC' }}>
@@ -261,26 +264,39 @@ export default function AssessmentReview() {
               {/* Action Buttons */}
               <div className="flex flex-col gap-3">
                 <button
+                  disabled={isSubmitting}
                   onClick={async () => {
-                    await saveStage('STAGE_4_REVIEW', true);
-                    await completeAssessment();
-                    navigate('/analysis');
+                    setIsSubmitting(true);
+                    try {
+                      await saveStage('STAGE_4_REVIEW', true);
+                      await completeAssessment();
+                      navigate('/analysis');
+                    } catch {
+                      // toast + retry action already surfaced by AssessmentSessionContext
+                    } finally {
+                      setIsSubmitting(false);
+                    }
                   }}
-                  className="w-full font-label-md text-label-md bg-primary text-on-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="w-full font-label-md text-label-md bg-primary text-on-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-60"
                 >
-                  <span
-                    className="material-symbols-outlined text-[20px]"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    auto_awesome
-                  </span>
+                  {isSubmitting ? (
+                    <Spinner size={20} />
+                  ) : (
+                    <span
+                      className="material-symbols-outlined text-[20px]"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      auto_awesome
+                    </span>
+                  )}
                   Generate AI Recommendations
                 </button>
                 <button
-                  onClick={() => saveNow()}
-                  className="w-full font-label-md text-label-md bg-surface border border-outline-variant/50 text-text-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors duration-200"
+                  onClick={() => saveDraft('STAGE_4_REVIEW')}
+                  disabled={saveStatus === 'saving'}
+                  className="w-full font-label-md text-label-md bg-surface border border-outline-variant/50 text-text-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors duration-200 disabled:opacity-60"
                 >
-                  <span className="material-symbols-outlined text-[20px]">save</span>
+                  {saveStatus === 'saving' ? <Spinner size={20} /> : <span className="material-symbols-outlined text-[20px]">save</span>}
                   {saveStatus === 'saving' ? 'Saving…' : 'Save Draft'}
                 </button>
               </div>

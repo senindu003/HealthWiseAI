@@ -11,8 +11,8 @@ import { validateStage1 } from '../utils/assessmentValidation';
 
 export default function AssessmentProfile() {
   const navigate = useNavigate();
-  const { assessmentData, updateSection, sessionId, saveStage } = useAssessmentSession();
-  const { saveStatus, saveNow } = useAutoSave(sessionId, 'STAGE_1_BASIC_PROFILE', assessmentData);
+  const { assessmentData, updateSection, sessionId, saveStage, saveDraft, saveStatus } = useAssessmentSession();
+  useAutoSave(sessionId, 'STAGE_1_BASIC_PROFILE', assessmentData);
   const { basicProfile, lifestyle } = assessmentData;
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isContinuing, setIsContinuing] = useState(false);
@@ -71,7 +71,7 @@ export default function AssessmentProfile() {
             <div className="flex items-center gap-4">
               <span className="font-label-sm text-label-sm text-text-tertiary uppercase tracking-wider">15% Complete</span>
               <button
-                onClick={() => saveNow()}
+                onClick={() => saveDraft('STAGE_1_BASIC_PROFILE')}
                 disabled={saveStatus === 'saving'}
                 className="px-4 py-2 rounded-lg border border-outline-variant/50 font-label-md text-label-md text-text-secondary hover:bg-surface-container-low transition-colors duration-200 flex items-center gap-2 disabled:opacity-60"
               >
