@@ -30,6 +30,7 @@ export default function GoogleAuthButton() {
         onError={() => showToast('error', 'Google sign-in failed. Please try again.')}
         width="100%"
         text="continue_with"
+        locale="en"
       />
     </div>
   );
