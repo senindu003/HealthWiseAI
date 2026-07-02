@@ -1,6 +1,8 @@
 // Mirrors the backend DTOs/enums 1:1 (see Backend/.../session/model + dto).
 // Single source of truth for assessment-session shapes used by the service, context, and pages.
 
+export type { ApiError, ApiResponse } from './api';
+
 export type SessionStatus = 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
 
 export type StageType =
@@ -96,19 +98,6 @@ export interface AssessmentSessionResponse {
   completedAt: string | null;
   lastAutoSavedAt: string | null;
   assessmentData: AssessmentData;
-}
-
-export interface ApiError {
-  code: string;
-  message: string;
-  details: string[];
-}
-
-export interface ApiResponse<T> {
-  success: boolean;
-  data: T | null;
-  error: ApiError | null;
-  timestamp: string;
 }
 
 export interface CreateSessionRequest {

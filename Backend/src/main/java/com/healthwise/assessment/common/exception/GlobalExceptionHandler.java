@@ -34,6 +34,36 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.CONFLICT, "INVALID_STATE", ex.getMessage(), List.of());
     }
 
+    @ExceptionHandler(EmailAlreadyRegisteredException.class)
+    public ResponseEntity<ApiResponse<Void>> handleEmailTaken(EmailAlreadyRegisteredException ex) {
+        return build(HttpStatus.CONFLICT, "EMAIL_TAKEN", ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return build(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(WeakPasswordException.class)
+    public ResponseEntity<ApiResponse<Void>> handleWeakPassword(WeakPasswordException ex) {
+        return build(HttpStatus.BAD_REQUEST, "WEAK_PASSWORD", ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(InvalidGoogleTokenException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidGoogleToken(InvalidGoogleTokenException ex) {
+        return build(HttpStatus.UNAUTHORIZED, "INVALID_GOOGLE_TOKEN", ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(InvalidOrExpiredTokenException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidOrExpiredToken(InvalidOrExpiredTokenException ex) {
+        return build(HttpStatus.BAD_REQUEST, "INVALID_OR_EXPIRED_TOKEN", ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidRefreshToken(InvalidRefreshTokenException ex) {
+        return build(HttpStatus.UNAUTHORIZED, "INVALID_REFRESH_TOKEN", ex.getMessage(), List.of());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleValidation(MethodArgumentNotValidException ex) {
         List<String> details = ex.getBindingResult().getFieldErrors().stream()

@@ -25,7 +25,7 @@ export default function Welcome() {
             Log In
           </button>
           <button
-            onClick={() => navigate("/signin")}
+            onClick={() => navigate("/signin", { state: { openRegister: true } })}
             className="font-label-md text-label-md bg-primary text-on-primary rounded-lg px-6 py-2 hover:-translate-y-0.5 transition-transform duration-200 shadow-sm hover:shadow-md"
           >
             Get Started
@@ -61,7 +61,7 @@ export default function Welcome() {
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <button
-                onClick={() => navigate("/signin")}
+                onClick={() => navigate("/signin", { state: { openRegister: true } })}
                 className="font-label-md text-label-md bg-primary text-on-primary rounded-lg px-8 py-4 flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-[0_8px_16px_rgba(0,15,34,0.15)] hover:shadow-[0_12px_24px_rgba(0,15,34,0.2)]"
               >
                 Get Started
@@ -174,7 +174,7 @@ export default function Welcome() {
           HealthWise AI
         </div>
         <div className="font-label-sm text-label-sm text-text-tertiary mb-4 md:mb-0">
-          &copy; 2024 HealthWise AI. Clinical use only.
+          &copy; 2026 HealthWise AI. Clinical use only.
         </div>
         <div className="flex gap-6">
           <a

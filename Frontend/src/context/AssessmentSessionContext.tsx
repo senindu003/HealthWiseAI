@@ -49,9 +49,10 @@ export function AssessmentSessionProvider({ children }: { children: ReactNode })
     setAssessmentData(session.assessmentData);
   }, []);
 
-  // Resume-on-mount: find the user's IN_PROGRESS session (via the persisted stub userId,
-  // see assessmentSessionService.getOrCreateUserId), eagerly creating one if none exists
-  // (matches the spec's "User starts assessment -> Create Assessment Session" workflow).
+  // Resume-on-mount: find the authenticated user's IN_PROGRESS session, eagerly creating
+  // one if none exists (matches the spec's "User starts assessment -> Create Assessment
+  // Session" workflow). Only ever mounted behind ProtectedRoute, so a valid access token
+  // is already present in authTokenStore by the time this runs.
   // Redirects forward once if the resumed session is ahead of the currently rendered route.
   useEffect(() => {
     let cancelled = false;
