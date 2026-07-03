@@ -90,7 +90,7 @@ export default function TopNav() {
               onClick={() => setShowProfileMenu(!showProfileMenu)}
               className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs hover:border-indigo-400 transition-colors focus:outline-none"
             >
-              SD
+              <span className="material-symbols-outlined">person</span>
             </button>
 
             {/* Dropdown Menu Overlay Structure Box */}
