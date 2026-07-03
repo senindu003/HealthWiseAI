@@ -1,11 +1,25 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import AssessmentStepper from '../components/AssessmentStepper';
+import Spinner from '../components/Spinner';
+import { useAssessmentSession } from '../context/AssessmentSessionContext';
+import { useAutoSave } from '../hooks/useAutoSave';
+
+function capitalize(value: string | null): string {
+  if (!value) return 'Not provided';
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
 
 export default function AssessmentReview() {
   const navigate = useNavigate();
+  const { assessmentData, sessionId, saveStage, saveDraft, saveStatus, completeAssessment } = useAssessmentSession();
+  useAutoSave(sessionId, 'STAGE_4_REVIEW', assessmentData);
+  const { basicProfile, medicalHistory, symptoms } = assessmentData;
+  const allSymptoms = Object.values(symptoms.symptomsByCategory).flat();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <div className="text-text-primary min-h-screen flex flex-col" style={{ backgroundColor: '#F8FAFC' }}>
@@ -46,11 +60,16 @@ export default function AssessmentReview() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <p className="font-label-sm text-label-sm text-text-tertiary mb-1">Age / Gender</p>
-                  <p className="font-body-md text-body-md text-text-primary">42, Male</p>
+                  <p className="font-body-md text-body-md text-text-primary">
+                    {basicProfile.age ?? 'Not provided'}, {capitalize(basicProfile.gender)}
+                  </p>
                 </div>
                 <div>
                   <p className="font-label-sm text-label-sm text-text-tertiary mb-1">Height / Weight</p>
-                  <p className="font-body-md text-body-md text-text-primary">180 cm, 85 kg (BMI: 26.2)</p>
+                  <p className="font-body-md text-body-md text-text-primary">
+                    {basicProfile.height ?? '—'} cm, {basicProfile.weight ?? '—'} kg
+                    {basicProfile.bmi ? ` (BMI: ${basicProfile.bmi.toFixed(1)})` : ''}
+                  </p>
                 </div>
               </div>
             </div>
@@ -79,19 +98,29 @@ export default function AssessmentReview() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <p className="font-label-sm text-label-sm text-text-tertiary mb-1">Pre-existing Conditions</p>
-                  <p className="font-body-md text-body-md text-text-primary">Mild Hypertension</p>
+                  <p className="font-body-md text-body-md text-text-primary">
+                    {medicalHistory.personalConditions.length > 0
+                      ? medicalHistory.personalConditions.join(', ')
+                      : 'None reported'}
+                  </p>
                 </div>
                 <div>
                   <p className="font-label-sm text-label-sm text-text-tertiary mb-1">Current Medications</p>
-                  <p className="font-body-md text-body-md text-text-primary">Lisinopril 10mg</p>
+                  <p className="font-body-md text-body-md text-text-primary">
+                    {medicalHistory.medications.length > 0 ? medicalHistory.medications.join(', ') : 'None reported'}
+                  </p>
                 </div>
                 <div>
-                  <p className="font-label-sm text-label-sm text-text-tertiary mb-1">Recent Blood Pressure</p>
-                  <p className="font-body-md text-body-md text-text-primary">135/85 mmHg</p>
+                  <p className="font-label-sm text-label-sm text-text-tertiary mb-1">Allergies</p>
+                  <p className="font-body-md text-body-md text-text-primary">
+                    {medicalHistory.allergies.length > 0 ? medicalHistory.allergies.join(', ') : 'None reported'}
+                  </p>
                 </div>
                 <div>
-                  <p className="font-label-sm text-label-sm text-text-tertiary mb-1">Fasting Glucose</p>
-                  <p className="font-body-md text-body-md text-text-primary">105 mg/dL</p>
+                  <p className="font-label-sm text-label-sm text-text-tertiary mb-1">Family History</p>
+                  <p className="font-body-md text-body-md text-text-primary">
+                    {medicalHistory.familyHistory.length > 0 ? medicalHistory.familyHistory.join(', ') : 'None reported'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -116,12 +145,18 @@ export default function AssessmentReview() {
                 <h2 className="font-headline-md text-headline-md text-text-primary">Symptoms</h2>
               </div>
               <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-secondary-container font-label-md text-label-md text-on-secondary-container">
-                  Occasional Fatigue
-                </span>
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-secondary-container font-label-md text-label-md text-on-secondary-container">
-                  Mild Joint Pain
-                </span>
+                {allSymptoms.length > 0 ? (
+                  allSymptoms.map((symptom) => (
+                    <span
+                      key={symptom}
+                      className="inline-flex items-center px-4 py-2 rounded-full bg-secondary-container font-label-md text-label-md text-on-secondary-container"
+                    >
+                      {symptom}
+                    </span>
+                  ))
+                ) : (
+                  <span className="font-label-sm text-label-sm text-text-tertiary">No symptoms reported</span>
+                )}
               </div>
             </div>
 
@@ -229,20 +264,40 @@ export default function AssessmentReview() {
               {/* Action Buttons */}
               <div className="flex flex-col gap-3">
                 <button
-                  onClick={() => navigate('/analysis')}
-                  className="w-full font-label-md text-label-md bg-primary text-on-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md"
+                  disabled={isSubmitting}
+                  onClick={async () => {
+                    setIsSubmitting(true);
+                    try {
+                      await saveStage('STAGE_4_REVIEW', true);
+                      await completeAssessment();
+                      navigate('/analysis');
+                    } catch {
+                      // toast + retry action already surfaced by AssessmentSessionContext
+                    } finally {
+                      setIsSubmitting(false);
+                    }
+                  }}
+                  className="w-full font-label-md text-label-md bg-primary text-on-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-60"
                 >
-                  <span
-                    className="material-symbols-outlined text-[20px]"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    auto_awesome
-                  </span>
+                  {isSubmitting ? (
+                    <Spinner size={20} />
+                  ) : (
+                    <span
+                      className="material-symbols-outlined text-[20px]"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      auto_awesome
+                    </span>
+                  )}
                   Generate AI Recommendations
                 </button>
-                <button className="w-full font-label-md text-label-md bg-surface border border-outline-variant/50 text-text-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors duration-200">
-                  <span className="material-symbols-outlined text-[20px]">save</span>
-                  Save Draft
+                <button
+                  onClick={() => saveDraft('STAGE_4_REVIEW')}
+                  disabled={saveStatus === 'saving'}
+                  className="w-full font-label-md text-label-md bg-surface border border-outline-variant/50 text-text-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors duration-200 disabled:opacity-60"
+                >
+                  {saveStatus === 'saving' ? <Spinner size={20} /> : <span className="material-symbols-outlined text-[20px]">save</span>}
+                  {saveStatus === 'saving' ? 'Saving…' : 'Save Draft'}
                 </button>
               </div>
             </div>

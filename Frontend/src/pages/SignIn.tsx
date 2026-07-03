@@ -1,13 +1,69 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
+import RegistrationModal from "../components/RegistrationModal";
+import GoogleAuthButton from "../components/GoogleAuthButton";
+
+type ActiveModal = "none" | "register" | "forgot";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+  const location = useLocation();
+  const auth = useAuth();
+  const { showToast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeModal, setActiveModal] = useState<ActiveModal>("none");
+
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotSubmitted, setForgotSubmitted] = useState(false);
+  const [isForgotSubmitting, setIsForgotSubmitting] = useState(false);
+
+  useEffect(() => {
+    const state = location.state as { openRegister?: boolean } | null;
+    if (state?.openRegister) {
+      setActiveModal("register");
+      navigate(location.pathname, { replace: true, state: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/onboarding");
+    setIsSubmitting(true);
+    try {
+      await auth.login({ email, password, rememberMe });
+      navigate("/onboarding");
+    } catch (err) {
+      showToast("error", err instanceof Error ? err.message : "Sign in failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleForgotSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsForgotSubmitting(true);
+    try {
+      await auth.forgotPassword({ email: forgotEmail });
+    } catch {
+      // Backend already never reveals whether the account exists - treat any failure
+      // the same as success so the UI can't leak that information either.
+    } finally {
+      setIsForgotSubmitting(false);
+      setForgotSubmitted(true);
+    }
+  };
+
+  const closeForgotModal = () => {
+    setActiveModal("none");
+    setForgotEmail("");
+    setForgotSubmitted(false);
   };
 
   return (
@@ -84,6 +140,8 @@ export default function SignIn() {
                   </span>
                   <input
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant/50 bg-surface-container-lowest font-body-md text-body-md text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                   />
@@ -101,6 +159,8 @@ export default function SignIn() {
                   </span>
                   <input
                     type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     className="w-full pl-10 pr-12 py-3 rounded-xl border border-outline-variant/50 bg-surface-container-lowest font-body-md text-body-md text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                   />
@@ -121,29 +181,35 @@ export default function SignIn() {
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                     className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary"
                   />
                   <span className="font-label-sm text-label-sm text-text-secondary">
                     Remember me
                   </span>
                 </label>
-                <a
-                  href="#"
+                <button
+                  type="button"
+                  onClick={() => setActiveModal("forgot")}
                   className="font-label-sm text-label-sm text-primary hover:text-primary/80 transition-colors"
                 >
                   Forgot Password?
-                </a>
+                </button>
               </div>
 
               {/* Sign In button */}
               <button
                 type="submit"
-                className="w-full bg-primary text-on-primary font-label-md text-label-md rounded-xl py-3.5 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full bg-primary text-on-primary font-label-md text-label-md rounded-xl py-3.5 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:hover:translate-y-0"
               >
-                Sign In
-                <span className="material-symbols-outlined text-sm">
-                  arrow_forward
-                </span>
+                {isSubmitting ? "Signing in..." : "Sign In"}
+                {!isSubmitting && (
+                  <span className="material-symbols-outlined text-sm">
+                    arrow_forward
+                  </span>
+                )}
               </button>
             </form>
 
@@ -157,42 +223,18 @@ export default function SignIn() {
             </div>
 
             {/* Google sign-in button */}
-            <button className="w-full border border-outline-variant/50 rounded-xl py-3 flex items-center justify-center gap-3 hover:bg-surface-container-low transition-colors duration-200 font-label-md text-label-md text-text-primary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 48 48"
-              >
-                <path
-                  fill="#FFC107"
-                  d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
-                />
-                <path
-                  fill="#FF3D00"
-                  d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"
-                />
-                <path
-                  fill="#4CAF50"
-                  d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"
-                />
-                <path
-                  fill="#1976D2"
-                  d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"
-                />
-              </svg>
-              Sign in with Google
-            </button>
+            <GoogleAuthButton />
 
             {/* Create Account link */}
             <p className="text-center mt-gutter font-body-md text-body-md text-text-secondary">
               Don&apos;t have an account?{" "}
-              <Link
-                to="/onboarding"
+              <button
+                type="button"
+                onClick={() => setActiveModal("register")}
                 className="text-primary font-label-md hover:text-primary/80 transition-colors"
               >
                 Create Account
-              </Link>
+              </button>
             </p>
           </div>
 
@@ -223,6 +265,73 @@ export default function SignIn() {
           </div>
         </div>
       </div>
+
+      <RegistrationModal
+        isOpen={activeModal === "register"}
+        onClose={() => setActiveModal("none")}
+        onSwitchToSignIn={() => setActiveModal("none")}
+      />
+
+      {activeModal === "forgot" && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-margin-mobile"
+          onClick={closeForgotModal}
+        >
+          <div
+            className="w-full max-w-[440px] bg-card-bg rounded-[24px] p-gutter md:p-section-gap shadow-[0px_12px_32px_rgba(0,0,0,0.08)] border border-outline-variant/30"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center mb-gutter">
+              <h1 className="font-headline-lg text-headline-lg mb-2">Reset Password</h1>
+              <p className="font-body-md text-body-md text-text-secondary">
+                Enter your email and we&apos;ll send you a link to reset your password.
+              </p>
+            </div>
+
+            {forgotSubmitted ? (
+              <div className="text-center space-y-gutter">
+                <p className="font-body-md text-body-md text-text-secondary">
+                  If an account exists for that email, we&apos;ve sent a reset link.
+                </p>
+                <button
+                  type="button"
+                  onClick={closeForgotModal}
+                  className="w-full bg-primary text-on-primary font-label-md text-label-md rounded-xl py-3.5 transition-all duration-200"
+                >
+                  Done
+                </button>
+              </div>
+            ) : (
+              <form className="space-y-gutter" onSubmit={handleForgotSubmit}>
+                <div>
+                  <label className="font-label-sm text-label-sm text-text-secondary mb-1.5 block">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary text-xl">
+                      mail
+                    </span>
+                    <input
+                      type="email"
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant/50 bg-surface-container-lowest font-body-md text-body-md text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={isForgotSubmitting}
+                  className="w-full bg-primary text-on-primary font-label-md text-label-md rounded-xl py-3.5 hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:hover:translate-y-0"
+                >
+                  {isForgotSubmitting ? "Sending..." : "Send Reset Link"}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
