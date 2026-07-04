@@ -42,3 +42,6 @@ pnpm-debug.log*
 target/
 *.class
 .mvn/wrapper/maven-wrapper.jar
+
+# Local-only secrets (real Google client ID, SMTP credentials) - never commit
+Backend/src/main/resources/application-local.yml
