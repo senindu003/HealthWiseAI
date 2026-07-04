@@ -12,5 +12,6 @@
       "environmentVariable": "JAVA_HOME",
       "value": "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
     }
-  ]
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

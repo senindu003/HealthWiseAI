@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import { authService } from '../services/authService';
 import { setAccessToken as syncAccessToken } from '../services/authTokenStore';
 import type {
+  AuthResponse,
   ForgotPasswordRequest,
   GoogleAuthRequest,
   LoginRequest,
@@ -14,9 +15,12 @@ interface AuthContextValue {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (payload: LoginRequest) => Promise<void>;
-  register: (payload: RegisterRequest) => Promise<void>;
-  loginWithGoogle: (payload: GoogleAuthRequest) => Promise<void>;
+  // Return the full response (not just void) so callers can route based on
+  // isNewAccount - registration and a brand-new Google sign-up should land on
+  // /onboarding, but every other login must never show onboarding again.
+  login: (payload: LoginRequest) => Promise<AuthResponse>;
+  register: (payload: RegisterRequest) => Promise<AuthResponse>;
+  loginWithGoogle: (payload: GoogleAuthRequest) => Promise<AuthResponse>;
   logout: () => Promise<void>;
   forgotPassword: (payload: ForgotPasswordRequest) => Promise<void>;
   resetPassword: (payload: ResetPasswordRequest) => Promise<void>;
@@ -92,6 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     syncAccessToken(response.accessToken);
     setUser(response.user);
     scheduleRefresh(response.expiresInSeconds);
+    return response;
   }, [scheduleRefresh]);
 
   const register = useCallback(async (payload: RegisterRequest) => {
@@ -99,6 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     syncAccessToken(response.accessToken);
     setUser(response.user);
     scheduleRefresh(response.expiresInSeconds);
+    return response;
   }, [scheduleRefresh]);
 
   const loginWithGoogle = useCallback(async (payload: GoogleAuthRequest) => {
@@ -106,6 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     syncAccessToken(response.accessToken);
     setUser(response.user);
     scheduleRefresh(response.expiresInSeconds);
+    return response;
   }, [scheduleRefresh]);
 
   const logout = useCallback(async () => {

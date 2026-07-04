@@ -107,7 +107,7 @@ public class AuthServiceImpl implements AuthService {
             // Account must remain usable immediately even if the verification email fails to send.
         }
 
-        return issueTokens(saved, false);
+        return issueTokens(saved, false, true);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class AuthServiceImpl implements AuthService {
         user.setUpdatedAt(Instant.now());
         User saved = userRepository.save(user);
 
-        return issueTokens(saved, request.rememberMe());
+        return issueTokens(saved, request.rememberMe(), false);
     }
 
     @Override
@@ -139,6 +139,7 @@ public class AuthServiceImpl implements AuthService {
         Instant now = Instant.now();
 
         Optional<User> existing = userRepository.findByEmail(email);
+        boolean isNewAccount = existing.isEmpty();
         User user;
         if (existing.isEmpty()) {
             user = User.builder()
@@ -162,7 +163,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User saved = userRepository.save(user);
-        return issueTokens(saved, false);
+        return issueTokens(saved, false, isNewAccount);
     }
 
     @Override
@@ -240,10 +241,10 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
     }
 
-    private AuthResult issueTokens(User user, boolean rememberMe) {
+    private AuthResult issueTokens(User user, boolean rememberMe, boolean isNewAccount) {
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user, rememberMe);
-        AuthResponse response = new AuthResponse(accessToken, jwtService.accessTokenTtlSeconds(), UserSummary.from(user));
+        AuthResponse response = new AuthResponse(accessToken, jwtService.accessTokenTtlSeconds(), UserSummary.from(user), isNewAccount);
         return new AuthResult(response, refreshToken, jwtService.refreshTokenTtl(rememberMe));
     }
 

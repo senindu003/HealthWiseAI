@@ -37,8 +37,10 @@ export default function SignIn() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
+      // Login never creates an account, so this always lands on /dashboard - onboarding
+      // is reserved for brand-new accounts (see RegistrationModal/GoogleAuthButton).
       await auth.login({ email, password, rememberMe });
-      navigate("/onboarding");
+      navigate("/dashboard");
     } catch (err) {
       showToast("error", err instanceof Error ? err.message : "Sign in failed. Please try again.");
     } finally {

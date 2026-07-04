@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="bg-surface-container-lowest border-t border-outline-variant/20 mt-section-gap hidden md:block">
       <div className="flex flex-col md:flex-row justify-between items-center py-base px-margin-desktop max-w-container-max mx-auto">
         <span className="font-label-md text-label-md font-bold text-primary">
-          &copy; 2024 HealthWise AI. Clinical use only.
+          &copy; 2026 HealthWise AI. Clinical use only.
         </span>
         <div className="flex gap-4">
           <a

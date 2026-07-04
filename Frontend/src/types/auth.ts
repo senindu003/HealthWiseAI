@@ -14,6 +14,7 @@ export interface AuthResponse {
   accessToken: string;
   expiresInSeconds: number;
   user: User;
+  isNewAccount: boolean;
 }
 
 export interface RefreshResponse {

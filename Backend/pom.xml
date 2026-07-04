@@ -96,6 +96,13 @@
     </dependencies>
 
     <build>
+        <!-- Absolute, space-free build output directory. The project itself lives under
+             "/Volumes/My Disk 2/...", and that space breaks Spring's classpath-based
+             component scanning whenever classes are loaded from a raw target/classes
+             directory (packaged jars are unaffected). Redirecting the build directory here
+             fixes it for every launch mechanism (IntelliJ's Run button, mvn spring-boot:run,
+             a raw java -cp), not just java -jar. -->
+        <directory>/Users/ravindu_pathirana/.mvn-targets/clinicalqa-backend</directory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

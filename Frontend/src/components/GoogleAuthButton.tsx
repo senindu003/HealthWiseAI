@@ -16,8 +16,12 @@ export default function GoogleAuthButton() {
       return;
     }
     try {
-      await auth.loginWithGoogle({ idToken: credentialResponse.credential });
-      navigate('/onboarding');
+      // This button is shared by SignIn (existing users) and RegistrationModal (new
+      // signups), and Google sign-in can itself create a brand-new account from either
+      // place - so the destination is decided by the response, not by which page rendered
+      // the button. Onboarding is reserved for genuinely new accounts.
+      const response = await auth.loginWithGoogle({ idToken: credentialResponse.credential });
+      navigate(response.isNewAccount ? '/onboarding' : '/dashboard');
     } catch (err) {
       showToast('error', err instanceof Error ? err.message : 'Google sign-in failed. Please try again.');
     }
