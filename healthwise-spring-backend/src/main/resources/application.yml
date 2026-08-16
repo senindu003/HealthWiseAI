@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: healthwise-spring-backend
+  data:
+    mongodb:
+      uri: "${MONGODB_URI:mongodb://localhost:27017/healthwise}"
+      auto-index-creation: true
+server:
+  port: "${SERVER_PORT:8080}"
+app:
+  jwt:
+    secret: "${JWT_SECRET:replace-this-with-a-secure-at-least-32-character-secret}"
+    access-token-minutes: "${JWT_ACCESS_TOKEN_MINUTES:60}"
+    refresh-token-days: "${JWT_REFRESH_TOKEN_DAYS:30}"
+  cors:
+    origins: "${CORS_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}"
+logging:
+  level:
+    com.healthwise: INFO

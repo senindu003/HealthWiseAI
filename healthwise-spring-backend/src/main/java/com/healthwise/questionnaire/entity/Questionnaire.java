@@ -1,0 +1,4 @@
+package com.healthwise.questionnaire.entity;
+import java.time.Instant; import java.util.Map; import org.springframework.data.annotation.Id; import org.springframework.data.mongodb.core.index.Indexed; import org.springframework.data.mongodb.core.mapping.Document;
+/** Original questionnaire preserved as received from React. */
+@Document("questionnaires") public class Questionnaire{@Id private String id;@Indexed private String userId;private Instant submittedAt;private Map<String,Object> questionnaire;public String getId(){return id;}public String getUserId(){return userId;}public Instant getSubmittedAt(){return submittedAt;}public Map<String,Object> getQuestionnaire(){return questionnaire;}public void setUserId(String v){userId=v;}public void setSubmittedAt(Instant v){submittedAt=v;}public void setQuestionnaire(Map<String,Object> v){questionnaire=v;}}

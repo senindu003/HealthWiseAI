@@ -1,0 +1,1 @@
+package com.healthwise.analysis.dto;import jakarta.validation.constraints.*;import java.time.Instant;import java.util.Map;public final class AnalysisDtos{private AnalysisDtos(){}public record Create(@NotBlank String reportId,@NotEmpty Map<String,Object> analysis){}public record Response(String id,String reportId,Instant analyzedAt,Map<String,Object> analysis){}}

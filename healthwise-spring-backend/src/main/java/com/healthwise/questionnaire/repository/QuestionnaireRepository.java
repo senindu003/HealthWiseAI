@@ -1,0 +1,2 @@
+package com.healthwise.questionnaire.repository;
+import com.healthwise.questionnaire.entity.Questionnaire; import java.util.*; import org.springframework.data.mongodb.repository.MongoRepository; public interface QuestionnaireRepository extends MongoRepository<Questionnaire,String>{List<Questionnaire> findByUserIdOrderBySubmittedAtDesc(String userId);Optional<Questionnaire> findFirstByUserIdOrderBySubmittedAtDesc(String userId);}
