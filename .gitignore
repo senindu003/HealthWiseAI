@@ -1,0 +1,69 @@
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+# Node.js / Vite frontend
+node_modules/
+dist/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python / FastAPI backend
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Java / Spring Boot backend
+target/
+build/
+*.class
+*.jar
+*.war
+*.ear
+.gradle/
+
+# IDE and editor settings
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs, temporary files, and local uploads
+*.log
+logs/
+tmp/
+temp/
+uploads/
+
+# Local database data and backups
+mongo-data/
+mongodb-data/
+*.mongodb
+*.dump
