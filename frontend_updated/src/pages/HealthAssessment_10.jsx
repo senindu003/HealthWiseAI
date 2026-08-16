@@ -788,7 +788,10 @@ export default function HealthAssessmentWizard() {
       "healthwise_current_questionnaire",
       JSON.stringify(cleanlyStructuredPayload),
     );
-    sessionStorage.removeItem("healthwise_form_data");
+    // Keep the UI-shaped draft for the remainder of this authenticated browser
+    // session. The Assessment route restores from this key, so deleting it here
+    // made Stage 1 appear empty after visiting analysis or report analysis.
+    sessionStorage.setItem("healthwise_form_data", JSON.stringify(formData));
     navigate("/analysis", { state: { payload: cleanlyStructuredPayload } });
   };
 
