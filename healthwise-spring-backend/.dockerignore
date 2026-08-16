@@ -1,0 +1,9 @@
+.git
+.gitignore
+.idea
+target
+*.log
+.env
+.env.*
+!pom.xml
+README.md

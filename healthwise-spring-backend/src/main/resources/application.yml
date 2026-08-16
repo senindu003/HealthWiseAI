@@ -6,7 +6,8 @@ spring:
       uri: "${MONGODB_URI:mongodb://localhost:27017/healthwise}"
       auto-index-creation: true
 server:
-  port: "${SERVER_PORT:8080}"
+  # Railway provides PORT. SERVER_PORT is retained for local configuration.
+  port: "${PORT:${SERVER_PORT:8080}}"
 app:
   jwt:
     secret: "${JWT_SECRET:replace-this-with-a-secure-at-least-32-character-secret}"
