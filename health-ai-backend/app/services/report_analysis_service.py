@@ -12,6 +12,7 @@ from app.graph.report_workflow import build_report_analysis_graph
 from app.llm.anonymizer import anonymize_report_markdown
 from app.config import get_settings
 from app.schemas.report import ReportAnalysisResponse, ReportAnalysisUploadRequest
+from app.services.report_safety import validate_laboratory_report_text
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,7 @@ class ReportAnalysisService:
         if len(request.report_pdf) > settings.report_max_file_size_bytes:
             raise ValueError("report_file exceeds the configured maximum upload size")
         markdown = await to_thread(_convert_pdf_to_markdown, request.report_pdf, request.report_filename)
+        validate_laboratory_report_text(markdown)
         anonymized_markdown = anonymize_report_markdown(markdown)
         logger.info("Starting anonymized laboratory-report analysis")
         result = await self._graph.ainvoke(
@@ -98,8 +100,8 @@ def _convert_pdf_to_markdown(pdf_bytes: bytes, filename: str) -> str:
         markdown = "\n\n".join(markdown_parts).strip()
 
         if not markdown:
-            raise RuntimeError(
-                f"PyMuPDF could not extract readable text from '{filename}'."
+            raise ValueError(
+                "Safety check: this PDF has no readable text. Upload a text-readable laboratory diagnostic report."
             )
 
         logger.info(
@@ -109,7 +111,7 @@ def _convert_pdf_to_markdown(pdf_bytes: bytes, filename: str) -> str:
 
         return markdown
 
-    except RuntimeError:
+    except (RuntimeError, ValueError):
         raise
 
     except Exception as exc:
