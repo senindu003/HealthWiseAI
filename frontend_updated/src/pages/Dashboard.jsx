@@ -238,7 +238,10 @@ export default function Dashboard() {
         if (!active) return;
         const savedQuestionnaire = value.latestQuestionnaire?.questionnaire;
         if (savedQuestionnaire) {
-          sessionStorage.setItem("user_historical_health_record", JSON.stringify(savedQuestionnaire));
+          sessionStorage.setItem(
+            "user_historical_health_record",
+            JSON.stringify(savedQuestionnaire),
+          );
         }
         setData(value);
       })
@@ -275,6 +278,7 @@ export default function Dashboard() {
     data.recentReports || (data.latestReport ? [data.latestReport] : []);
   const analyses =
     data.recentAnalyses || (data.latestAnalysis ? [data.latestAnalysis] : []);
+  const firstName = data.firstName?.trim();
   const dialog = {
     pending: {
       title: "Pending recommendations",
@@ -305,11 +309,10 @@ export default function Dashboard() {
       <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-slate-950">
-            Your health dashboard
+            {firstName ? `Welcome ${firstName}!` : "Welcome!"}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Your saved clinical history and insights, securely loaded from
-            MongoDB.
+            Your saved clinical history and insights, securely loaded.
           </p>
         </div>
         <div className="flex gap-3">

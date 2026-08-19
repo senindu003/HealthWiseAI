@@ -1618,7 +1618,7 @@ export default function HealthAssessmentWizard() {
                         Clinical Review Summary
                       </h2>
                       <p className="text-indigo-100 mt-2">
-                        Verify your health profile before generating AI-powered
+                        Verify your health profile before generating HealthWise
                         recommendations.
                       </p>
                     </div>
@@ -1770,7 +1770,7 @@ export default function HealthAssessmentWizard() {
                   <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                     <div>
                       <h3 className="text-xl font-black">
-                        Ready for AI Clinical Analysis
+                        Ready for Clinical Analysis
                       </h3>
 
                       <p className="text-slate-300 mt-2">
@@ -1788,7 +1788,7 @@ export default function HealthAssessmentWizard() {
                       }
                       className="bg-indigo-600 hover:bg-indigo-700 px-8 py-4 rounded-2xl font-black text-sm shadow-lg transition-all hover:scale-105"
                     >
-                      Analyze Me →
+                      Diagnose Me →
                     </button>
                   </div>
                 </div>
