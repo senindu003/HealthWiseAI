@@ -315,7 +315,9 @@ const toQuestionnairePayload = (formData) => ({
 
 export default function HealthAssessmentWizard() {
   const navigate = useNavigate();
-  const hasDraftOnEntry = useRef(Boolean(sessionStorage.getItem("healthwise_form_data")));
+  const hasDraftOnEntry = useRef(
+    Boolean(sessionStorage.getItem("healthwise_form_data")),
+  );
   const hasFetchedSavedBaseline = useRef(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [activeSymptomTab, setActiveSymptomTab] = useState("general");
@@ -434,14 +436,22 @@ export default function HealthAssessmentWizard() {
   // A new authenticated assessment uses the patient's latest saved Stage 1 baseline.
   // Never overwrite an unfinished assessment draft.
   useEffect(() => {
-    if (hasDraftOnEntry.current || hasFetchedSavedBaseline.current || !sessionStorage.getItem("accessToken")) return;
+    if (
+      hasDraftOnEntry.current ||
+      hasFetchedSavedBaseline.current ||
+      !sessionStorage.getItem("accessToken")
+    )
+      return;
     hasFetchedSavedBaseline.current = true;
     let active = true;
     loadDashboard()
       .then((dashboard) => {
         const saved = dashboard.latestQuestionnaire?.questionnaire;
         if (!active || !saved?.stage1) return;
-        sessionStorage.setItem("user_historical_health_record", JSON.stringify(saved));
+        sessionStorage.setItem(
+          "user_historical_health_record",
+          JSON.stringify(saved),
+        );
         const stage1 = saved.stage1;
         setFormData((current) => ({
           ...current,
@@ -463,8 +473,12 @@ export default function HealthAssessmentWizard() {
           stressLevel: stage1.stressLevel ?? current.stressLevel,
         }));
       })
-      .catch(() => { /* Session handling is managed by the authenticated workspace. */ });
-    return () => { active = false; };
+      .catch(() => {
+        /* Session handling is managed by the authenticated workspace. */
+      });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const isStage1Complete =
@@ -776,7 +790,6 @@ export default function HealthAssessmentWizard() {
 
   const handleFormSubmissionSubmit = (e) => {
     if (e && e.preventDefault) e.preventDefault();
-    console.log("ANALYSIS BUTTON PRESSED");
 
     const cleanlyStructuredPayload = toQuestionnairePayload(formData);
 
@@ -1775,7 +1788,7 @@ export default function HealthAssessmentWizard() {
                       }
                       className="bg-indigo-600 hover:bg-indigo-700 px-8 py-4 rounded-2xl font-black text-sm shadow-lg transition-all hover:scale-105"
                     >
-                      Generate AI Analysis →
+                      Analyze Me →
                     </button>
                   </div>
                 </div>

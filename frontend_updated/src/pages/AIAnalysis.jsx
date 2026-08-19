@@ -230,7 +230,7 @@ export default function AIAnalysis() {
       </main>
 
       <footer className="text-center text-[10px] tracking-wider text-slate-600 font-bold uppercase">
-        Secure Sandboxed Processing Environment • HIPAA Compliant Stack Logs
+        Secure Sandboxed Processing Environment
       </footer>
     </div>
   );

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Welcome() {
   const navigate = useNavigate();
 
-  // Sets up the state boundary for the restricted sandbox walkthrough
+  // Starts the limited, unauthenticated assessment walkthrough.
   const handleDemoModeActivation = () => {
     sessionStorage.setItem("isDemoMode", "true");
     sessionStorage.setItem("isLoggedIn", "false");
@@ -13,7 +13,7 @@ export default function Welcome() {
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-slate-50 to-slate-100 font-sans text-slate-800 antialiased flex flex-col justify-between">
-      {/* Minimal Header Navigation */}
+      {/* Header navigation */}
       <header className="w-full px-6 py-4 max-w-7xl mx-auto flex justify-between items-center z-20 relative">
         <div className="flex items-center gap-2.5 text-xs font-black uppercase tracking-wider text-slate-900">
           <div className="w-7 h-7 rounded-lg bg-slate-950 text-white flex items-center justify-center font-bold text-xs shadow-md">
@@ -38,28 +38,27 @@ export default function Welcome() {
       </header>
 
       {/* Hero Split Bento Layout */}
-      <main className="flex-grow flex items-center justify-center px-4 md:px-8 max-w-7xl mx-auto w-full py-12 relative z-10">
+      <main className="flex-grow flex items-center justify-center px-4 md:px-8 max-w-7xl mx-auto w-full py-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           <div className="flex flex-col gap-6 max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-xs w-fit">
               <span className="text-emerald-500 text-xs select-none">🛡️</span>
               <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
-                HIPAA Compliant &bull; Sandbox Hub
+                Personalised health insights
               </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 tracking-tight leading-none">
-              Medical precision, <br />
+              Know more. Worry less.
+              <br />
               <span className="text-indigo-600 bg-clip-text">
-                orchestrated by AI.
+                Take the next step with confidence.
               </span>
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed max-w-xl">
-              Experience analytical clarity inside your preventative healthcare
-              parameters loop. HealthWise AI transforms complex biological
-              markers checklists and system reviews variables indices into
-              accessible data blueprints.
+              Turn everyday health details and laboratory reports into
+              personalised, easy-to-understand guidance designed around you.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
@@ -70,24 +69,23 @@ export default function Welcome() {
                 }}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black rounded-xl px-8 py-3.5 shadow-lg shadow-indigo-600/20 uppercase tracking-wider flex items-center justify-center gap-2 hover:scale-[1.01] transition-all"
               >
-                Initialize Intake Portal <span>→</span>
+                Create your health profile <span>→</span>
               </button>
 
-              {/* Refactored Interceptor Demo Button Option */}
               <button
                 onClick={handleDemoModeActivation}
                 className="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl px-8 py-3.5 transition-all shadow-xs flex items-center justify-center"
               >
-                View System Demo Map
+                Explore the assessment
               </button>
             </div>
 
             <div className="mt-4 flex items-start gap-2.5 text-slate-400 font-medium text-[11px] leading-normal max-w-md">
               <span className="text-sm select-none pt-0.5">🔒</span>
               <p>
-                Your biometric input telemetry parameters remain locked to local
-                browser state instances under complete customer control
-                pipelines.
+                Your privacy matters. HealthWise AI is a supportive tool for
+                exploring your health, not a substitute for professional medical
+                advice.
               </p>
             </div>
           </div>
@@ -101,11 +99,10 @@ export default function Welcome() {
                 </div>
                 <div>
                   <h3 className="text-[10px] font-black uppercase tracking-wider text-slate-400">
-                    Heart Rate Variability
+                    Personal health profile
                   </h3>
                   <p className="text-xl font-black text-slate-900 mt-0.5">
-                    64{" "}
-                    <span className="text-xs text-slate-400 font-bold">ms</span>
+                    Your baseline
                   </p>
                 </div>
                 <div className="h-6 w-full rounded-md bg-slate-50 border border-slate-100 overflow-hidden flex items-end">
@@ -121,14 +118,14 @@ export default function Welcome() {
                 </div>
                 <div className="space-y-1 py-2">
                   <h3 className="text-[10px] font-black uppercase tracking-wider text-slate-400">
-                    AI Rules Synthesis
+                    AI-guided review
                   </h3>
                   <p className="text-sm font-black text-emerald-600 uppercase tracking-wide">
-                    Optimal Baselines
+                    Personalised insights
                   </p>
                 </div>
                 <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">
-                  30-Day Metric Check
+                  Clear next steps
                 </p>
               </div>
 
@@ -139,10 +136,11 @@ export default function Welcome() {
                   </div>
                   <div>
                     <h3 className="text-xs font-black text-slate-900 tracking-tight">
-                      Comprehensive Blood Checkpoint
+                      Report analysis
                     </h3>
                     <p className="text-[10px] text-slate-400 font-medium">
-                      FastAPI rule verification completed successfully.
+                      Structured findings to help you prepare for your next
+                      healthcare conversation.
                     </p>
                   </div>
                 </div>
@@ -157,18 +155,21 @@ export default function Welcome() {
 
       <footer className="w-full border-t border-slate-200/60 bg-white py-5 px-6 max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-black uppercase tracking-wide text-slate-400">
         <div className="text-slate-900 font-black tracking-wider">
-          HealthWise AI Node
+          HealthWise AI
         </div>
-        <div>&copy; 2026 HealthWise AI Platform. Secure Operations.</div>
+        <div>
+          &copy; 2026 HealthWise AI. Personal health insights, thoughtfully
+          presented.
+        </div>
         <div className="flex gap-4">
           <a className="hover:text-indigo-600 transition-colors" href="#">
-            Clinical Disclaimers
+            Medical disclaimer
           </a>
           <a className="hover:text-indigo-600 transition-colors" href="#">
-            Infrastructure Status
+            Platform status
           </a>
           <a className="hover:text-indigo-600 transition-colors" href="#">
-            Privacy Guidelines
+            Privacy
           </a>
         </div>
       </footer>
