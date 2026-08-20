@@ -1,78 +1,108 @@
 # HealthWise AI
 
-> A full-stack health-intake and laboratory-insight platform that helps users complete a guided health assessment, receive AI-assisted test recommendations, analyse laboratory-report PDFs, and keep a secure personal history.
+> **Personalised health insights, designed to make the next conversation more informed.**
+
+HealthWise AI is a full-stack health-intake and laboratory-report insight platform. It guides a user through a structured health assessment, generates evidence-aware laboratory-test recommendations, analyses uploaded laboratory-report PDFs, and keeps the user’s history in a secure authenticated workspace.
+
+> **Important:** HealthWise AI is an informational support tool. It does not diagnose conditions, prescribe treatment, replace professional medical advice, or provide emergency care.
 
 ![React](https://img.shields.io/badge/Frontend-React%2019-61DAFB?logo=react&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/API-Spring%20Boot%203-6DB33F?logo=springboot&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Core%20API-Spring%20Boot%203-6DB33F?logo=springboot&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/AI%20API-FastAPI-009688?logo=fastapi&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![Docker](https://img.shields.io/badge/Deployment-Docker-2496ED?logo=docker&logoColor=white)
 
-## What HealthWise AI does
+## Why HealthWise AI?
 
-- Guides users through a multi-stage health questionnaire.
-- Reuses a signed-in user's saved Stage 1 baseline for future assessments.
-- Generates structured, personalised laboratory-test recommendations.
-- Extracts and interprets information from uploaded PDF laboratory reports.
-- Stores questionnaires, recommendations, reports, and analyses in MongoDB.
-- Provides an authenticated dashboard with saved history and interactive detail views.
-- Uses JWT access tokens and refresh tokens to protect saved records.
+Health information can feel fragmented: symptoms live in one place, laboratory reports in another, and useful questions are often discovered too late. HealthWise AI brings those inputs into one clear workflow so users can:
 
-> **Clinical disclaimer:** HealthWise AI is an informational support tool. It does not diagnose conditions, replace professional medical advice, or provide emergency care. Users should consult a qualified clinician for medical decisions.
+- build a reusable personal health baseline;
+- receive structured, non-diagnostic laboratory-test suggestions;
+- upload a laboratory diagnostic-report PDF for a grounded summary;
+- revisit saved recommendations, reports, analyses, and recent activity from one dashboard;
+- prepare for more productive discussions with qualified healthcare professionals.
+
+## Key features
+
+| Area | Capability |
+| --- | --- |
+| Guided assessment | Multi-stage health, lifestyle, medical-history, and symptom intake flow. Stage 1 is retained in-session and can be pre-filled from the user’s latest saved baseline. |
+| AI recommendations | A multi-stage evaluator → critic → optimiser workflow produces structured laboratory-test recommendations with clear rationales. |
+| Laboratory-report analysis | Upload a text-readable PDF laboratory report and receive a grounded summary of reported parameters, abnormal findings, and follow-up context. |
+| Safety controls | Non-laboratory PDFs, unreadable documents, and obvious prompt-injection text are rejected before any LLM processing. |
+| Private history | MongoDB stores user-owned questionnaires, recommendations, uploaded-report metadata, analyses, and timeline events. |
+| Personal dashboard | Shows a personalised welcome, recent activity, saved history, counts, and interactive record-detail dialogs. |
+| Authentication | JWT access and refresh tokens protect user records, with automatic sign-out after prolonged inactivity. |
 
 ## Architecture
 
 ```mermaid
-flowchart TB
-    FE["React + Vite frontend\nSign-in · Assessment · Dashboard"]
-    JAVA["Spring Boot API\nJWT authentication · Saved history"]
-    AI["FastAPI AI service\nRecommendations · PDF report analysis"]
-    DB[("MongoDB\nUser-owned saved records")]
-    LLM["Gemini · DeepSeek · OpenAI\nConfigured LLM workflows"]
+flowchart LR
+    Browser["React + Vite frontend\nAssessment · Dashboard · Reports"]
+    Spring["Spring Boot API\nAuth · History · Dashboard"]
+    FastAPI["FastAPI AI service\nRecommendations · Report analysis"]
+    Mongo[("MongoDB\nUser-owned records")]
+    Models["Configured LLM providers\nGemini · Groq · OpenAI"]
 
-    FE --> JAVA
-    FE --> AI
-    JAVA --> DB
-    AI --> LLM
+    Browser -->|"HTTPS /api/v1"| Spring
+    Browser -->|"HTTPS /api/v1"| FastAPI
+    Spring --> Mongo
+    FastAPI --> Models
+```
+
+### Report-analysis safety path
+
+```mermaid
+flowchart LR
+    PDF["Uploaded PDF"] --> Check["PDF, size, readable-text, and scope checks"]
+    Check -->|"Rejected"| Error["422 safety message shown in the UI"]
+    Check -->|"Accepted"| Redact["PII anonymisation"]
+    Redact --> Extract["Extract laboratory parameters"]
+    Extract --> Interpret["Cautious interpretation"]
+    Interpret --> Verify["Grounded verification"]
 ```
 
 ## Repository layout
 
 ```text
-Healthwise AI/
-├── frontend_updated/          # React + Vite + Tailwind UI
+HealthWise AI/
+├── frontend_updated/          # React + Vite client application
 ├── healthwise-spring-backend/ # Java 21 / Spring Boot / MongoDB API
-├── health-ai-backend/         # Python / FastAPI / LangChain AI API
-└── tools/                     # Supporting project utilities
+├── health-ai-backend/         # Python / FastAPI / LangGraph AI API
+├── tools/                     # Supporting project utilities
+├── .gitignore
+└── README.md
 ```
 
 ## Technology stack
 
-| Area | Technology |
+| Layer | Technologies |
 | --- | --- |
 | Frontend | React 19, Vite, React Router, Tailwind CSS |
 | Core API | Java 21, Spring Boot 3, Spring Security, JWT |
 | Data | MongoDB, Spring Data MongoDB |
-| AI API | Python, FastAPI, Pydantic, LangChain, LangGraph |
-| AI models | Gemini 2.5 Flash Lite, DeepSeek V4 Flash, GPT-4o mini |
-| Document analysis | PyMuPDF and PDF upload handling |
-
-## Prerequisites
-
-- Node.js 20+ and npm
-- Java Development Kit (JDK) 21
-- Python 3.11+
-- MongoDB Community Server or a MongoDB Atlas cluster
-- API keys for Gemini, DeepSeek, and OpenAI
+| AI service | Python, FastAPI, Pydantic, LangChain, LangGraph |
+| Document processing | PyMuPDF, Presidio Analyzer/Anonymizer, spaCy |
+| Model providers | Google Gemini, Groq, OpenAI; optional DeepSeek configuration |
+| Containers | Docker, Caddy for frontend production serving |
 
 ## Quick start
 
-Run all three services in separate terminals.
+### Prerequisites
+
+- Node.js 20+ and npm
+- JDK 21 and Maven 3.9+
+- Python 3.11+
+- MongoDB Community Server or MongoDB Atlas
+- Provider API keys for the LLM stages you enable
+
+Run the database and each service in its own terminal.
 
 ### 1. Start MongoDB
 
-For a local instance, ensure MongoDB is running on port `27017`:
+For local development, start MongoDB with a database named `healthwise`:
 
 ```text
 mongodb://localhost:27017/healthwise
@@ -84,28 +114,28 @@ mongodb://localhost:27017/healthwise
 cd healthwise-spring-backend
 $env:MONGODB_URI = "mongodb://localhost:27017/healthwise"
 $env:JWT_SECRET = "replace-with-a-long-random-secret-of-at-least-32-characters"
-./mvnw.cmd spring-boot:run
+mvn spring-boot:run
 ```
 
-The API starts at `http://localhost:8080`.
+The core API starts at `http://localhost:8080`.
 
 ### 3. Start the FastAPI AI service
 
-Create `health-ai-backend/.env` locally. Do **not** commit it.
+Create `health-ai-backend/.env` locally. Never commit this file.
 
 ```dotenv
 GOOGLE_API_KEY=your_google_ai_key
-DEEPSEEK_API_KEY=your_deepseek_key
+GROQ_API_KEY=your_groq_key
 OPENAI_API_KEY=your_openai_key
 
 GEMINI_MODEL=gemini-2.5-flash-lite
-DEEPSEEK_MODEL=deepseek-v4-flash
+GROQ_MODEL=openai/gpt-oss-20b
 OPENAI_MODEL=gpt-4o-mini
 
 CORS_ORIGINS=["http://localhost:5173","http://127.0.0.1:5173"]
 ```
 
-Then run:
+Then install and start the service:
 
 ```powershell
 cd health-ai-backend
@@ -136,55 +166,71 @@ npm run dev
 
 Open `http://localhost:5173`.
 
-## Environment variables
+## Configuration
 
 ### Spring Boot API
 
-| Variable | Required | Purpose |
+| Variable | Required | Description |
 | --- | --- | --- |
-| `MONGODB_URI` | Yes | MongoDB connection URI |
-| `JWT_SECRET` | Yes | Random secret, at least 32 characters |
-| `JWT_ACCESS_TOKEN_MINUTES` | No | Access-token lifetime; default `60` |
-| `JWT_REFRESH_TOKEN_DAYS` | No | Refresh-token lifetime; default `30` |
-| `SERVER_PORT` | No | API port; default `8080` |
-| `CORS_ORIGINS` | Yes in production | Comma-separated permitted frontend origins |
+| `MONGODB_URI` | Yes | MongoDB connection URI. |
+| `SPRING_DATA_MONGODB_DATABASE` | Production | Database name, for example `healthwise`. |
+| `JWT_SECRET` | Yes | Random secret of at least 32 characters. |
+| `JWT_ACCESS_TOKEN_MINUTES` | No | Access-token lifetime; default `60`. |
+| `JWT_REFRESH_TOKEN_DAYS` | No | Refresh-token lifetime; default `30`. |
+| `PORT` / `SERVER_PORT` | No | Runtime port; defaults to `8080`. Railway supplies `PORT`. |
+| `CORS_ORIGINS` | Production | Comma-separated frontend origins; no trailing slash. |
+
+Example:
+
+```text
+CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://your-frontend.up.railway.app
+```
 
 ### FastAPI AI service
 
-| Variable | Required | Purpose |
+| Variable | Required | Description |
 | --- | --- | --- |
-| `GOOGLE_API_KEY` | Yes | Gemini provider key |
-| `DEEPSEEK_API_KEY` | Yes | DeepSeek provider key |
-| `OPENAI_API_KEY` | Yes | OpenAI provider key |
-| `GEMINI_MODEL` | No | Default: `gemini-2.5-flash-lite` |
-| `DEEPSEEK_MODEL` | No | Default: `deepseek-v4-flash` |
-| `OPENAI_MODEL` | No | Default: `gpt-4o-mini` |
-| `CORS_ORIGINS` | Yes in production | JSON list of permitted frontend origins |
-| `REPORT_MAX_FILE_SIZE_BYTES` | No | PDF upload limit; default `20000000` |
+| `GOOGLE_API_KEY` | Yes for current evaluator/interpreter stages | Gemini API key. |
+| `GROQ_API_KEY` | Yes for current critic stage | Groq API key. |
+| `OPENAI_API_KEY` | Yes for current optimiser/verifier stages | OpenAI API key. |
+| `GEMINI_MODEL` | No | Default: `gemini-2.5-flash-lite`. |
+| `GROQ_MODEL` | Yes for current Groq critic stage | Set explicitly to `openai/gpt-oss-20b`. |
+| `OPENAI_MODEL` | No | Default: `gpt-4o-mini`. |
+| `DEEPSEEK_API_KEY` / `DEEPSEEK_MODEL` | No | Reserved optional provider configuration. |
+| `CORS_ORIGINS` | Production | JSON array of allowed frontend origins. |
+| `REPORT_MAX_FILE_SIZE_BYTES` | No | PDF size limit; default `20000000` (20 MB). |
+| `REPORT_UPLOAD_CHUNK_SIZE_BYTES` | No | Upload streaming chunk size. |
+
+FastAPI CORS must be valid JSON:
+
+```text
+CORS_ORIGINS=["https://your-frontend.up.railway.app"]
+```
 
 ### Frontend
 
-| Variable | Required | Purpose |
+| Variable | Required | Description |
 | --- | --- | --- |
-| `VITE_SPRING_API_URL` | Yes | Spring API URL ending in `/api/v1` |
-| `VITE_AI_API_URL` | Yes | FastAPI URL ending in `/api/v1` |
+| `VITE_SPRING_API_URL` | Yes | Public Spring API URL ending in `/api/v1`. |
+| `VITE_AI_API_URL` | Yes | Public FastAPI URL ending in `/api/v1`. |
 
-**Never place private keys, database credentials, or JWT secrets in `VITE_*` variables.** Vite bundles these values into the browser application.
+> `VITE_*` values are embedded in the browser bundle at build time. Never put API keys, database credentials, or JWT secrets in them.
 
-## Main API routes
+## API overview
 
 ### Spring Boot API — `/api/v1`
 
-| Area | Routes |
+| Area | Main routes |
 | --- | --- |
 | Authentication | `POST /auth/register`, `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout` |
-| User | `GET /users/me`, `PUT /users/me`, `PUT /users/password` |
-| Questionnaire | `POST /questionnaires`, `GET /questionnaires`, `GET /questionnaires/{id}` |
-| Recommendations | `POST /recommendations`, `GET /recommendations`, `GET /recommendations/{id}` |
-| Reports and analyses | `POST /reports`, `GET /reports`, `POST /analysis`, `GET /analysis` |
-| Dashboard | `GET /dashboard` |
+| Profile | `GET /users/me`, `PUT /users/me`, `PUT /users/password`, `DELETE /users/me` |
+| Questionnaire history | `POST /questionnaires`, `GET /questionnaires`, `GET /questionnaires/{id}` |
+| Recommendation history | `POST /recommendations`, `GET /recommendations`, `GET /recommendations/{id}`, `DELETE /recommendations/{id}` |
+| Reports | `POST /reports`, `GET /reports`, `GET /reports/{id}`, `DELETE /reports/{id}` |
+| Saved analyses | `POST /analysis`, `GET /analysis`, `GET /analysis/{id}` |
+| Dashboard | `GET /dashboard` — includes the authenticated user’s `firstName` and saved-history projection |
 
-Authenticated requests require:
+Protected routes require:
 
 ```http
 Authorization: Bearer <access-token>
@@ -194,67 +240,99 @@ Authorization: Bearer <access-token>
 
 | Route | Purpose |
 | --- | --- |
-| `GET /health` | Lightweight service health check |
-| `POST /recommendations` | Generate structured laboratory recommendations from a questionnaire |
-| `POST /report-analysis` | Analyse a PDF report with the current questionnaire context |
+| `GET /health` | Lightweight liveness check; does not call an LLM. |
+| `POST /recommendations` | Returns structured, non-diagnostic laboratory-test recommendations for a validated questionnaire. |
+| `POST /report-analysis` | Analyses an eligible laboratory diagnostic-report PDF using the current questionnaire only as context. |
 
-## Development checks
+Invalid or unsafe report uploads receive an actionable `422` response, for example:
+
+```text
+Safety check: HealthWise AI can analyse only laboratory diagnostic-report PDFs with test results or reference ranges.
+```
+
+## Run checks
 
 ```powershell
 # Frontend production build
 cd frontend_updated
 npm run build
 
-# Spring Boot package and tests
+# Spring Boot package
 cd ../healthwise-spring-backend
-./mvnw.cmd clean package
+mvn -DskipTests package
 
-# FastAPI syntax/import compilation
+# FastAPI safety tests and compilation
 cd ../health-ai-backend
+python -m unittest discover -s tests -v
 python -m compileall app
 ```
 
-## Deploying to AWS
+## Production deployment with Railway
 
-Recommended first-production architecture:
+The repository includes production Dockerfiles and `.dockerignore` files for all three services.
 
-| Component | AWS service |
-| --- | --- |
-| Frontend | AWS Amplify Hosting |
-| Java API | AWS App Runner |
-| FastAPI AI API | AWS App Runner |
-| Secrets | AWS Secrets Manager |
-| Container images | Amazon ECR |
-| Database | MongoDB Atlas initially, or a separately validated AWS database migration |
+### Create four Railway services
 
-For the production frontend, configure:
+| Service | Root directory | Public? |
+| --- | --- | --- |
+| MongoDB | Railway MongoDB service | **No** — private networking only |
+| `spring-api` | `/healthwise-spring-backend` | Yes, target port `8080` |
+| `ai-api` | `/health-ai-backend` | Yes, target port `8080` |
+| `health-frontend` | `/frontend_updated` | Yes, target port `8080` |
 
-```dotenv
-VITE_SPRING_API_URL=https://your-java-api.aws-region.awsapprunner.com/api/v1
-VITE_AI_API_URL=https://your-ai-api.aws-region.awsapprunner.com/api/v1
-```
+### Essential Railway variables
 
-Then update both backend CORS settings to the exact Amplify domain, such as:
+**`spring-api`**
 
 ```text
-https://main.example.amplifyapp.com
+MONGODB_URI=${{MongoDB.MONGO_URL}}
+SPRING_DATA_MONGODB_DATABASE=healthwise
+JWT_SECRET=<long-random-secret>
+CORS_ORIGINS=https://your-frontend.up.railway.app
 ```
 
-Use AWS Secrets Manager for all database, JWT, and LLM-provider credentials. Do not store them in GitHub, Docker images, or frontend build variables.
+**`ai-api`**
 
-## Security notes
+```text
+GOOGLE_API_KEY=<secret>
+GROQ_API_KEY=<secret>
+OPENAI_API_KEY=<secret>
+GROQ_MODEL=openai/gpt-oss-20b
+CORS_ORIGINS=["https://your-frontend.up.railway.app"]
+```
 
-- Keep the GitHub repository private while the project is in development.
-- Rotate any secret immediately if it is ever committed or exposed in a screenshot.
-- Use separate MongoDB users and databases for local, staging, and production environments.
-- Restrict CORS to your actual frontend domain; never use `*` for authenticated APIs.
-- Use HTTPS-only production URLs.
-- Treat uploaded reports and generated outputs as sensitive health information.
+**`health-frontend`**
+
+```text
+VITE_SPRING_API_URL=https://your-spring-api.up.railway.app/api/v1
+VITE_AI_API_URL=https://your-ai-api.up.railway.app/api/v1
+```
+
+The frontend variables are build-time values. After changing either one, trigger a fresh frontend build and deployment.
+
+Use Railway private networking only between Railway services. The browser must use the public `https://...up.railway.app` domains; it cannot reach `*.railway.internal` addresses.
+
+## Security and privacy practices
+
+- Never commit `.env` files, provider keys, JWT secrets, or MongoDB credentials.
+- Restrict CORS to exact frontend origins; do not use `*` on authenticated APIs.
+- Keep MongoDB private; connect it through Railway’s internal `MONGO_URL` reference.
+- Use HTTPS public domains in production.
+- Treat health data and generated insights as sensitive information.
+- The report-analysis service validates the PDF format, file size, readable text, laboratory-report evidence, and obvious prompt-injection content before LLM processing.
+- Rotate a secret immediately if it is exposed in Git history, logs, screenshots, or a shared environment.
+
+## Contributing
+
+1. Create a branch from `main`.
+2. Keep secrets out of commits.
+3. Run the relevant checks above.
+4. Open a pull request describing the behaviour change and verification performed.
 
 ## License
 
-Add a license before publishing this project publicly. Until then, all rights are reserved by the project owner.
+Add a licence before publishing the repository publicly. Until then, all rights are reserved by the project owner.
 
 ---
 
-Built with React, Spring Boot, FastAPI, MongoDB, and configurable multi-model AI workflows.
+Built with React, Spring Boot, FastAPI, MongoDB, and safety-focused multi-model AI workflows.
