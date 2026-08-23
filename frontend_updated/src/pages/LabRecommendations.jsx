@@ -435,8 +435,8 @@ export default function LabRecommendations() {
                   {busy === "analyse"
                     ? "Analysing all reports…"
                     : allReportsAttached
-                      ? "Meta-analysis"
-                      : "Upload all Reports to enable Meta-analysis"}
+                      ? "Meta-Analysis"
+                      : "Upload all Reports to enable Meta-Analysis"}
                 </button>
                 {savedSetAnalysis && (
                   <button
@@ -555,16 +555,16 @@ export default function LabRecommendations() {
                         ? "Removing…"
                         : "Remove report"
                       : uploading
-                      ? "Attaching report…"
-                      : selectedSet
-                        ? "Upload report"
-                        : "Save set to upload reports"}
+                        ? "Attaching report…"
+                        : selectedSet
+                          ? "Upload report"
+                          : "Save set to upload reports"}
                   </button>
                   {primaryReport && (
                     <button
                       onClick={() => analyseSingleReport(primaryReport)}
                       disabled={Boolean(busy)}
-                      className="rounded-xl text-indigo-600 px-3 py-2.5 text-xs font-bold bg-white disabled:opacity-50"
+                      className="text-indigo-600 rounded-xl border border-indigo-200 px-3 py-2.5 text-xs font-bold bg-white disabled:opacity-50"
                     >
                       {busy === `analyse:${primaryReport.id}`
                         ? "Analysing…"
