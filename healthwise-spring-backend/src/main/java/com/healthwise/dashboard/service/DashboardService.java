@@ -76,7 +76,7 @@ public class DashboardService {
             recommendation.getId(), recommendation.getQuestionnaireId(), recommendation.getGeneratedAt(),
             recommendation.getSummary(), recommendation.getRecommendations());
         List<ReportDtos.Response> reportDtos = savedReports.stream().map(report -> new ReportDtos.Response(
-            report.getId(), report.getRecommendationId(), report.getReportName(), report.getUploadedAt(), report.getReportType())).toList();
+            report.getId(), report.getRecommendationId(), report.getRecommendedTestName(), report.getReportName(), report.getUploadedAt(), report.getReportType())).toList();
         List<AnalysisDtos.Response> analysisDtos = savedAnalyses.stream().map(analysis -> new AnalysisDtos.Response(
             analysis.getId(), analysis.getRecommendationId(), analysis.getReportIds(), analysis.isComplete(),
             analysis.getAnalyzedAt(), analysis.getAnalysis())).toList();

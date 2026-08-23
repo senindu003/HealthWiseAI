@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   Outlet,
+  Navigate,
 } from "react-router-dom";
 
 // --- COMPONENT IMPORTS ---
@@ -19,7 +20,6 @@ import Dashboard from "./pages/Dashboard";
 import AIAnalysis from "./pages/AIAnalysis";
 import LabRecommendations from "./pages/LabRecommendations";
 import HealthAssessment_10 from "./pages/HealthAssessment_10";
-import ReportAnalysis from "./pages/ReportAnalysis";
 /**
  * WorkspaceLayout Component
  * Wraps around your core logged-in application workspaces.
@@ -65,7 +65,7 @@ export default function App() {
 
           {/* Unified Destination Path for Both Tab Clicks and AI Navigation Redirects */}
           <Route path="/recommendations" element={<LabRecommendations />} />
-          <Route path="/report-analysis" element={<ReportAnalysis />} />
+          <Route path="/report-analysis" element={<Navigate to="/recommendations" replace />} />
         </Route>
       </Routes>
     </Router>

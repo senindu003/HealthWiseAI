@@ -31,8 +31,9 @@ public class ReportController {
     @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.CREATED)
     public Response upload(@AuthenticationPrincipal CurrentUser user,
                            @RequestParam String recommendationId,
+                           @RequestParam String testName,
                            @RequestParam("reportFile") MultipartFile reportFile) {
-        return service.upload(user.id(), recommendationId, reportFile);
+        return service.upload(user.id(), recommendationId, testName, reportFile);
     }
 
     @GetMapping

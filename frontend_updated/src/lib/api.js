@@ -52,9 +52,10 @@ export const saveRecommendation = async ({ questionnaire, aiResponse }) => {
   });
 };
 
-export const uploadReport = (recommendationId, reportFile) => {
+export const uploadReport = (recommendationId, testName, reportFile) => {
   const data = new FormData();
   data.append("recommendationId", recommendationId);
+  data.append("testName", testName);
   data.append("reportFile", reportFile);
   return request(`${SPRING_BASE_URL}/reports`, {
     method: "POST",

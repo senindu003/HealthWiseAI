@@ -6,6 +6,7 @@ import com.healthwise.analysis.entity.AnalysisHistory;
 import com.healthwise.analysis.repository.AnalysisHistoryRepository;
 import com.healthwise.exception.ResourceNotFoundException;
 import com.healthwise.recommendation.repository.RecommendationRepository;
+import com.healthwise.recommendation.entity.Recommendation;
 import com.healthwise.report.entity.Report;
 import com.healthwise.report.repository.ReportRepository;
 import java.time.Instant;
@@ -32,7 +33,7 @@ public class AnalysisService {
     }
 
     public Response save(String userId, Create request) {
-        recommendations.findById(request.recommendationId()).filter(item -> item.getUserId().equals(userId))
+        Recommendation recommendation = recommendations.findById(request.recommendationId()).filter(item -> item.getUserId().equals(userId))
             .orElseThrow(() -> new ResourceNotFoundException("Recommendation set not found"));
         List<Report> currentReports = reports.findByUserIdAndRecommendationIdOrderByUploadedAtDesc(userId, request.recommendationId());
         if (currentReports.isEmpty()) throw new IllegalArgumentException("Upload at least one report before analysis.");
@@ -40,11 +41,22 @@ public class AnalysisService {
         if (!savedReportIds.equals(Set.copyOf(request.reportIds()))) {
             throw new IllegalArgumentException("Analysis must include every report currently uploaded for this recommendation set.");
         }
+        Set<String> uploadedTests = currentReports.stream().map(Report::getRecommendedTestName)
+            .filter(java.util.Objects::nonNull).map(this::normalize).collect(java.util.stream.Collectors.toSet());
+        List<String> missingTests = recommendation.getRecommendations().stream()
+            .map(item -> item.getOrDefault("test_name", item.getOrDefault("name", "")).toString())
+            .filter(name -> !name.isBlank()).filter(name -> !uploadedTests.contains(normalize(name))).toList();
+        if (!missingTests.isEmpty()) {
+            throw new IllegalArgumentException("Upload a report for every recommended test before analysis. Missing: " + String.join(", ", missingTests));
+        }
+        if (!request.complete()) {
+            throw new IllegalArgumentException("Confirm that all recommended-test reports have been uploaded before analysis.");
+        }
         AnalysisHistory analysis = new AnalysisHistory();
         analysis.setUserId(userId);
         analysis.setRecommendationId(request.recommendationId());
         analysis.setReportIds(List.copyOf(request.reportIds()));
-        analysis.setComplete(request.complete());
+        analysis.setComplete(true);
         analysis.setAnalysis(Map.copyOf(request.analysis()));
         analysis.setAnalyzedAt(Instant.now());
         return dto(analyses.save(analysis));
@@ -62,4 +74,6 @@ public class AnalysisService {
         return analyses.findById(id).filter(analysis -> analysis.getUserId().equals(userId))
             .orElseThrow(() -> new ResourceNotFoundException("Analysis not found"));
     }
+
+    private String normalize(String value) { return value.trim().replaceAll("\\s+", " ").toLowerCase(java.util.Locale.ROOT); }
 }

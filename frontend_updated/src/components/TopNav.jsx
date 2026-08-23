@@ -10,7 +10,6 @@ export default function TopNav() {
     { label: "Dashboard", to: "/dashboard" },
     { label: "Assessment", to: "/assessment/profile" },
     { label: "Recommendations", to: "/recommendations" },
-    { label: "Report analysis", to: "/report-analysis" },
   ];
 
   // Robust route verification matching dynamic parameters strings

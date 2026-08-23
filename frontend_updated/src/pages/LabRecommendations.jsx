@@ -1,343 +1,125 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { saveRecommendation } from "../lib/api";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  analyzeReports, getQuestionnaire, getReportFile, loadDashboard,
+  saveAnalysis, saveRecommendation, uploadReport,
+} from "../lib/api";
 
-// Mapping helper to resolve Material Icons dynamically matching category strings
-const CATEGORY_ICONS = {
-  "metabolic profile": "water_drop",
-  cardiovascular: "monitor_heart",
-  hematology: "science",
-  "nutritional deficiencies": "medication",
-};
+const CATEGORY_ICONS = { hematology: "science", cardiovascular: "monitor_heart", endocrinology: "water_drop", chemistry: "biotech" };
+const normalize = (value = "") => value.trim().replace(/\s+/g, " ").toLowerCase();
+const testName = (test) => test.test_name || test.name || "Recommended test";
+
+function AnalysisDialog({ analysis, onClose }) {
+  if (!analysis) return null;
+  return <div role="dialog" aria-modal="true" className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <button aria-label="Close analysis" onClick={onClose} className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm" />
+    <section className="relative z-10 max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-[28px] bg-white shadow-2xl">
+      <header className="flex items-start justify-between bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 px-6 py-5 text-white"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-indigo-300">HealthWise analysis</p><h2 className="mt-1 text-xl font-black">{analysis.overall_status?.title || "Combined report review"}</h2></div><button onClick={onClose} className="grid h-9 w-9 place-items-center rounded-full border border-white/20 text-xl">×</button></header>
+      <div className="space-y-5 p-6"><p className="text-sm leading-7 text-slate-700">{analysis.summary}</p>{(analysis.abnormal_findings || []).length > 0 && <div><h3 className="font-black text-slate-900">Findings requiring attention</h3><div className="mt-3 space-y-3">{analysis.abnormal_findings.map((finding, index) => <article key={`${finding.parameter}-${index}`} className="rounded-2xl border border-amber-100 bg-amber-50 p-4"><p className="font-bold text-slate-900">{finding.parameter}: {finding.value}</p><p className="mt-1 text-sm text-slate-600">{finding.explanation}</p></article>)}</div></div>}<div className="grid gap-4 sm:grid-cols-2"><div className="rounded-2xl bg-slate-50 p-4"><h3 className="font-black text-slate-900">Lifestyle guidance</h3><ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">{[...(analysis.lifestyle_recommendations?.continue || []), ...(analysis.lifestyle_recommendations?.improve || [])].map((tip) => <li key={tip}>{tip}</li>)}</ul></div><div className="rounded-2xl bg-slate-50 p-4"><h3 className="font-black text-slate-900">Medical follow-up</h3><p className="mt-2 text-sm text-slate-600">{analysis.doctor_consultation?.reason || "No follow-up guidance returned."}</p></div></div><p className="border-t pt-4 text-xs leading-5 text-slate-500">{analysis.disclaimer}</p></div>
+    </section>
+  </div>;
+}
 
 export default function LabRecommendations() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const fileInputs = useRef({});
   const [searchQuery, setSearchQuery] = useState("");
-  const [saveState, setSaveState] = useState({
-    loading: false,
-    message: "",
-    error: "",
-  });
-  const [savedRecommendationId, setSavedRecommendationId] = useState("");
-
-  // Extract the live runtime analytics framework out of session storage
-  const sessionCachedResult = useMemo(() => {
-    const rawCacheData = sessionStorage.getItem("active_lab_recommendations");
-    if (rawCacheData) {
-      try {
-        return JSON.parse(rawCacheData);
-      } catch (e) {
-        console.error("Session parse error inside recommendations view:", e);
-      }
-    }
-    return null;
+  const [dashboard, setDashboard] = useState(null);
+  const [selectedId, setSelectedId] = useState(location.state?.recommendationId || "");
+  const [busy, setBusy] = useState("");
+  const [notice, setNotice] = useState("");
+  const [error, setError] = useState("");
+  const [dialogAnalysis, setDialogAnalysis] = useState(null);
+  const sessionRecommendation = useMemo(() => {
+    try { return JSON.parse(sessionStorage.getItem("active_lab_recommendations") || "null"); } catch { return null; }
   }, []);
 
-  // Preprocess, label, and filter the full array catalog simultaneously without tab restrictions
-  const finalRecommendationsList = useMemo(() => {
-    if (!sessionCachedResult || !sessionCachedResult.recommendations) return [];
+  const sets = useMemo(() => {
+    const unique = new Map();
+    [...(dashboard?.pendingRecommendations || []), ...(dashboard?.analysedRecommendations || [])]
+      .forEach((set) => unique.set(set.recommendation.id, set));
+    return [...unique.values()];
+  }, [dashboard]);
+  const selectedSet = sets.find((set) => set.recommendation.id === selectedId) || null;
+  const activeRecommendation = selectedSet?.recommendation || (!selectedId ? sessionRecommendation : null);
+  const activeTests = useMemo(() => {
+    const unique = new Map();
+    (activeRecommendation?.recommendations || []).forEach((test) => unique.set(normalize(testName(test)), test));
+    return [...unique.values()];
+  }, [activeRecommendation]);
+  const reports = selectedSet?.reports || [];
+  const savedAnalysis = selectedSet?.analyses?.[0]?.analysis || null;
+  const allReportsAttached = Boolean(selectedSet && activeTests.length && activeTests.every((test) => reports.some((report) => normalize(report.recommendedTestName) === normalize(testName(test)))));
 
-    return sessionCachedResult.recommendations
-      .map((test) => {
-        // Resolve the exact parent Track Tier Grouping dynamically for card display
-        let trackGroup = "Recommended Track";
-        const priorityText = (test.priority || "").toLowerCase();
+  const visibleTests = useMemo(() => activeTests.filter((test) => {
+    const query = searchQuery.toLowerCase();
+    return !query || [testName(test), test.category, test.priority, test.personalized_explanation].some((value) => String(value || "").toLowerCase().includes(query));
+  }), [activeTests, searchQuery]);
 
-        if (priorityText.includes("optional")) {
-          trackGroup = "Optional Track";
-        } else if (
-          priorityText.includes("routine") ||
-          priorityText.includes("preventative") ||
-          priorityText.includes("preventive") ||
-          priorityText.includes("low")
-        ) {
-          trackGroup = "Preventive Track";
-        }
-
-        return {
-          ...test,
-          trackGroup,
-        };
-      })
-      .filter((test) => {
-        const query = searchQuery.toLowerCase();
-        return (
-          (test.test_name || "").toLowerCase().includes(query) ||
-          (test.category || "").toLowerCase().includes(query) ||
-          (test.trackGroup || "").toLowerCase().includes(query) ||
-          (test.personalized_explanation || "").toLowerCase().includes(query)
-        );
-      });
-  }, [searchQuery, sessionCachedResult]);
-
-  const handleSave = async () => {
-    const questionnaire = sessionStorage.getItem("healthwise_questionnaire");
-    if (!sessionStorage.getItem("accessToken") || !questionnaire) {
-      setSaveState({
-        loading: false,
-        message: "",
-        error: "Sign in and complete an assessment before saving.",
-      });
-      return;
+  const refresh = async () => {
+    const value = await loadDashboard();
+    setDashboard(value);
+    const available = [...(value.pendingRecommendations || []), ...(value.analysedRecommendations || [])];
+    const preferred = sessionStorage.getItem("latest_recommendation_id");
+    if (!selectedId || !available.some((set) => set.recommendation.id === selectedId)) {
+      setSelectedId(available.find((set) => set.recommendation.id === preferred)?.recommendation.id || available[0]?.recommendation.id || "");
     }
-    setSaveState({ loading: true, message: "", error: "" });
-    try {
-      const saved = await saveRecommendation({
-        questionnaire: JSON.parse(questionnaire),
-        aiResponse: sessionCachedResult,
-      });
-      sessionStorage.setItem("latest_recommendation_id", saved.id);
-      setSavedRecommendationId(saved.id);
-      setSaveState({
-        loading: false,
-        message: "Recommendations saved to your history.",
-        error: "",
-      });
-    } catch (error) {
-      setSaveState({
-        loading: false,
-        message: "",
-        error: error.message || "Could not save recommendations.",
-      });
-    }
+    return value;
   };
+  useEffect(() => { refresh().catch((err) => setError(err.message || "Could not load your saved recommendation sets.")); }, []);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  // Fallback Catch Layout if Session Data is Missing
-  if (!sessionCachedResult) {
-    return (
-      <div className="bg-slate-50 min-h-[75vh] flex items-center justify-center p-6 text-slate-900 font-sans antialiased">
-        <div className="max-w-md w-full bg-white rounded-[24px] border border-slate-200/80 p-8 text-center shadow-lg space-y-6">
-          <div className="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-2xl mx-auto">
-            🔒
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-base font-black uppercase text-slate-900 tracking-wide">
-              No Diagnostics Set Logged
-            </h3>
-            <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">
-              Please initialize your biometric baseline profile configuration
-              setup wizard first to generate structural recommendation metrics.
-            </p>
-          </div>
-          <button
-            onClick={() => navigate("/assessment/profile")}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl px-5 py-3.5 shadow-md shadow-indigo-600/10 transition-all"
-          >
-            Complete Health Intake Profile
-          </button>
-        </div>
-      </div>
-    );
+  async function saveCurrentSet() {
+    const rawQuestionnaire = sessionStorage.getItem("healthwise_questionnaire");
+    if (!sessionRecommendation || !rawQuestionnaire || !sessionStorage.getItem("accessToken")) return setError("Sign in and complete an assessment before saving recommendations.");
+    setBusy("save"); setError(""); setNotice("");
+    try {
+      const saved = await saveRecommendation({ questionnaire: JSON.parse(rawQuestionnaire), aiResponse: sessionRecommendation });
+      sessionStorage.setItem("latest_recommendation_id", saved.id);
+      setSelectedId(saved.id); await refresh();
+      setNotice("Recommendation set saved. Attach a PDF report to each relevant test card.");
+    } catch (err) { setError(err.message || "Could not save this recommendation set."); }
+    finally { setBusy(""); }
   }
 
-  return (
-    <div
-      className="bg-slate-50 text-slate-900 min-h-screen font-sans antialiased"
-      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-    >
-      <main className="w-full max-w-7xl mx-auto px-4 md:px-8 py-10 space-y-6">
-        {/* Top Header Row with Search Input Filter */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-xl md:text-2xl font-black tracking-tight text-slate-900">
-              All Recommended Lab Tests
-            </h1>
-            <p className="text-xs md:text-sm font-medium text-slate-500 mt-1">
-              Unified view mapping all systemic baseline diagnostic checkpoints
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            {savedRecommendationId ? (
-              <button
-                onClick={() => navigate("/report-analysis", { state: { recommendationId: savedRecommendationId } })}
-                className="rounded-xl border border-indigo-200 bg-white px-4 py-2.5 text-xs font-bold text-indigo-700"
-              >
-                Manage reports
-              </button>
-            ) : (
-              <button
-                onClick={handleSave}
-                disabled={saveState.loading}
-                className="rounded-xl border border-indigo-200 bg-white px-4 py-2.5 text-xs font-bold text-indigo-700 disabled:opacity-60"
-              >
-                {saveState.loading ? "Saving…" : "Save recommendation set"}
-              </button>
-            )}
-            <div className="relative">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">
-                search
-              </span>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by name, category, or track..."
-                className="w-full sm:w-72 bg-white border border-slate-200 rounded-xl pl-9 pr-4 py-2.5 text-xs font-semibold outline-none focus:ring-2 focus:ring-indigo-500/20"
-              />
-            </div>
-          </div>
-        </div>
-        {saveState.error && (
-          <div
-            role="alert"
-            className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-bold text-rose-700"
-          >
-            {saveState.error}
-          </div>
-        )}
-        {saveState.message && (
-          <div
-            role="status"
-            className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs font-bold text-emerald-700"
-          >
-            {saveState.message}
-          </div>
-        )}
+  async function attachReport(test, file) {
+    if (!file || !selectedSet) return;
+    if (!file.name.toLowerCase().endsWith(".pdf")) return setError("Upload a PDF laboratory report.");
+    const name = testName(test);
+    setBusy(`upload:${name}`); setError(""); setNotice("");
+    try {
+      await uploadReport(selectedSet.recommendation.id, name, file);
+      await refresh();
+      setNotice(`Report attached to ${name}. ${allReportsAttached ? "You can now analyse the set." : "Upload the remaining recommended reports to enable analysis."}`);
+    } catch (err) { setError(err.message || "Could not attach this report."); }
+    finally { setBusy(""); if (fileInputs.current[name]) fileInputs.current[name].value = ""; }
+  }
 
-        {/* Global Summary Explanation Banner Block */}
-        {sessionCachedResult.summary && (
-          <div className="p-5 bg-slate-900 rounded-[20px] border border-slate-800 shadow-md text-white flex gap-4 items-start">
-            <span className="material-symbols-outlined text-indigo-400 mt-0.5">
-              auto_awesome
-            </span>
-            <p className="text-xs font-medium leading-relaxed text-slate-300">
-              {sessionCachedResult.summary}
-            </p>
-          </div>
-        )}
+  async function analyseSet() {
+    if (!selectedSet || !allReportsAttached) return;
+    setBusy("analyse"); setError(""); setNotice("");
+    try {
+      const questionnaire = await getQuestionnaire(selectedSet.recommendation.questionnaireId);
+      const reportFiles = await Promise.all(reports.map((report) => getReportFile(report.id, report.reportName)));
+      const analysis = await analyzeReports(reportFiles, questionnaire.questionnaire);
+      await saveAnalysis({ recommendationId: selectedSet.recommendation.id, reportIds: reports.map((report) => report.id), complete: true, analysis });
+      await refresh(); setDialogAnalysis(analysis); setNotice("Combined analysis saved for this recommendation set.");
+    } catch (err) { setError(err.message || "Could not analyse the uploaded reports."); }
+    finally { setBusy(""); }
+  }
 
-        {/* UNIFIED CARD GRID LAYOUT PANEL */}
-        {finalRecommendationsList.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {finalRecommendationsList.map((test, index) => {
-              const isHigh = test.priority?.toLowerCase().includes("high");
-              const isMed = test.priority?.toLowerCase().includes("medium");
+  if (!activeRecommendation && dashboard) return <main className="mx-auto max-w-3xl p-8 text-center"><h1 className="text-2xl font-black text-slate-900">No saved recommendations yet</h1><p className="mt-2 text-sm text-slate-500">Complete an assessment to receive a new recommendation set.</p><button onClick={() => navigate("/assessment/profile")} className="mt-5 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white">Start assessment</button></main>;
+  if (!activeRecommendation) return <main className="mx-auto max-w-6xl p-8">Loading recommendations...</main>;
 
-              const priorityBadgeStyle = isHigh
-                ? "bg-rose-50 text-rose-700 border-rose-100"
-                : isMed
-                  ? "bg-amber-50 text-amber-700 border-amber-100"
-                  : "bg-slate-100 text-slate-600 border-slate-200";
-
-              // Resolve category specific icons or fall back safely to a default flask element
-              const categoryKey = (test.category || "").toLowerCase();
-              const categoryIcon = CATEGORY_ICONS[categoryKey] || "science";
-
-              // Format distinct color themes for Track Badges written on cards
-              let trackBadgeColor =
-                "bg-indigo-50 text-indigo-700 border-indigo-100";
-              if (test.trackGroup.includes("Optional"))
-                trackBadgeColor =
-                  "bg-violet-50 text-violet-700 border-violet-100";
-              if (test.trackGroup.includes("Preventive"))
-                trackBadgeColor = "bg-teal-50 text-teal-700 border-teal-100";
-
-              return (
-                <div
-                  key={index}
-                  className="bg-white rounded-[24px] border border-slate-200/70 p-6 shadow-[0_2px_12px_rgba(0,0,0,0.015)] hover:shadow-md transition-all flex flex-col justify-between space-y-5 animate-fadeIn"
-                >
-                  <div className="space-y-4">
-                    {/* Upper Badges Block: Dynamic Tracks & Priority Tags */}
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span
-                        className={`inline-flex items-center gap-1 border px-2.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider ${trackBadgeColor}`}
-                      >
-                        <span className="material-symbols-outlined text-[11px]">
-                          folder_shared
-                        </span>
-                        {test.trackGroup}
-                      </span>
-                      <span
-                        className={`inline-flex items-center gap-0.5 rounded-md px-2 py-0.5 font-bold text-[9px] uppercase border tracking-wide ${priorityBadgeStyle}`}
-                      >
-                        {test.priority || "Routine Checking"}
-                      </span>
-                    </div>
-
-                    {/* Test Identity Block Rows */}
-                    <div className="flex items-start gap-3.5 pt-1">
-                      <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0">
-                        <span className="material-symbols-outlined text-slate-600 text-[20px]">
-                          {categoryIcon}
-                        </span>
-                      </div>
-                      <div className="space-y-0.5">
-                        <h3 className="text-sm font-black text-slate-900 tracking-tight leading-snug min-h-[40px] flex items-center">
-                          {test.test_name}
-                        </h3>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                          Category: {test.category || "General Checkup"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Technical Logic Block Row */}
-                    <div className="bg-slate-50/70 border border-slate-100 rounded-xl p-3.5 space-y-1">
-                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">
-                        Rule Logic Trigger
-                      </span>
-                      <p className="text-slate-800 text-[11px] font-semibold italic leading-relaxed">
-                        "
-                        {test.reason_from_rules ||
-                          "Indicated general screening checklist baseline."}
-                        "
-                      </p>
-                    </div>
-
-                    {/* Translation Breakdown Explanation Text */}
-                    <div className="space-y-1">
-                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">
-                        Clinical Context
-                      </span>
-                      <p className="text-slate-500 text-[11px] font-medium leading-relaxed">
-                        {test.personalized_explanation}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Operational Interactive Action Buttons */}
-                  <div className="flex gap-2.5 pt-2 border-t border-slate-50">
-                    <button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded-xl py-2.5 transition-all shadow-xs flex items-center justify-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">
-                        calendar_month
-                      </span>
-                      Book Test
-                    </button>
-                    <button
-                      onClick={() => navigate("/report-analysis")}
-                      className="flex-1 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-[11px] rounded-xl py-2.5 transition-all flex items-center justify-center gap-1"
-                    >
-                      <span className="material-symbols-outlined text-[14px]">
-                        upload_file
-                      </span>
-                      Upload Report
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          /* Empty Catalog Filter State Match */
-          <div className="text-center py-24 bg-white border border-dashed rounded-[24px] border-slate-300 max-w-sm mx-auto space-y-3">
-            <span className="material-symbols-outlined text-[36px] text-slate-300 block">
-              layers_clear
-            </span>
-            <h4 className="text-xs font-black text-slate-800 uppercase tracking-wide">
-              No Recommendations Found
-            </h4>
-            <p className="text-xs text-slate-400 font-medium px-8 leading-relaxed">
-              No active guideline parameters matched your current search
-              parameters input query: "{searchQuery}".
-            </p>
-          </div>
-        )}
-      </main>
-    </div>
-  );
+  return <div className="min-h-screen bg-slate-50 text-slate-900"><main className="mx-auto max-w-7xl space-y-6 px-4 py-10 md:px-8">
+    <header><h1 className="text-2xl font-black tracking-tight">Your recommended laboratory tests</h1><p className="mt-1 max-w-3xl text-sm leading-6 text-slate-500">{activeRecommendation.summary || "Review each recommended test, attach its relevant laboratory report, and receive one combined analysis when every card is ready."}</p></header>
+    <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><label className="block text-xs font-black uppercase tracking-wider text-slate-500">Recommendation set<select value={selectedId} onChange={(event) => { setSelectedId(event.target.value); setError(""); setNotice(""); }} className="mt-2 block w-full rounded-xl border border-slate-300 bg-white p-3 text-sm font-bold text-slate-800"><option value="">Current unsaved recommendations</option>{sets.map((set) => <option key={set.recommendation.id} value={set.recommendation.id}>{new Date(set.recommendation.generatedAt).toLocaleDateString()} · {(set.recommendation.recommendations || []).length} recommended tests</option>)}</select></label><div className="mt-4 flex flex-wrap items-center justify-between gap-3"><p className="text-sm text-slate-600">{selectedSet ? `${reports.length} uploaded report${reports.length === 1 ? "" : "s"} across ${activeTests.length} required test cards.` : "Save this set to attach reports to its cards."}</p>{!selectedSet ? <button onClick={saveCurrentSet} disabled={busy === "save"} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-60">{busy === "save" ? "Saving…" : "Save recommendation set"}</button> : <button onClick={analyseSet} disabled={!allReportsAttached || Boolean(busy)} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">{busy === "analyse" ? "Analysing all reports…" : allReportsAttached ? "Analyse all uploaded reports" : "Upload every report to enable analysis"}</button>}</div>{selectedSet && !allReportsAttached && <p className="mt-3 rounded-xl bg-amber-50 p-3 text-xs font-semibold text-amber-800">Analysis unlocks once each recommended test card has at least one attached report.</p>}</section>
+    {error && <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">{error}</div>}{notice && <div role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">{notice}</div>}
+    <div className="flex items-center gap-3"><span className="material-symbols-outlined text-slate-400">search</span><input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search your recommended tests" className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200" /></div>
+    <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">{visibleTests.map((test, index) => {
+      const name = testName(test); const attached = reports.filter((report) => normalize(report.recommendedTestName) === normalize(name)); const uploading = busy === `upload:${name}`; const icon = CATEGORY_ICONS[normalize(test.category)] || "science";
+      return <article key={`${name}-${index}`} className="flex flex-col justify-between rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm"><div className="space-y-4"><div className="flex items-start justify-between gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-50 text-indigo-700"><span className="material-symbols-outlined">{icon}</span></span><span className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase ${attached.length ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>{attached.length ? `${attached.length} report${attached.length > 1 ? "s" : ""} attached` : "report needed"}</span></div><div><h2 className="text-base font-black text-slate-900">{name}</h2><p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">{test.category || "General"} · {test.priority || "routine"}</p></div><p className="text-sm leading-6 text-slate-600">{test.personalized_explanation || "Recommended for your health profile."}</p>{attached.length > 0 && <ul className="rounded-xl bg-slate-50 p-3 text-xs text-slate-600">{attached.map((report) => <li key={report.id}>✓ {report.reportName}</li>)}</ul>}</div><div className="mt-5 space-y-2 border-t border-slate-100 pt-4"><input ref={(element) => { fileInputs.current[name] = element; }} type="file" accept="application/pdf,.pdf" className="hidden" onChange={(event) => attachReport(test, event.target.files?.[0])} /><button onClick={() => fileInputs.current[name]?.click()} disabled={!selectedSet || Boolean(busy)} className="w-full rounded-xl border border-indigo-200 bg-white py-2.5 text-xs font-bold text-indigo-700 disabled:cursor-not-allowed disabled:opacity-40">{uploading ? "Attaching report…" : selectedSet ? "Upload report for this test" : "Save set to upload reports"}</button>{savedAnalysis && <button onClick={() => setDialogAnalysis(savedAnalysis)} className="w-full rounded-xl bg-slate-950 py-2.5 text-xs font-bold text-white">View saved set analysis</button>}</div></article>;
+    })}</section>
+    {selectedSet && <p className="text-center text-xs text-slate-400">Analysis combines every report attached to this selected recommendation set.</p>}
+  </main><AnalysisDialog analysis={dialogAnalysis} onClose={() => setDialogAnalysis(null)} /></div>;
 }

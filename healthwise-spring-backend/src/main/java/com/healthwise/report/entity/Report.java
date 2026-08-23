@@ -11,6 +11,7 @@ public class Report {
     @Id private String id;
     @Indexed private String userId;
     @Indexed private String recommendationId;
+    private String recommendedTestName;
     private String storageId;
     private String reportName;
     private Instant uploadedAt;
@@ -18,12 +19,14 @@ public class Report {
     public String getId() { return id; }
     public String getUserId() { return userId; }
     public String getRecommendationId() { return recommendationId; }
+    public String getRecommendedTestName() { return recommendedTestName; }
     public String getStorageId() { return storageId; }
     public String getReportName() { return reportName; }
     public Instant getUploadedAt() { return uploadedAt; }
     public String getReportType() { return reportType; }
     public void setUserId(String value) { userId = value; }
     public void setRecommendationId(String value) { recommendationId = value; }
+    public void setRecommendedTestName(String value) { recommendedTestName = value; }
     public void setStorageId(String value) { storageId = value; }
     public void setReportName(String value) { reportName = value; }
     public void setUploadedAt(Instant value) { uploadedAt = value; }

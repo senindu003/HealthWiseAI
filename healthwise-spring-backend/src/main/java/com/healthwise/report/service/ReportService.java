@@ -2,6 +2,7 @@ package com.healthwise.report.service;
 
 import com.healthwise.analysis.repository.AnalysisHistoryRepository;
 import com.healthwise.exception.ResourceNotFoundException;
+import com.healthwise.recommendation.entity.Recommendation;
 import com.healthwise.recommendation.repository.RecommendationRepository;
 import com.healthwise.report.dto.ReportDtos.Response;
 import com.healthwise.report.entity.Report;
@@ -35,12 +36,15 @@ public class ReportService {
     }
 
     private Response dto(Report report) {
-        return new Response(report.getId(), report.getRecommendationId(), report.getReportName(),
+        return new Response(report.getId(), report.getRecommendationId(), report.getRecommendedTestName(), report.getReportName(),
             report.getUploadedAt(), report.getReportType());
     }
 
-    public Response upload(String userId, String recommendationId, MultipartFile file) {
-        requireOwnedRecommendation(userId, recommendationId);
+    public Response upload(String userId, String recommendationId, String testName, MultipartFile file) {
+        Recommendation recommendation = requireOwnedRecommendation(userId, recommendationId);
+        if (testName == null || testName.isBlank() || !recommendedTestNames(recommendation).contains(normalize(testName))) {
+            throw new IllegalArgumentException("Choose a test from this recommendation set before uploading its report.");
+        }
         String fileName = file.getOriginalFilename();
         if (file.isEmpty() || fileName == null || !fileName.toLowerCase().endsWith(".pdf")
             || fileName.contains("/") || fileName.contains("\\")) {
@@ -56,6 +60,7 @@ public class ReportService {
             Report report = new Report();
             report.setUserId(userId);
             report.setRecommendationId(recommendationId);
+            report.setRecommendedTestName(testName.trim());
             report.setStorageId(storageId);
             report.setReportName(fileName);
             report.setReportType("Laboratory Report");
@@ -101,10 +106,18 @@ public class ReportService {
             .orElseThrow(() -> new ResourceNotFoundException("Report not found"));
     }
 
-    private void requireOwnedRecommendation(String userId, String recommendationId) {
-        recommendations.findById(recommendationId).filter(recommendation -> recommendation.getUserId().equals(userId))
+    private Recommendation requireOwnedRecommendation(String userId, String recommendationId) {
+        return recommendations.findById(recommendationId).filter(recommendation -> recommendation.getUserId().equals(userId))
             .orElseThrow(() -> new ResourceNotFoundException("Recommendation set not found"));
     }
+
+    private java.util.Set<String> recommendedTestNames(Recommendation recommendation) {
+        return recommendation.getRecommendations().stream()
+            .map(item -> item.getOrDefault("test_name", item.getOrDefault("name", "")).toString())
+            .map(this::normalize).filter(name -> !name.isBlank()).collect(java.util.stream.Collectors.toSet());
+    }
+
+    private String normalize(String value) { return value.trim().replaceAll("\\s+", " ").toLowerCase(java.util.Locale.ROOT); }
 
     private void deleteStoredFile(String storageId) {
         if (storageId != null && ObjectId.isValid(storageId)) {
