@@ -49,7 +49,7 @@ public class DashboardService {
         List<RecommendationSetDashboard> pending = sets.stream()
             .filter(set -> !"COMPLETE".equals(set.analysisStatus())).toList();
         List<RecommendationSetDashboard> analysed = sets.stream()
-            .filter(set -> !set.analyses().isEmpty()).toList();
+            .filter(set -> set.analyses().stream().anyMatch(analysis -> "SET".equals(analysis.analysisType()))).toList();
         String firstName = users.findById(userId)
             .map(User::getFirstName)
             .map(String::trim)
@@ -71,14 +71,15 @@ public class DashboardService {
         List<Report> savedReports = reports.findByUserIdAndRecommendationIdOrderByUploadedAtDesc(userId, recommendation.getId());
         List<com.healthwise.analysis.entity.AnalysisHistory> savedAnalyses =
             analyses.findByUserIdAndRecommendationIdOrderByAnalyzedAtDesc(userId, recommendation.getId());
-        String status = savedAnalyses.isEmpty() ? "PENDING" : savedAnalyses.get(0).isComplete() ? "COMPLETE" : "PARTIAL";
+        boolean hasSetAnalysis = savedAnalyses.stream().anyMatch(analysis -> "SET".equals(analysis.getAnalysisType()) && analysis.isComplete());
+        String status = hasSetAnalysis ? "COMPLETE" : "PENDING";
         RecommendationDtos.Response recommendationDto = new RecommendationDtos.Response(
             recommendation.getId(), recommendation.getQuestionnaireId(), recommendation.getGeneratedAt(),
             recommendation.getSummary(), recommendation.getRecommendations());
         List<ReportDtos.Response> reportDtos = savedReports.stream().map(report -> new ReportDtos.Response(
             report.getId(), report.getRecommendationId(), report.getRecommendedTestName(), report.getReportName(), report.getUploadedAt(), report.getReportType())).toList();
         List<AnalysisDtos.Response> analysisDtos = savedAnalyses.stream().map(analysis -> new AnalysisDtos.Response(
-            analysis.getId(), analysis.getRecommendationId(), analysis.getReportIds(), analysis.isComplete(),
+            analysis.getId(), analysis.getRecommendationId(), analysis.getReportIds(), analysis.getAnalysisType(), analysis.isComplete(),
             analysis.getAnalyzedAt(), analysis.getAnalysis())).toList();
         return new RecommendationSetDashboard(recommendationDto, reportDtos, analysisDtos, status);
     }

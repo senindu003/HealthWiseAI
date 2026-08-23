@@ -83,11 +83,11 @@ export const deleteReport = (reportId) => request(`${SPRING_BASE_URL}/reports/${
   method: "DELETE", headers: authHeaders(),
 });
 
-export const saveAnalysis = ({ recommendationId, reportIds, complete, analysis }) =>
+export const saveAnalysis = ({ recommendationId, reportIds, analysisType, complete, analysis }) =>
   request(`${SPRING_BASE_URL}/analysis`, {
     method: "POST",
     headers: authHeaders({ "Content-Type": "application/json" }),
-    body: JSON.stringify({ recommendationId, reportIds, complete, analysis }),
+    body: JSON.stringify({ recommendationId, reportIds, analysisType, complete, analysis }),
   });
 
 export const deleteAnalysis = (analysisId) => request(`${SPRING_BASE_URL}/analysis/${analysisId}`, {

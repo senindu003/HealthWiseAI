@@ -12,6 +12,7 @@ public final class AnalysisDtos {
     public record Create(
         @NotBlank String recommendationId,
         @NotEmpty List<@NotBlank String> reportIds,
+        @NotBlank String analysisType,
         boolean complete,
         @NotEmpty Map<String, Object> analysis
     ) {}
@@ -20,6 +21,7 @@ public final class AnalysisDtos {
         String id,
         String recommendationId,
         List<String> reportIds,
+        String analysisType,
         boolean complete,
         Instant analyzedAt,
         Map<String, Object> analysis

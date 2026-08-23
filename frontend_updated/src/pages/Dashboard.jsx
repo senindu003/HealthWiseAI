@@ -20,7 +20,7 @@ function RecordDialog({ title, subtitle, onClose, children }) {
 }
 
 function SetRecord({ set, onOpen, onDeleteSet, onDeleteAnalysis, showAnalysis }) {
-  const analysis = set.analyses?.[0];
+  const analysis = set.analyses?.find((item) => item.analysisType === "SET");
   const status = set.analysisStatus || "PENDING";
   const badge = status === "COMPLETE" ? "bg-emerald-100 text-emerald-800" : status === "PARTIAL" ? "bg-violet-100 text-violet-800" : "bg-amber-100 text-amber-800";
   return <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">

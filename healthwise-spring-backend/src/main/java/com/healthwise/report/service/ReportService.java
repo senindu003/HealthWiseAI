@@ -65,8 +65,8 @@ public class ReportService {
             report.setReportName(fileName);
             report.setReportType("Laboratory Report");
             report.setUploadedAt(Instant.now());
-            // A new file makes every previous aggregate analysis stale.
-            analyses.deleteAll(analyses.findByUserIdAndRecommendationIdOrderByAnalyzedAtDesc(userId, recommendationId));
+            // A new file changes the set-wide evidence, but does not invalidate other individual-report reviews.
+            invalidateSetAnalyses(userId, recommendationId);
             return dto(reports.save(report));
         } catch (RuntimeException exception) {
             deleteStoredFile(storageId);
@@ -96,7 +96,8 @@ public class ReportService {
 
     public void delete(String userId, String id) {
         Report report = findOwned(userId, id);
-        analyses.deleteAll(analyses.findByUserIdAndRecommendationIdOrderByAnalyzedAtDesc(userId, report.getRecommendationId()));
+        analyses.deleteAll(analyses.findByUserIdAndRecommendationIdOrderByAnalyzedAtDesc(userId, report.getRecommendationId())
+            .stream().filter(analysis -> "SET".equals(analysis.getAnalysisType()) || analysis.getReportIds().contains(report.getId())).toList());
         reports.delete(report);
         deleteStoredFile(report.getStorageId());
     }
@@ -118,6 +119,11 @@ public class ReportService {
     }
 
     private String normalize(String value) { return value.trim().replaceAll("\\s+", " ").toLowerCase(java.util.Locale.ROOT); }
+
+    private void invalidateSetAnalyses(String userId, String recommendationId) {
+        analyses.deleteAll(analyses.findByUserIdAndRecommendationIdOrderByAnalyzedAtDesc(userId, recommendationId)
+            .stream().filter(analysis -> "SET".equals(analysis.getAnalysisType())).toList());
+    }
 
     private void deleteStoredFile(String storageId) {
         if (storageId != null && ObjectId.isValid(storageId)) {

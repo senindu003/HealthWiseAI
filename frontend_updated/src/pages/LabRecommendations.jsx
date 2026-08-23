@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  analyzeReports, getQuestionnaire, getReportFile, loadDashboard,
+  analyzeReports, deleteReport, getQuestionnaire, getReportFile, loadDashboard,
   saveAnalysis, saveRecommendation, uploadReport,
 } from "../lib/api";
 
@@ -49,7 +49,8 @@ export default function LabRecommendations() {
     return [...unique.values()];
   }, [activeRecommendation]);
   const reports = selectedSet?.reports || [];
-  const savedAnalysis = selectedSet?.analyses?.[0]?.analysis || null;
+  const analyses = selectedSet?.analyses || [];
+  const savedSetAnalysis = analyses.find((analysis) => analysis.analysisType === "SET")?.analysis || null;
   const allReportsAttached = Boolean(selectedSet && activeTests.length && activeTests.every((test) => reports.some((report) => normalize(report.recommendedTestName) === normalize(testName(test)))));
 
   const visibleTests = useMemo(() => activeTests.filter((test) => {
@@ -102,9 +103,32 @@ export default function LabRecommendations() {
       const questionnaire = await getQuestionnaire(selectedSet.recommendation.questionnaireId);
       const reportFiles = await Promise.all(reports.map((report) => getReportFile(report.id, report.reportName)));
       const analysis = await analyzeReports(reportFiles, questionnaire.questionnaire);
-      await saveAnalysis({ recommendationId: selectedSet.recommendation.id, reportIds: reports.map((report) => report.id), complete: true, analysis });
+      await saveAnalysis({ recommendationId: selectedSet.recommendation.id, reportIds: reports.map((report) => report.id), analysisType: "SET", complete: true, analysis });
       await refresh(); setDialogAnalysis(analysis); setNotice("Combined analysis saved for this recommendation set.");
     } catch (err) { setError(err.message || "Could not analyse the uploaded reports."); }
+    finally { setBusy(""); }
+  }
+
+  async function analyseSingleReport(report) {
+    if (!selectedSet) return;
+    setBusy(`analyse:${report.id}`); setError(""); setNotice("");
+    try {
+      const questionnaire = await getQuestionnaire(selectedSet.recommendation.questionnaireId);
+      const reportFile = await getReportFile(report.id, report.reportName);
+      const analysis = await analyzeReports([reportFile], questionnaire.questionnaire);
+      await saveAnalysis({ recommendationId: selectedSet.recommendation.id, reportIds: [report.id], analysisType: "INDIVIDUAL", complete: false, analysis });
+      await refresh(); setDialogAnalysis(analysis); setNotice(`Analysis saved for ${report.reportName}.`);
+    } catch (err) { setError(err.message || "Could not analyse this report."); }
+    finally { setBusy(""); }
+  }
+
+  async function removeReport(report) {
+    if (!window.confirm(`Permanently remove ${report.reportName}? Its individual analysis and any combined set analysis will also be removed.`)) return;
+    setBusy(`remove:${report.id}`); setError(""); setNotice("");
+    try {
+      await deleteReport(report.id); await refresh();
+      setNotice(`${report.reportName} and analyses that depended on it were removed.`);
+    } catch (err) { setError(err.message || "Could not remove this report."); }
     finally { setBusy(""); }
   }
 
@@ -118,7 +142,7 @@ export default function LabRecommendations() {
     <div className="flex items-center gap-3"><span className="material-symbols-outlined text-slate-400">search</span><input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search your recommended tests" className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200" /></div>
     <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">{visibleTests.map((test, index) => {
       const name = testName(test); const attached = reports.filter((report) => normalize(report.recommendedTestName) === normalize(name)); const uploading = busy === `upload:${name}`; const icon = CATEGORY_ICONS[normalize(test.category)] || "science";
-      return <article key={`${name}-${index}`} className="flex flex-col justify-between rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm"><div className="space-y-4"><div className="flex items-start justify-between gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-50 text-indigo-700"><span className="material-symbols-outlined">{icon}</span></span><span className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase ${attached.length ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>{attached.length ? `${attached.length} report${attached.length > 1 ? "s" : ""} attached` : "report needed"}</span></div><div><h2 className="text-base font-black text-slate-900">{name}</h2><p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">{test.category || "General"} · {test.priority || "routine"}</p></div><p className="text-sm leading-6 text-slate-600">{test.personalized_explanation || "Recommended for your health profile."}</p>{attached.length > 0 && <ul className="rounded-xl bg-slate-50 p-3 text-xs text-slate-600">{attached.map((report) => <li key={report.id}>✓ {report.reportName}</li>)}</ul>}</div><div className="mt-5 space-y-2 border-t border-slate-100 pt-4"><input ref={(element) => { fileInputs.current[name] = element; }} type="file" accept="application/pdf,.pdf" className="hidden" onChange={(event) => attachReport(test, event.target.files?.[0])} /><button onClick={() => fileInputs.current[name]?.click()} disabled={!selectedSet || Boolean(busy)} className="w-full rounded-xl border border-indigo-200 bg-white py-2.5 text-xs font-bold text-indigo-700 disabled:cursor-not-allowed disabled:opacity-40">{uploading ? "Attaching report…" : selectedSet ? "Upload report for this test" : "Save set to upload reports"}</button>{savedAnalysis && <button onClick={() => setDialogAnalysis(savedAnalysis)} className="w-full rounded-xl bg-slate-950 py-2.5 text-xs font-bold text-white">View saved set analysis</button>}</div></article>;
+      return <article key={`${name}-${index}`} className="flex flex-col justify-between rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm"><div className="space-y-4"><div className="flex items-start justify-between gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-50 text-indigo-700"><span className="material-symbols-outlined">{icon}</span></span><span className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase ${attached.length ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>{attached.length ? `${attached.length} report${attached.length > 1 ? "s" : ""} attached` : "report needed"}</span></div><div><h2 className="text-base font-black text-slate-900">{name}</h2><p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">{test.category || "General"} · {test.priority || "routine"}</p></div><p className="text-sm leading-6 text-slate-600">{test.personalized_explanation || "Recommended for your health profile."}</p>{attached.length > 0 && <ul className="space-y-2 rounded-xl bg-slate-50 p-3 text-xs text-slate-600">{attached.map((report) => { const individual = analyses.find((analysis) => analysis.analysisType === "INDIVIDUAL" && analysis.reportIds?.includes(report.id)); return <li key={report.id} className="rounded-lg border border-slate-200 bg-white p-2.5"><p className="break-all font-semibold text-slate-700">✓ {report.reportName}</p><div className="mt-2 flex flex-wrap gap-2"><button onClick={() => analyseSingleReport(report)} disabled={Boolean(busy)} className="rounded-lg bg-indigo-600 px-2.5 py-1.5 text-[10px] font-bold text-white disabled:opacity-50">{busy === `analyse:${report.id}` ? "Analysing…" : "Analyse this report"}</button>{individual && <button onClick={() => setDialogAnalysis(individual.analysis)} className="rounded-lg border border-indigo-200 px-2.5 py-1.5 text-[10px] font-bold text-indigo-700">View analysis</button>}<button onClick={() => removeReport(report)} disabled={Boolean(busy)} className="rounded-lg border border-rose-200 px-2.5 py-1.5 text-[10px] font-bold text-rose-700 disabled:opacity-50">{busy === `remove:${report.id}` ? "Removing…" : "Remove report"}</button></div></li>; })}</ul>}</div><div className="mt-5 space-y-2 border-t border-slate-100 pt-4"><input ref={(element) => { fileInputs.current[name] = element; }} type="file" accept="application/pdf,.pdf" className="hidden" onChange={(event) => attachReport(test, event.target.files?.[0])} /><button onClick={() => fileInputs.current[name]?.click()} disabled={!selectedSet || Boolean(busy)} className="w-full rounded-xl border border-indigo-200 bg-white py-2.5 text-xs font-bold text-indigo-700 disabled:cursor-not-allowed disabled:opacity-40">{uploading ? "Attaching report…" : selectedSet ? "Upload report for this test" : "Save set to upload reports"}</button>{savedSetAnalysis && <button onClick={() => setDialogAnalysis(savedSetAnalysis)} className="w-full rounded-xl bg-slate-950 py-2.5 text-xs font-bold text-white">View combined set analysis</button>}</div></article>;
     })}</section>
     {selectedSet && <p className="text-center text-xs text-slate-400">Analysis combines every report attached to this selected recommendation set.</p>}
   </main><AnalysisDialog analysis={dialogAnalysis} onClose={() => setDialogAnalysis(null)} /></div>;
