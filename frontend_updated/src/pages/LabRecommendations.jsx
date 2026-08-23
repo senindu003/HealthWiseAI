@@ -436,7 +436,7 @@ export default function LabRecommendations() {
                     ? "Analysing all reports…"
                     : allReportsAttached
                       ? "Meta-analysis"
-                      : "Upload all report to enable Meta-analysis"}
+                      : "Upload all Reports to enable Meta-analysis"}
                 </button>
                 {savedSetAnalysis && (
                   <button
@@ -449,12 +449,6 @@ export default function LabRecommendations() {
               </div>
             )}
           </div>
-          {selectedSet && !allReportsAttached && (
-            <p className="mt-3 rounded-xl bg-amber-50 p-3 text-xs font-semibold text-amber-800">
-              Analysis unlocks once each recommended test card has at least one
-              attached report.
-            </p>
-          )}
         </section>
         {error && (
           <div
@@ -548,23 +542,29 @@ export default function LabRecommendations() {
                     }
                   />
                   <button
-                    onClick={() => fileInputs.current[name]?.click()}
-                    disabled={!selectedSet || Boolean(busy) || Boolean(primaryReport)}
-                    className="rounded-xl border border-indigo-200 bg-white px-3 py-2.5 text-xs font-bold text-indigo-700 disabled:cursor-not-allowed disabled:opacity-40"
+                    onClick={() =>
+                      primaryReport
+                        ? removeReport(primaryReport)
+                        : fileInputs.current[name]?.click()
+                    }
+                    disabled={!selectedSet || Boolean(busy)}
+                    className={`rounded-xl border px-3 py-2.5 text-xs font-bold disabled:cursor-not-allowed disabled:opacity-40 ${primaryReport ? "border-rose-200 text-rose-700" : "border-indigo-200 bg-white text-indigo-700"}`}
                   >
-                    {uploading
+                    {primaryReport
+                      ? busy === `remove:${primaryReport.id}`
+                        ? "Removing…"
+                        : "Remove report"
+                      : uploading
                       ? "Attaching report…"
-                      : primaryReport
-                        ? "Report uploaded"
-                        : selectedSet
-                          ? "Upload report"
+                      : selectedSet
+                        ? "Upload report"
                         : "Save set to upload reports"}
                   </button>
                   {primaryReport && (
                     <button
                       onClick={() => analyseSingleReport(primaryReport)}
                       disabled={Boolean(busy)}
-                      className="rounded-xl bg-indigo-600 px-3 py-2.5 text-xs font-bold text-white disabled:opacity-50"
+                      className="rounded-xl text-indigo-600 px-3 py-2.5 text-xs font-bold bg-white disabled:opacity-50"
                     >
                       {busy === `analyse:${primaryReport.id}`
                         ? "Analysing…"
@@ -577,17 +577,6 @@ export default function LabRecommendations() {
                       className="rounded-xl border border-indigo-200 px-3 py-2.5 text-xs font-bold text-indigo-700"
                     >
                       View analysis
-                    </button>
-                  )}
-                  {primaryReport && (
-                    <button
-                      onClick={() => removeReport(primaryReport)}
-                      disabled={Boolean(busy)}
-                      className="rounded-xl border border-rose-200 px-3 py-2.5 text-xs font-bold text-rose-700 disabled:opacity-50"
-                    >
-                      {busy === `remove:${primaryReport.id}`
-                        ? "Removing…"
-                        : "Remove report"}
                     </button>
                   )}
                 </div>
