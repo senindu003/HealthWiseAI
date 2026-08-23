@@ -1,5 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import healthConsultation from "../assets/landing/health-consultation.png";
+import healthMonitor from "../assets/landing/health-monitor.png";
+import wellbeingWalk from "../assets/landing/wellbeing-walk.png";
+import wellbeingTea from "../assets/landing/wellbeing-tea.png";
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -90,7 +94,10 @@ export default function Welcome() {
             </div>
           </div>
 
-          <div className="relative w-full h-full min-h-[440px] flex items-center justify-center">
+          <div className="relative w-full min-h-[440px] flex items-center justify-center py-4">
+            {/*
+            Previous feature-card illustration kept here only as a reference while
+            the image collage below is used in the live landing page.
             <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-emerald-500/5 rounded-full blur-3xl -z-10" />
             <div className="grid grid-cols-2 gap-4 w-full max-w-md relative z-10 font-sans">
               <div className="bg-white rounded-2xl p-5 shadow-md border border-slate-200/50 flex flex-col gap-3 transform translate-y-6 hover:-translate-y-0.5 transition-all duration-300">
@@ -147,6 +154,41 @@ export default function Welcome() {
                 <span className="text-emerald-500 text-lg font-bold select-none">
                   ✓
                 </span>
+              </div>
+            </div>
+            */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 via-sky-500/5 to-emerald-500/10 rounded-full blur-3xl -z-10" />
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg relative z-10">
+              <figure className="group overflow-hidden rounded-[1.8rem] border-4 border-white bg-white shadow-xl shadow-slate-900/10 transition-transform duration-300 hover:-translate-y-1">
+                <img
+                  src={healthConsultation}
+                  alt="Healthcare professional reviewing information on a tablet"
+                  className="h-56 sm:h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </figure>
+              <figure className="group overflow-hidden rounded-[1.8rem] border-4 border-white bg-white shadow-xl shadow-slate-900/10 translate-y-7 transition-transform duration-300 hover:translate-y-5">
+                <img
+                  src={healthMonitor}
+                  alt="Personal health monitoring workspace"
+                  className="h-56 sm:h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </figure>
+              <figure className="group overflow-hidden rounded-[1.8rem] border-4 border-white bg-white shadow-xl shadow-slate-900/10 -translate-y-2 transition-transform duration-300 hover:-translate-y-4">
+                <img
+                  src={wellbeingWalk}
+                  alt="Person taking a calm walk outdoors"
+                  className="h-56 sm:h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </figure>
+              <figure className="group overflow-hidden rounded-[1.8rem] border-4 border-white bg-white shadow-xl shadow-slate-900/10 translate-y-5 transition-transform duration-300 hover:translate-y-3">
+                <img
+                  src={wellbeingTea}
+                  alt="Calm self-care moment at home"
+                  className="h-56 sm:h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </figure>
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/70 bg-slate-950 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-slate-950/20">
+                Health, in focus
               </div>
             </div>
           </div>
