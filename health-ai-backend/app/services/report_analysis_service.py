@@ -35,11 +35,14 @@ class ReportAnalysisService:
         if not isinstance(request, ReportAnalysisUploadRequest):
             raise TypeError("request must be a ReportAnalysisUploadRequest")
         settings = get_settings()
-        if len(request.report_pdf) > settings.report_max_file_size_bytes:
-            raise ValueError("report_file exceeds the configured maximum upload size")
-        markdown = await to_thread(_convert_pdf_to_markdown, request.report_pdf, request.report_filename)
-        validate_laboratory_report_text(markdown)
-        anonymized_markdown = anonymize_report_markdown(markdown)
+        if any(len(report_pdf) > settings.report_max_file_size_bytes for report_pdf in request.report_pdfs):
+            raise ValueError("A report file exceeds the configured maximum upload size")
+        anonymized_reports: list[str] = []
+        for index, (report_pdf, report_filename) in enumerate(zip(request.report_pdfs, request.report_filenames), start=1):
+            markdown = await to_thread(_convert_pdf_to_markdown, report_pdf, report_filename)
+            validate_laboratory_report_text(markdown)
+            anonymized_reports.append(f"# Uploaded laboratory report {index}\n\n{anonymize_report_markdown(markdown)}")
+        anonymized_markdown = "\n\n---\n\n".join(anonymized_reports)
         logger.info("Starting anonymized laboratory-report analysis")
         result = await self._graph.ainvoke(
             {

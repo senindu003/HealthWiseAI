@@ -18,6 +18,7 @@ export default function LabRecommendations() {
     message: "",
     error: "",
   });
+  const [savedRecommendationId, setSavedRecommendationId] = useState("");
 
   // Extract the live runtime analytics framework out of session storage
   const sessionCachedResult = useMemo(() => {
@@ -86,6 +87,7 @@ export default function LabRecommendations() {
         aiResponse: sessionCachedResult,
       });
       sessionStorage.setItem("latest_recommendation_id", saved.id);
+      setSavedRecommendationId(saved.id);
       setSaveState({
         loading: false,
         message: "Recommendations saved to your history.",
@@ -149,13 +151,22 @@ export default function LabRecommendations() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              onClick={handleSave}
-              disabled={saveState.loading}
-              className="rounded-xl border border-indigo-200 bg-white px-4 py-2.5 text-xs font-bold text-indigo-700 disabled:opacity-60"
-            >
-              {saveState.loading ? "Saving…" : "Save"}
-            </button>
+            {savedRecommendationId ? (
+              <button
+                onClick={() => navigate("/report-analysis", { state: { recommendationId: savedRecommendationId } })}
+                className="rounded-xl border border-indigo-200 bg-white px-4 py-2.5 text-xs font-bold text-indigo-700"
+              >
+                Manage reports
+              </button>
+            ) : (
+              <button
+                onClick={handleSave}
+                disabled={saveState.loading}
+                className="rounded-xl border border-indigo-200 bg-white px-4 py-2.5 text-xs font-bold text-indigo-700 disabled:opacity-60"
+              >
+                {saveState.loading ? "Saving…" : "Save recommendation set"}
+              </button>
+            )}
             <div className="relative">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">
                 search

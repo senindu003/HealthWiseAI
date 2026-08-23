@@ -26,9 +26,9 @@ export const generateRecommendations = (questionnaire) => request(`${AI_BASE_URL
   method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(questionnaire),
 });
 
-export const analyzeReport = (reportFile, questionnaire) => {
+export const analyzeReports = (reportFiles, questionnaire) => {
   const data = new FormData();
-  data.append("report_file", reportFile);
+  reportFiles.forEach((reportFile) => data.append("report_files", reportFile));
   data.append("questionnaire", JSON.stringify(questionnaire));
   return request(`${AI_BASE_URL}/report-analysis`, { method: "POST", body: data });
 };
@@ -52,19 +52,54 @@ export const saveRecommendation = async ({ questionnaire, aiResponse }) => {
   });
 };
 
-export const saveReport = async ({ recommendationId = null, reportName, reportType = "Laboratory Report", reportAnalysis }) => {
-  const report = await request(`${SPRING_BASE_URL}/reports`, {
+export const uploadReport = (recommendationId, reportFile) => {
+  const data = new FormData();
+  data.append("recommendationId", recommendationId);
+  data.append("reportFile", reportFile);
+  return request(`${SPRING_BASE_URL}/reports`, {
     method: "POST",
-    headers: authHeaders({ "Content-Type": "application/json" }),
-    body: JSON.stringify({ recommendationId, reportName, reportType }),
+    headers: authHeaders(),
+    body: data,
   });
-  const analysis = await request(`${SPRING_BASE_URL}/analysis`, {
-    method: "POST",
-    headers: authHeaders({ "Content-Type": "application/json" }),
-    body: JSON.stringify({ reportId: report.id, analysis: reportAnalysis }),
-  });
-  return { report, analysis };
 };
+
+export const listReports = (recommendationId) => request(
+  `${SPRING_BASE_URL}/reports?recommendationId=${encodeURIComponent(recommendationId)}`,
+  { headers: authHeaders() },
+);
+
+export const getReportFile = async (reportId, reportName = "laboratory-report.pdf") => {
+  const response = await fetch(`${SPRING_BASE_URL}/reports/${reportId}/file`, { headers: authHeaders() });
+  if (!response.ok) {
+    let message = "The saved report could not be read.";
+    try { message = (await response.json()).message || message; } catch { /* non-JSON error */ }
+    throw new ApiError(message, response.status);
+  }
+  return new File([await response.blob()], reportName, { type: "application/pdf" });
+};
+
+export const deleteReport = (reportId) => request(`${SPRING_BASE_URL}/reports/${reportId}`, {
+  method: "DELETE", headers: authHeaders(),
+});
+
+export const saveAnalysis = ({ recommendationId, reportIds, complete, analysis }) =>
+  request(`${SPRING_BASE_URL}/analysis`, {
+    method: "POST",
+    headers: authHeaders({ "Content-Type": "application/json" }),
+    body: JSON.stringify({ recommendationId, reportIds, complete, analysis }),
+  });
+
+export const deleteAnalysis = (analysisId) => request(`${SPRING_BASE_URL}/analysis/${analysisId}`, {
+  method: "DELETE", headers: authHeaders(),
+});
+
+export const deleteRecommendation = (recommendationId) => request(`${SPRING_BASE_URL}/recommendations/${recommendationId}`, {
+  method: "DELETE", headers: authHeaders(),
+});
+
+export const getQuestionnaire = (questionnaireId) => request(`${SPRING_BASE_URL}/questionnaires/${questionnaireId}`, {
+  headers: authHeaders(),
+});
 
 export const loadDashboard = () => request(`${SPRING_BASE_URL}/dashboard`, {
   headers: authHeaders(),

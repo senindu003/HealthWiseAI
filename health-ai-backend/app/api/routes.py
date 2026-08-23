@@ -60,25 +60,27 @@ async def create_recommendations(
 
 @router.post("/report-analysis", response_model=ReportAnalysisResponse, status_code=status.HTTP_200_OK)
 async def analyze_report(
-    report_file: Annotated[UploadFile, File(...)],
+    report_files: Annotated[list[UploadFile], File(...)],
     questionnaire: Annotated[str, Form(...)],
     service: Annotated[ReportAnalysisService, Depends(get_report_analysis_service)],
 ) -> ReportAnalysisResponse:
     """Accept a report PDF and questionnaire; Markdown remains an internal backend detail."""
 
     try:
+        if not report_files:
+            raise ValueError("Upload at least one PDF laboratory report")
         allowed_content_types = {"application/pdf", "application/x-pdf", "application/octet-stream"}
-        if report_file.content_type not in allowed_content_types:
-            raise ValueError("report_file must have a PDF content type")
-        filename = report_file.filename or ""
-        pdf_bytes = await _read_report_pdf(report_file)
+        if any(report_file.content_type not in allowed_content_types for report_file in report_files):
+            raise ValueError("Every report file must have a PDF content type")
+        filenames = [report_file.filename or "" for report_file in report_files]
+        pdf_bytes = [await _read_report_pdf(report_file) for report_file in report_files]
         try:
             questionnaire_payload = json.loads(questionnaire)
         except json.JSONDecodeError as exc:
             raise ValueError("questionnaire must be valid JSON") from exc
         request = ReportAnalysisUploadRequest(
-            report_filename=filename,
-            report_pdf=pdf_bytes,
+            report_filenames=filenames,
+            report_pdfs=pdf_bytes,
             questionnaire=QuestionnaireRequest.model_validate(questionnaire_payload),
         )
         return await service.analyze(request)

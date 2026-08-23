@@ -1,2 +1,77 @@
-package com.healthwise.recommendation.service;import com.healthwise.exception.ResourceNotFoundException;import com.healthwise.recommendation.dto.RecommendationDtos.*;import com.healthwise.recommendation.entity.Recommendation;import com.healthwise.recommendation.repository.RecommendationRepository;import java.time.Instant;import java.util.*;import org.springframework.stereotype.Service;
-@Service public class RecommendationService{private final RecommendationRepository r;public RecommendationService(RecommendationRepository x){r=x;}private Response dto(Recommendation e){return new Response(e.getId(),e.getQuestionnaireId(),e.getGeneratedAt(),e.getSummary(),e.getRecommendations());}public Response save(String u,Create d){Recommendation e=new Recommendation();e.setUserId(u);e.setQuestionnaireId(d.questionnaireId());e.setGeneratedAt(Instant.now());e.setSummary(d.summary());e.setRecommendations(List.copyOf(d.recommendations()));return dto(r.save(e));}public List<Response> list(String u){return r.findByUserIdOrderByGeneratedAtDesc(u).stream().map(this::dto).toList();}public Response get(String u,String id){return dto(r.findById(id).filter(e->e.getUserId().equals(u)).orElseThrow(()->new ResourceNotFoundException("Recommendation not found")));}public void delete(String u,String id){r.delete(r.findById(id).filter(e->e.getUserId().equals(u)).orElseThrow(()->new ResourceNotFoundException("Recommendation not found")));}}
+package com.healthwise.recommendation.service;
+
+import com.healthwise.analysis.repository.AnalysisHistoryRepository;
+import com.healthwise.exception.ResourceNotFoundException;
+import com.healthwise.recommendation.dto.RecommendationDtos.Create;
+import com.healthwise.recommendation.dto.RecommendationDtos.Response;
+import com.healthwise.recommendation.entity.Recommendation;
+import com.healthwise.recommendation.repository.RecommendationRepository;
+import com.healthwise.report.entity.Report;
+import com.healthwise.report.repository.ReportRepository;
+import java.time.Instant;
+import java.util.List;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RecommendationService {
+    /** A user keeps at most five complete, independently managed recommendation records. */
+    public static final int MAX_RECOMMENDATION_SETS = 5;
+    private final RecommendationRepository recommendations;
+    private final ReportRepository reports;
+    private final AnalysisHistoryRepository analyses;
+    private final GridFsTemplate gridFs;
+
+    public RecommendationService(RecommendationRepository recommendations, ReportRepository reports,
+                                 AnalysisHistoryRepository analyses, GridFsTemplate gridFs) {
+        this.recommendations = recommendations;
+        this.reports = reports;
+        this.analyses = analyses;
+        this.gridFs = gridFs;
+    }
+
+    private Response dto(Recommendation recommendation) {
+        return new Response(recommendation.getId(), recommendation.getQuestionnaireId(), recommendation.getGeneratedAt(),
+            recommendation.getSummary(), recommendation.getRecommendations());
+    }
+
+    public Response save(String userId, Create request) {
+        if (recommendations.countByUserId(userId) >= MAX_RECOMMENDATION_SETS) {
+            throw new IllegalArgumentException("You can keep up to five recommendation sets. Delete an older set before creating another.");
+        }
+        Recommendation recommendation = new Recommendation();
+        recommendation.setUserId(userId);
+        recommendation.setQuestionnaireId(request.questionnaireId());
+        recommendation.setGeneratedAt(Instant.now());
+        recommendation.setSummary(request.summary());
+        recommendation.setRecommendations(List.copyOf(request.recommendations()));
+        return dto(recommendations.save(recommendation));
+    }
+
+    public List<Response> list(String userId) {
+        return recommendations.findByUserIdOrderByGeneratedAtDesc(userId).stream().map(this::dto).toList();
+    }
+
+    public Response get(String userId, String id) { return dto(findOwned(userId, id)); }
+
+    /** Permanently deletes the set plus every linked GridFS PDF and analysis. */
+    public void delete(String userId, String id) {
+        Recommendation recommendation = findOwned(userId, id);
+        analyses.deleteAll(analyses.findByUserIdAndRecommendationIdOrderByAnalyzedAtDesc(userId, id));
+        for (Report report : reports.findByUserIdAndRecommendationIdOrderByUploadedAtDesc(userId, id)) {
+            if (report.getStorageId() != null && ObjectId.isValid(report.getStorageId())) {
+                gridFs.delete(new Query(Criteria.where("_id").is(new ObjectId(report.getStorageId()))));
+            }
+            reports.delete(report);
+        }
+        recommendations.delete(recommendation);
+    }
+
+    private Recommendation findOwned(String userId, String id) {
+        return recommendations.findById(id).filter(item -> item.getUserId().equals(userId))
+            .orElseThrow(() -> new ResourceNotFoundException("Recommendation set not found"));
+    }
+}

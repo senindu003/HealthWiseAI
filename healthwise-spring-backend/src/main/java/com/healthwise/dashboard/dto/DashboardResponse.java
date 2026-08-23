@@ -7,10 +7,9 @@ import java.util.List;
 public record DashboardResponse(
     String firstName,
     Object latestQuestionnaire,
-    Object latestRecommendation,
-    Object latestReport,
-    Object latestAnalysis,
+    List<RecommendationSetDashboard> pendingRecommendations,
+    List<RecommendationSetDashboard> analysedRecommendations,
     long pendingRecommendationCount,
-    long completedRecommendationCount,
+    long analysedRecommendationCount,
     List<TimelineEvent> timelineSummary
 ) {}

@@ -1,2 +1,33 @@
-package com.healthwise.analysis.entity;import java.time.Instant;import java.util.Map;import org.springframework.data.annotation.Id;import org.springframework.data.mongodb.core.index.Indexed;import org.springframework.data.mongodb.core.mapping.Document;
-/** Exact AI analysis JSON received from React, never interpreted by Spring Boot. */@Document("analysis_history")public class AnalysisHistory{@Id private String id;@Indexed private String userId;@Indexed private String reportId;private Instant analyzedAt;private Map<String,Object> analysis;public String getId(){return id;}public String getUserId(){return userId;}public String getReportId(){return reportId;}public Instant getAnalyzedAt(){return analyzedAt;}public Map<String,Object> getAnalysis(){return analysis;}public void setUserId(String v){userId=v;}public void setReportId(String v){reportId=v;}public void setAnalyzedAt(Instant v){analyzedAt=v;}public void setAnalysis(Map<String,Object> v){analysis=v;}}
+package com.healthwise.analysis.entity;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+/** A report analysis always belongs to one recommendation set. */
+@Document("analysis_history")
+public class AnalysisHistory {
+    @Id private String id;
+    @Indexed private String userId;
+    @Indexed private String recommendationId;
+    private List<String> reportIds;
+    private boolean complete;
+    private Instant analyzedAt;
+    private Map<String, Object> analysis;
+    public String getId() { return id; }
+    public String getUserId() { return userId; }
+    public String getRecommendationId() { return recommendationId; }
+    public List<String> getReportIds() { return reportIds; }
+    public boolean isComplete() { return complete; }
+    public Instant getAnalyzedAt() { return analyzedAt; }
+    public Map<String, Object> getAnalysis() { return analysis; }
+    public void setUserId(String value) { userId = value; }
+    public void setRecommendationId(String value) { recommendationId = value; }
+    public void setReportIds(List<String> value) { reportIds = value; }
+    public void setComplete(boolean value) { complete = value; }
+    public void setAnalyzedAt(Instant value) { analyzedAt = value; }
+    public void setAnalysis(Map<String, Object> value) { analysis = value; }
+}

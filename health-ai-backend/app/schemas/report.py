@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.schemas.questionnaire import QuestionnaireRequest
 
@@ -99,25 +99,34 @@ class ReportAnalysisUploadRequest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    report_filename: str = Field(min_length=5, max_length=255)
-    report_pdf: bytes = Field(min_length=5)
+    report_filenames: list[str] = Field(min_length=1)
+    report_pdfs: list[bytes] = Field(min_length=1)
     questionnaire: QuestionnaireRequest
 
-    @field_validator("report_filename")
+    @field_validator("report_filenames")
     @classmethod
-    def ensure_pdf_filename(cls, value: str) -> str:
+    def ensure_pdf_filenames(cls, values: list[str]) -> list[str]:
         """Require a PDF filename without accepting a filesystem path."""
 
-        cleaned = value.strip()
-        if not cleaned.lower().endswith(".pdf") or "/" in cleaned or "\\" in cleaned:
-            raise ValueError("report_file must have a safe .pdf filename")
-        return cleaned
+        cleaned_values = []
+        for value in values:
+            cleaned = value.strip()
+            if not cleaned.lower().endswith(".pdf") or "/" in cleaned or "\\" in cleaned:
+                raise ValueError("Every report file must have a safe .pdf filename")
+            cleaned_values.append(cleaned)
+        return cleaned_values
 
-    @field_validator("report_pdf")
+    @field_validator("report_pdfs")
     @classmethod
-    def ensure_pdf_signature(cls, value: bytes) -> bytes:
+    def ensure_pdf_signatures(cls, values: list[bytes]) -> list[bytes]:
         """Reject files that do not begin with the PDF magic header."""
 
-        if not value.startswith(b"%PDF-"):
-            raise ValueError("report_file must be a valid PDF")
-        return value
+        if any(not value.startswith(b"%PDF-") for value in values):
+            raise ValueError("Every report file must be a valid PDF")
+        return values
+
+    @model_validator(mode="after")
+    def matching_files(self) -> "ReportAnalysisUploadRequest":
+        if len(self.report_filenames) != len(self.report_pdfs):
+            raise ValueError("Each uploaded report must include both a filename and PDF content")
+        return self

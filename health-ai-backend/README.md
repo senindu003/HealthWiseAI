@@ -22,6 +22,6 @@ It also provides a separate report-analysis pipeline: PDF upload → Docling Mar
 
 `GET /api/v1/health` provides a liveness check.
 
-`POST /api/v1/report-analysis` accepts `multipart/form-data`: a `report_file` PDF and a `questionnaire` JSON string. Docling conversion, Markdown, and Presidio anonymization are internal backend operations and are never returned to the frontend. The endpoint returns the fixed report-analysis JSON contract and does not persist the report.
+`POST /api/v1/report-analysis` accepts `multipart/form-data`: one or more `report_files` PDFs and a `questionnaire` JSON string. Every uploaded report is independently validated and anonymized before the combined, recommendation-set analysis is generated. Docling conversion, Markdown, and Presidio anonymization are internal backend operations and are never returned to the frontend. The endpoint returns the fixed report-analysis JSON contract and does not persist the reports itself; Spring Boot stores the authenticated user's reports and analysis record.
 
 The service provides informational laboratory recommendations only; it does not diagnose conditions or replace a qualified clinician.
