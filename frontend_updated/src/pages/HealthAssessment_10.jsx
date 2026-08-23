@@ -969,7 +969,7 @@ export default function HealthAssessmentWizard() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700">
-                        Age Evaluation Indicator (Years)
+                        Age(Years)
                       </label>
                       <input
                         type="number"
@@ -1003,7 +1003,7 @@ export default function HealthAssessmentWizard() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700">
-                        Height Parameter Metrics (cm)
+                        Height(cm)
                       </label>
                       <input
                         type="number"
@@ -1019,7 +1019,7 @@ export default function HealthAssessmentWizard() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700">
-                        Weight Parameter Metrics (kg)
+                        Weight(kg)
                       </label>
                       <input
                         type="number"
@@ -1058,7 +1058,7 @@ export default function HealthAssessmentWizard() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700">
-                        Ethnicity Background Vector
+                        Ethnicity
                       </label>
                       <select
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-semibold focus:ring-2 focus:ring-indigo-500/20 outline-none"
@@ -1077,7 +1077,7 @@ export default function HealthAssessmentWizard() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700">
-                        Geographic Operations Country
+                        Country
                       </label>
                       <select
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-semibold focus:ring-2 focus:ring-indigo-500/20 outline-none"
@@ -1185,7 +1185,7 @@ export default function HealthAssessmentWizard() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
                         <div className="space-y-2">
                           <label className="text-xs font-bold text-slate-700">
-                            Exercise Duration (minutes per session)
+                            Exercise Duration (minutes per a session)
                           </label>
                           <input
                             type="number"

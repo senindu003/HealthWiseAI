@@ -379,10 +379,6 @@ export default function LabRecommendations() {
           <h1 className="text-2xl font-black tracking-tight">
             Your recommended laboratory tests
           </h1>
-          <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-500">
-            {activeRecommendation.summary ||
-              "Review each recommended test, attach its relevant laboratory report, and receive one combined analysis when every card is ready."}
-          </p>
         </header>
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
           <label className="block text-xs font-black uppercase tracking-wider text-slate-500">
@@ -563,10 +559,12 @@ export default function LabRecommendations() {
                   {primaryReport && (
                     <button
                       onClick={() => analyseSingleReport(primaryReport)}
-                      disabled={Boolean(busy)}
+                      disabled={Boolean(busy) || Boolean(individual)}
                       className="text-indigo-600 rounded-xl border border-indigo-200 px-3 py-2.5 text-xs font-bold bg-white disabled:opacity-50"
                     >
-                      {busy === `analyse:${primaryReport.id}`
+                      {individual
+                        ? "Report analysed"
+                        : busy === `analyse:${primaryReport.id}`
                         ? "Analysing…"
                         : "Analyse report"}
                     </button>
