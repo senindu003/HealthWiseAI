@@ -42,7 +42,7 @@ export default function Welcome() {
       </header>
 
       {/* Hero Split Bento Layout */}
-      <main className="flex-grow flex items-center justify-center px-4 md:px-8 max-w-7xl mx-auto w-full py-8 relative z-10">
+      <main className="flex-grow flex items-center justify-center px-4 md:px-8 max-w-7xl mx-auto w-full py-3 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           <div className="flex flex-col gap-6 max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-xs w-fit">
@@ -61,8 +61,8 @@ export default function Welcome() {
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed max-w-xl">
-              Turn everyday health details and laboratory reports into
-              personalised, easy-to-understand guidance designed around you.
+              Transform your daily health metrics and lab results into clear,
+              tailored insights made for you.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
@@ -73,14 +73,14 @@ export default function Welcome() {
                 }}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black rounded-xl px-8 py-3.5 shadow-lg shadow-indigo-600/20 uppercase tracking-wider flex items-center justify-center gap-2 hover:scale-[1.01] transition-all"
               >
-                Create your health profile <span>→</span>
+                Create your health profile
               </button>
 
               <button
                 onClick={handleDemoModeActivation}
                 className="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl px-8 py-3.5 transition-all shadow-xs flex items-center justify-center"
               >
-                Explore the assessment
+                Explore More
               </button>
             </div>
 
@@ -94,7 +94,7 @@ export default function Welcome() {
             </div>
           </div>
 
-          <div className="relative w-full min-h-[440px] flex items-center justify-center py-4">
+          <div className="relative w-full min-h-[360px] flex items-center justify-center py-4">
             {/*
             Previous feature-card illustration kept here only as a reference while
             the image collage below is used in the live landing page.
@@ -158,37 +158,37 @@ export default function Welcome() {
             </div>
             */}
             <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 via-sky-500/5 to-emerald-500/10 rounded-full blur-3xl -z-10" />
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg relative z-10">
+            <div className="grid grid-cols-2 gap-3 w-full max-w-md relative z-10">
               <figure className="group overflow-hidden rounded-[1.8rem] border-4 border-white bg-white shadow-xl shadow-slate-900/10 transition-transform duration-300 hover:-translate-y-1">
                 <img
                   src={healthConsultation}
-                  alt="Healthcare professional reviewing information on a tablet"
-                  className="h-56 sm:h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  alt="Blood sample tube held in a diagnostic laboratory"
+                  className="h-44 sm:h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </figure>
               <figure className="group overflow-hidden rounded-[1.8rem] border-4 border-white bg-white shadow-xl shadow-slate-900/10 translate-y-7 transition-transform duration-300 hover:translate-y-5">
                 <img
                   src={healthMonitor}
-                  alt="Personal health monitoring workspace"
-                  className="h-56 sm:h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  alt="Home health monitoring devices arranged together"
+                  className="h-44 sm:h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </figure>
               <figure className="group overflow-hidden rounded-[1.8rem] border-4 border-white bg-white shadow-xl shadow-slate-900/10 -translate-y-2 transition-transform duration-300 hover:-translate-y-4">
                 <img
                   src={wellbeingWalk}
-                  alt="Person taking a calm walk outdoors"
-                  className="h-56 sm:h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  alt="Person jogging calmly outdoors"
+                  className="h-44 sm:h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </figure>
               <figure className="group overflow-hidden rounded-[1.8rem] border-4 border-white bg-white shadow-xl shadow-slate-900/10 translate-y-5 transition-transform duration-300 hover:translate-y-3">
                 <img
                   src={wellbeingTea}
                   alt="Calm self-care moment at home"
-                  className="h-56 sm:h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="h-44 sm:h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </figure>
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/70 bg-slate-950 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-slate-950/20">
-                Health, in focus
+                Health is Wealth
               </div>
             </div>
           </div>

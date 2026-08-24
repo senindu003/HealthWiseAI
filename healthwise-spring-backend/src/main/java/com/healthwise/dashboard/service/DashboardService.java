@@ -50,6 +50,8 @@ public class DashboardService {
             .filter(set -> !"COMPLETE".equals(set.analysisStatus())).toList();
         List<RecommendationSetDashboard> analysed = sets.stream()
             .filter(set -> set.analyses().stream().anyMatch(analysis -> "SET".equals(analysis.analysisType()))).toList();
+        long partialAnalysisCount = analysed.stream().filter(set -> "PARTIAL".equals(set.analysisStatus())).count();
+        long completeAnalysisCount = analysed.stream().filter(set -> "COMPLETE".equals(set.analysisStatus())).count();
         String firstName = users.findById(userId)
             .map(User::getFirstName)
             .map(String::trim)
@@ -63,6 +65,8 @@ public class DashboardService {
             analysed,
             pending.size(),
             analysed.size(),
+            partialAnalysisCount,
+            completeAnalysisCount,
             timeline.timeline(userId)
         );
     }
@@ -71,8 +75,11 @@ public class DashboardService {
         List<Report> savedReports = reports.findByUserIdAndRecommendationIdOrderByUploadedAtDesc(userId, recommendation.getId());
         List<com.healthwise.analysis.entity.AnalysisHistory> savedAnalyses =
             analyses.findByUserIdAndRecommendationIdOrderByAnalyzedAtDesc(userId, recommendation.getId());
-        boolean hasSetAnalysis = savedAnalyses.stream().anyMatch(analysis -> "SET".equals(analysis.getAnalysisType()) && analysis.isComplete());
-        String status = hasSetAnalysis ? "COMPLETE" : "PENDING";
+        boolean hasCompleteSetAnalysis = savedAnalyses.stream()
+            .anyMatch(analysis -> "SET".equals(analysis.getAnalysisType()) && analysis.isComplete());
+        boolean hasPartialSetAnalysis = savedAnalyses.stream()
+            .anyMatch(analysis -> "SET".equals(analysis.getAnalysisType()) && !analysis.isComplete());
+        String status = hasCompleteSetAnalysis ? "COMPLETE" : hasPartialSetAnalysis ? "PARTIAL" : "PENDING";
         RecommendationDtos.Response recommendationDto = new RecommendationDtos.Response(
             recommendation.getId(), recommendation.getQuestionnaireId(), recommendation.getGeneratedAt(),
             recommendation.getSummary(), recommendation.getRecommendations());

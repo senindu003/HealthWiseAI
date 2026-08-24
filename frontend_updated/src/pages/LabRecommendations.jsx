@@ -161,6 +161,27 @@ export default function LabRecommendations() {
       ),
     ),
   );
+  const highPriorityTests = activeTests.filter(
+    (test) => normalize(String(test.priority || "")) === "high",
+  );
+  const highPriorityReportsAttached = Boolean(
+    selectedSet &&
+      reports.length &&
+      (highPriorityTests.length === 0 ||
+        highPriorityTests.every((test) =>
+          reports.some(
+            (report) =>
+              normalize(report.recommendedTestName) === normalize(testName(test)),
+          ),
+        )),
+  );
+  const missingHighPriorityTests = highPriorityTests.filter(
+    (test) =>
+      !reports.some(
+        (report) =>
+          normalize(report.recommendedTestName) === normalize(testName(test)),
+      ),
+  );
 
   const visibleTests = useMemo(
     () =>
@@ -252,9 +273,7 @@ export default function LabRecommendations() {
     try {
       await uploadReport(selectedSet.recommendation.id, name, file);
       await refresh();
-      setNotice(
-        `Report attached to ${name}. ${allReportsAttached ? "You can now analyse the set." : "Upload the remaining recommended reports to enable analysis."}`,
-      );
+      setNotice(`Report attached to ${name}. Meta-analysis becomes available once every high-priority test report is attached.`);
     } catch (err) {
       setError(err.message || "Could not attach this report.");
     } finally {
@@ -264,7 +283,7 @@ export default function LabRecommendations() {
   }
 
   async function analyseSet() {
-    if (!selectedSet || !allReportsAttached) return;
+    if (!selectedSet || !highPriorityReportsAttached) return;
     setBusy("analyse");
     setError("");
     setNotice("");
@@ -283,12 +302,16 @@ export default function LabRecommendations() {
         recommendationId: selectedSet.recommendation.id,
         reportIds: reports.map((report) => report.id),
         analysisType: "SET",
-        complete: true,
+        complete: allReportsAttached,
         analysis,
       });
       await refresh();
       setDialogAnalysis(analysis);
-      setNotice("Combined analysis saved for this recommendation set.");
+      setNotice(
+        allReportsAttached
+          ? "Complete meta-analysis saved for this recommendation set."
+          : "Partial meta-analysis saved. It covers the uploaded reports; attach the remaining tests for a complete analysis.",
+      );
     } catch (err) {
       setError(err.message || "Could not analyse the uploaded reports.");
     } finally {
@@ -410,7 +433,7 @@ export default function LabRecommendations() {
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-slate-600">
               {selectedSet
-                ? `${reports.length} uploaded report${reports.length === 1 ? "" : "s"} across ${activeTests.length} required test cards.`
+                ? `${reports.length} uploaded report${reports.length === 1 ? "" : "s"} across ${activeTests.length} recommended test cards. ${allReportsAttached ? "Every recommended test has a report." : highPriorityReportsAttached ? "All high-priority reports are ready; analysis will be marked partial until the remaining reports are added." : missingHighPriorityTests.length ? `Still needed for meta-analysis: ${missingHighPriorityTests.map(testName).join(", ")}.` : "Upload a report to begin."}`
                 : "Save this set to attach reports to its cards."}
             </p>
             {!selectedSet ? (
@@ -425,14 +448,16 @@ export default function LabRecommendations() {
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={analyseSet}
-                  disabled={!allReportsAttached || Boolean(busy)}
+                  disabled={!highPriorityReportsAttached || Boolean(busy)}
                   className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {busy === "analyse"
                     ? "Analysing all reports…"
-                    : allReportsAttached
-                      ? "Meta-Analysis"
-                      : "Upload all Reports to enable Meta-Analysis"}
+                    : highPriorityReportsAttached
+                      ? allReportsAttached
+                        ? "Meta-Analysis"
+                        : "Meta-Analysis (partial)"
+                      : "Upload high-priority reports"}
                 </button>
                 {savedSetAnalysis && (
                   <button

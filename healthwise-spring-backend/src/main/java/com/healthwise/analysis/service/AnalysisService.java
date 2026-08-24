@@ -54,9 +54,12 @@ public class AnalysisService {
             if (!currentReportIds.equals(requestedReportIds)) {
                 throw new IllegalArgumentException("Set analysis must include every report currently uploaded for this recommendation set.");
             }
-            requireEveryRecommendedTestHasReport(recommendation, currentReports);
-            if (!request.complete()) throw new IllegalArgumentException("Confirm that all recommended-test reports have been uploaded before set analysis.");
-            complete = true;
+            requireEveryHighPriorityTestHasReport(recommendation, currentReports);
+            boolean everyRecommendedTestUploaded = everyRecommendedTestHasReport(recommendation, currentReports);
+            if (request.complete() && !everyRecommendedTestUploaded) {
+                throw new IllegalArgumentException("A complete set analysis requires a report for every recommended test.");
+            }
+            complete = everyRecommendedTestUploaded;
         } else {
             if (requestedReportIds.size() != 1) {
                 throw new IllegalArgumentException("Individual analysis must contain exactly one uploaded report.");
@@ -78,15 +81,29 @@ public class AnalysisService {
     public Response get(String userId, String id) { return dto(findOwned(userId, id)); }
     public void delete(String userId, String id) { analyses.delete(findOwned(userId, id)); }
 
-    private void requireEveryRecommendedTestHasReport(Recommendation recommendation, List<Report> currentReports) {
+    private void requireEveryHighPriorityTestHasReport(Recommendation recommendation, List<Report> currentReports) {
         Set<String> uploadedTests = currentReports.stream().map(Report::getRecommendedTestName)
             .filter(java.util.Objects::nonNull).map(this::normalize).collect(java.util.stream.Collectors.toSet());
-        List<String> missingTests = recommendation.getRecommendations().stream()
-            .map(item -> item.getOrDefault("test_name", item.getOrDefault("name", "")).toString())
-            .filter(name -> !name.isBlank()).filter(name -> !uploadedTests.contains(normalize(name))).distinct().toList();
-        if (!missingTests.isEmpty()) {
-            throw new IllegalArgumentException("Upload a report for every recommended test before set analysis. Missing: " + String.join(", ", missingTests));
+        List<String> highPriorityTests = recommendation.getRecommendations().stream()
+            .filter(item -> "high".equalsIgnoreCase(String.valueOf(item.getOrDefault("priority", ""))))
+            .map(this::recommendedTestName).filter(name -> !name.isBlank()).distinct().toList();
+        List<String> missingHighPriorityTests = highPriorityTests.stream()
+            .filter(name -> !uploadedTests.contains(normalize(name))).toList();
+        if (!missingHighPriorityTests.isEmpty()) {
+            throw new IllegalArgumentException("Upload a report for every high-priority recommended test before meta-analysis. Missing: "
+                + String.join(", ", missingHighPriorityTests));
         }
+    }
+
+    private boolean everyRecommendedTestHasReport(Recommendation recommendation, List<Report> currentReports) {
+        Set<String> uploadedTests = currentReports.stream().map(Report::getRecommendedTestName)
+            .filter(java.util.Objects::nonNull).map(this::normalize).collect(java.util.stream.Collectors.toSet());
+        return recommendation.getRecommendations().stream().map(this::recommendedTestName)
+            .filter(name -> !name.isBlank()).allMatch(name -> uploadedTests.contains(normalize(name)));
+    }
+
+    private String recommendedTestName(Map<String, Object> recommendation) {
+        return String.valueOf(recommendation.getOrDefault("test_name", recommendation.getOrDefault("name", "")));
     }
 
     private AnalysisHistory findOwned(String userId, String id) {

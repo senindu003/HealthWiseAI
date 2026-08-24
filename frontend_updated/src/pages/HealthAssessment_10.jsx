@@ -1788,7 +1788,7 @@ export default function HealthAssessmentWizard() {
                       }
                       className="bg-indigo-600 hover:bg-indigo-700 px-8 py-4 rounded-2xl font-black text-sm shadow-lg transition-all hover:scale-105"
                     >
-                      Diagnose Me →
+                      Diagnose Me
                     </button>
                   </div>
                 </div>

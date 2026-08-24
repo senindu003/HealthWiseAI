@@ -11,5 +11,7 @@ public record DashboardResponse(
     List<RecommendationSetDashboard> analysedRecommendations,
     long pendingRecommendationCount,
     long analysedRecommendationCount,
+    long partialAnalysisCount,
+    long completeAnalysisCount,
     List<TimelineEvent> timelineSummary
 ) {}
