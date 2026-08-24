@@ -108,6 +108,7 @@ export default function LabRecommendations() {
   const navigate = useNavigate();
   const location = useLocation();
   const fileInputs = useRef({});
+  const forceUnsavedOnFirstLoad = useRef(Boolean(location.state?.openUnsaved));
   const [searchQuery, setSearchQuery] = useState("");
   const [dashboard, setDashboard] = useState(null);
   const [selectedId, setSelectedId] = useState(
@@ -166,14 +167,14 @@ export default function LabRecommendations() {
   );
   const highPriorityReportsAttached = Boolean(
     selectedSet &&
-      reports.length &&
-      (highPriorityTests.length === 0 ||
-        highPriorityTests.every((test) =>
-          reports.some(
-            (report) =>
-              normalize(report.recommendedTestName) === normalize(testName(test)),
-          ),
-        )),
+    reports.length &&
+    (highPriorityTests.length === 0 ||
+      highPriorityTests.every((test) =>
+        reports.some(
+          (report) =>
+            normalize(report.recommendedTestName) === normalize(testName(test)),
+        ),
+      )),
   );
   const missingHighPriorityTests = highPriorityTests.filter(
     (test) =>
@@ -207,6 +208,11 @@ export default function LabRecommendations() {
   const refresh = async () => {
     const value = await loadDashboard();
     setDashboard(value);
+    if (forceUnsavedOnFirstLoad.current) {
+      forceUnsavedOnFirstLoad.current = false;
+      setSelectedId("");
+      return value;
+    }
     const available = [
       ...(value.pendingRecommendations || []),
       ...(value.analysedRecommendations || []),
@@ -273,7 +279,9 @@ export default function LabRecommendations() {
     try {
       await uploadReport(selectedSet.recommendation.id, name, file);
       await refresh();
-      setNotice(`Report attached to ${name}. Meta-analysis becomes available once every high-priority test report is attached.`);
+      setNotice(
+        `Report attached to ${name}. Meta-analysis becomes available once every high-priority test report is attached.`,
+      );
     } catch (err) {
       setError(err.message || "Could not attach this report.");
     } finally {
@@ -457,7 +465,7 @@ export default function LabRecommendations() {
                       ? allReportsAttached
                         ? "Meta-Analysis"
                         : "Meta-Analysis (partial)"
-                      : "Upload high-priority reports"}
+                      : "🔒Meta-Analysis"}
                 </button>
                 {savedSetAnalysis && (
                   <button
@@ -590,8 +598,8 @@ export default function LabRecommendations() {
                       {individual
                         ? "Report analysed"
                         : busy === `analyse:${primaryReport.id}`
-                        ? "Analysing…"
-                        : "Analyse report"}
+                          ? "Analysing…"
+                          : "Analyse report"}
                     </button>
                   )}
                   {individual && (

@@ -119,7 +119,7 @@ export default function AIAnalysis() {
         setProgressWidth("100%");
 
         setTimeout(() => {
-          navigate("/recommendations");
+          navigate("/recommendations", { state: { openUnsaved: true } });
         }, 300);
       } catch (err) {
         console.error("API Pipeline Error:", err);
