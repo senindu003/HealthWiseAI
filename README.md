@@ -31,7 +31,7 @@ Health information can feel fragmented: symptoms live in one place, laboratory r
 | Guided assessment | Multi-stage health, lifestyle, medical-history, and symptom intake flow. Stage 1 is retained in-session and can be pre-filled from the user’s latest saved baseline. |
 | AI recommendations | A multi-stage evaluator → critic → optimiser workflow produces structured laboratory-test recommendations with clear rationales. |
 | Laboratory-report analysis | Upload a text-readable PDF laboratory report and receive a grounded summary of reported parameters, abnormal findings, and follow-up context. |
-| Safety controls | Non-laboratory PDFs, unreadable documents, and obvious prompt-injection text are rejected before any LLM processing. |
+| Safety controls | Implausible questionnaire submissions, unsuitable PDFs, unreadable documents, and prompt-injection text are rejected before any LLM processing. |
 | Private history | MongoDB stores user-owned questionnaires, recommendations, uploaded-report metadata, analyses, and timeline events. |
 | Personal dashboard | Shows a personalised welcome, recent activity, saved history, counts, and interactive record-detail dialogs. |
 | Authentication | JWT access and refresh tokens protect user records, with automatic sign-out after prolonged inactivity. |
@@ -50,6 +50,16 @@ flowchart LR
     Browser -->|"HTTPS /api/v1"| FastAPI
     Spring --> Mongo
     FastAPI --> Models
+```
+
+### Questionnaire safety path
+
+```mermaid
+flowchart LR
+    Form["Assessment answers"] --> Validate["Schema and plausibility validation"]
+    Validate -->|"Rejected"| Error["422 safety message shown in the UI"]
+    Validate -->|"Accepted"| Workflow["Evaluator → critic → optimiser"]
+    Workflow --> Recommendations["Structured, non-diagnostic recommendations"]
 ```
 
 ### Report-analysis safety path
@@ -85,7 +95,7 @@ HealthWise AI/
 | Data | MongoDB, Spring Data MongoDB |
 | AI service | Python, FastAPI, Pydantic, LangChain, LangGraph |
 | Document processing | PyMuPDF, Presidio Analyzer/Anonymizer, spaCy |
-| Model providers | Google Gemini, Groq, OpenAI; optional DeepSeek configuration |
+| Model providers | Google Gemini, Groq, OpenAI, with DeepSeek fallback |
 | Containers | Docker, Caddy for frontend production serving |
 
 ## Quick start
@@ -127,10 +137,13 @@ Create `health-ai-backend/.env` locally. Never commit this file.
 GOOGLE_API_KEY=your_google_ai_key
 GROQ_API_KEY=your_groq_key
 OPENAI_API_KEY=your_openai_key
+DEEPSEEK_API_KEY=your_deepseek_key
 
 GEMINI_MODEL=gemini-2.5-flash-lite
 GROQ_MODEL=openai/gpt-oss-20b
 OPENAI_MODEL=gpt-4o-mini
+DEEPSEEK_MODEL=deepseek-v4-flash
+LLM_MAX_RETRIES=3
 
 CORS_ORIGINS=["http://localhost:5173","http://127.0.0.1:5173"]
 ```
@@ -196,7 +209,12 @@ CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://your-frontend.u
 | `GEMINI_MODEL` | No | Default: `gemini-2.5-flash-lite`. |
 | `GROQ_MODEL` | Yes for current Groq critic stage | Set explicitly to `openai/gpt-oss-20b`. |
 | `OPENAI_MODEL` | No | Default: `gpt-4o-mini`. |
-| `DEEPSEEK_API_KEY` / `DEEPSEEK_MODEL` | No | Reserved optional provider configuration. |
+| `DEEPSEEK_API_KEY` / `DEEPSEEK_MODEL` | Recommended | DeepSeek is the fallback when a primary LLM stage exhausts its retries. Default model: `deepseek-v4-flash`. |
+| `LLM_MAX_RETRIES` | No | Primary and fallback LLM attempts per invocation; default `3`. |
+| `GEMINI_MAX_OUTPUT_TOKENS` | No | Gemini output cap; default `4096`. |
+| `GROQ_MAX_TOKENS` | No | Groq output cap; default `2048`. |
+| `OPENAI_MAX_TOKENS` | No | OpenAI output cap; default `4096`. |
+| `DEEPSEEK_MAX_TOKENS` | No | DeepSeek fallback output cap; default `2048`. |
 | `CORS_ORIGINS` | Production | JSON array of allowed frontend origins. |
 | `REPORT_MAX_FILE_SIZE_BYTES` | No | PDF size limit; default `20000000` (20 MB). |
 | `REPORT_UPLOAD_CHUNK_SIZE_BYTES` | No | Upload streaming chunk size. |
@@ -244,7 +262,7 @@ Authorization: Bearer <access-token>
 | `POST /recommendations` | Returns structured, non-diagnostic laboratory-test recommendations for a validated questionnaire. |
 | `POST /report-analysis` | Analyses an eligible laboratory diagnostic-report PDF using the current questionnaire only as context. |
 
-Invalid or unsafe report uploads receive an actionable `422` response, for example:
+Invalid or unsafe report uploads and implausible questionnaire submissions receive an actionable `422` response, for example:
 
 ```text
 Safety check: HealthWise AI can analyse only laboratory diagnostic-report PDFs with test results or reference ranges.
@@ -297,6 +315,7 @@ CORS_ORIGINS=https://your-frontend.up.railway.app
 GOOGLE_API_KEY=<secret>
 GROQ_API_KEY=<secret>
 OPENAI_API_KEY=<secret>
+DEEPSEEK_API_KEY=<secret>
 GROQ_MODEL=openai/gpt-oss-20b
 CORS_ORIGINS=["https://your-frontend.up.railway.app"]
 ```
@@ -312,7 +331,40 @@ The frontend variables are build-time values. After changing either one, trigger
 
 Use Railway private networking only between Railway services. The browser must use the public `https://...up.railway.app` domains; it cannot reach `*.railway.internal` addresses.
 
-## Security and privacy practices
+## Security and privacy controls
+
+HealthWise AI includes application-level safeguards, but it is **not** represented as a certified medical, HIPAA-compliant, or production-security-complete system. A professional security review, threat model, encryption and key-management strategy, retention policy, and compliance assessment are required before handling real clinical data at scale.
+
+### Authentication and access control
+
+- Passwords are hashed with BCrypt; plaintext passwords are not persisted.
+- Protected Spring API routes require a signed JWT bearer token. `JWT_SECRET` must be random and at least 32 characters.
+- Access tokens are short-lived. Refresh tokens are random, server-side records that are rotated on refresh; logging in again clears prior refresh-token records for that user.
+- Authentication, questionnaire, recommendation, report, analysis, and dashboard services verify that the requested record belongs to the authenticated user.
+- The frontend clears its session and returns to sign-in after inactivity or an unauthorised response instead of leaving a broken protected view open.
+
+### Input, document, and prompt safety
+
+- FastAPI validates assessment data with Pydantic and a dedicated plausibility gate before the recommendation workflow runs. It rejects impossible or highly suspicious ranges and incompatible answers, including unrealistic sleep, activity, body-measurement, and age values.
+- The upload path checks PDF type/signature, size, readable extracted text, laboratory-report evidence, and suspicious instruction-like text before an LLM receives the document.
+- Presidio Analyzer and Anonymizer redact configured personally identifiable information from report text before it is sent to LLM providers.
+- Unsafe input is rejected with a user-facing `422` response; the request does not continue to the model workflow.
+
+### AI reliability safeguards
+
+- LLM outputs are parsed into Pydantic contracts rather than being trusted as free text.
+- Report interpretation is verified against extracted report content to reduce unsupported claims.
+- Primary LLM stages retry in a bounded way, then use the configured DeepSeek provider as a fallback. Each provider has a bounded output-token configuration to control cost and reduce excessive output.
+- The UI and prompts frame results as informational, non-diagnostic support for discussions with healthcare professionals.
+
+### Data handling and deletion
+
+- MongoDB is accessed only by the Spring Boot API; the FastAPI service has no direct database credential or database connection.
+- Uploaded report PDFs are stored in MongoDB GridFS and records are scoped to the owning user and recommendation set.
+- Deleting a recommendation set permanently removes its linked reports, stored analysis data, and associated file data to avoid orphaned health records. Deleting a report also removes analyses that depend on it.
+- Recommendation and report-analysis history is deliberately bounded per user, reducing retained data while preserving the current workflow.
+
+### Deployment and operational essentials
 
 - Never commit `.env` files, provider keys, JWT secrets, or MongoDB credentials.
 - Restrict CORS to exact frontend origins; do not use `*` on authenticated APIs.
