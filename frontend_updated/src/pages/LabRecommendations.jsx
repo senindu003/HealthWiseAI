@@ -523,6 +523,15 @@ export default function LabRecommendations() {
               : null;
             const uploading = busy === `upload:${name}`;
             const icon = CATEGORY_ICONS[normalize(test.category)] || "science";
+            const priority = normalize(String(test.priority || "routine"));
+            const priorityStyle =
+              priority === "high"
+                ? "bg-rose-100 text-rose-700 ring-rose-200"
+                : priority === "medium"
+                  ? "bg-amber-100 text-amber-700 ring-amber-200"
+                  : priority === "low"
+                    ? "bg-emerald-100 text-emerald-700 ring-emerald-200"
+                    : "bg-slate-100 text-slate-600 ring-slate-200";
             return (
               <article
                 key={`${name}-${index}`}
@@ -543,10 +552,16 @@ export default function LabRecommendations() {
                     <h2 className="text-base font-black text-slate-900">
                       {name}
                     </h2>
-                    <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                      {test.category || "General"} ·{" "}
-                      {test.priority || "routine"}
-                    </p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        {test.category || "General"}
+                      </p>
+                      <span
+                        className={`rounded-full px-2 py-1 text-[10px] font-black uppercase tracking-wider ring-1 ${priorityStyle}`}
+                      >
+                        {priority}
+                      </span>
+                    </div>
                   </div>
                   <p className="text-sm leading-6 text-slate-600">
                     {test.personalized_explanation ||
