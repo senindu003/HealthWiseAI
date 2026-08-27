@@ -5,8 +5,7 @@ import logging
 
 from app.graph.prompts import OPTIMIZER_PROMPT
 from app.graph.state import RecommendationState
-from app.llm.client import get_optimizer_llm
-from app.llm.parser import parse_model_output
+from app.llm.client import get_optimizer_llm, invoke_structured
 from app.schemas.response import RecommendationResponse
 
 logger = logging.getLogger(__name__)
@@ -23,7 +22,6 @@ async def optimize_recommendations(state: RecommendationState) -> Recommendation
     prompt = OPTIMIZER_PROMPT.replace("{questionnaire}", json.dumps(questionnaire))
     prompt = prompt.replace("{evaluator_output}", evaluator_result.model_dump_json())
     prompt = prompt.replace("{critic_output}", critic_result.model_dump_json())
-    response = await get_optimizer_llm().ainvoke(prompt)
-    result = parse_model_output(response.content, RecommendationResponse)
+    result = await invoke_structured(prompt, RecommendationResponse, get_optimizer_llm)
     logger.info("Optimizer produced %d final recommendations", len(result.recommendations))
     return {"final_result": result}

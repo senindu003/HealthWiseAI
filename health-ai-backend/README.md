@@ -12,6 +12,17 @@ It also provides a separate report-analysis pipeline: PDF upload → Docling Mar
 4. Set `GOOGLE_API_KEY` in `.env`.
 5. Start the API with `uvicorn app.main:app --host 0.0.0.0 --port 8000`.
 
+The active client output limits are configurable through `GEMINI_MAX_OUTPUT_TOKENS`
+(default `4096`), `GROQ_MAX_TOKENS` (default `2048`), and
+`OPENAI_MAX_TOKENS` (default `4096`). These limits cap generated completion
+tokens; they do not limit the size of the incoming questionnaire or PDF.
+
+DeepSeek is configured as the structured-output fallback for every LLM stage.
+The primary provider receives `LLM_MAX_RETRIES` attempts first; only then does
+the service try `DEEPSEEK_MODEL` with `DEEPSEEK_API_KEY` and
+`DEEPSEEK_MAX_TOKENS` (default `2048`). Configure a valid DeepSeek key and a
+model available to that key, otherwise fallback cannot recover a primary outage.
+
 ## API
 
 `POST /api/v1/recommendations` accepts the three-stage frontend questionnaire and returns:
@@ -19,6 +30,12 @@ It also provides a separate report-analysis pipeline: PDF upload → Docling Mar
 ```json
 {"summary":"...","recommendations":[{"test_name":"...","category":"...","priority":"medium","reason_from_rules":"...","personalized_explanation":"..."}]}
 ```
+
+Before the LangGraph evaluator is called, FastAPI applies a deterministic
+questionnaire safety gate. It rejects impossible or unsupported biometric
+values, implausible sleep/exercise values, contradictory answers, oversized
+free text, and prompt-injection-like content with a `422` response. The
+frontend displays this message and lets the user return to the assessment.
 
 `GET /api/v1/health` provides a liveness check.
 

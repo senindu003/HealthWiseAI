@@ -6,6 +6,7 @@ from functools import lru_cache
 from app.graph.workflow import build_recommendation_graph
 from app.schemas.questionnaire import QuestionnaireRequest
 from app.schemas.response import RecommendationResponse
+from app.services.questionnaire_safety import validate_questionnaire_for_recommendations
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ class RecommendationService:
 
         if not isinstance(questionnaire, QuestionnaireRequest):
             raise TypeError("questionnaire must be a QuestionnaireRequest")
+        validate_questionnaire_for_recommendations(questionnaire)
         logger.info("Generating recommendations for age=%d, sex=%s", questionnaire.stage1.age, questionnaire.stage1.sex)
         result = await self._graph.ainvoke({"questionnaire": questionnaire.as_clinical_context()})
         final_result = result.get("final_result")

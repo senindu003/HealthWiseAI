@@ -28,7 +28,7 @@ def _required_secret(value: str, variable: str) -> str:
 
 @lru_cache
 def get_evaluator_llm() -> ChatGoogleGenerativeAI:
-    """Return Gemini's ``gemini-2.5-flash-lite`` critic client."""
+    """Return Gemini's ``gemini-2.5-flash-lite`` evaluator client."""
 
     settings: Settings = get_settings()
     api_key = _required_secret(settings.google_api_key.get_secret_value(), "GOOGLE_API_KEY")
@@ -37,10 +37,30 @@ def get_evaluator_llm() -> ChatGoogleGenerativeAI:
         model=settings.gemini_model,
         api_key=api_key,
         temperature=settings.gemini_temperature,
+        max_output_tokens=settings.gemini_max_output_tokens,
         request_timeout=settings.gemini_timeout_seconds,
         retries=settings.llm_max_retries,
     )
     
+
+@lru_cache
+def get_deepseek_llm() -> ChatDeepSeek:
+    """Return the DeepSeek structured-output fallback client."""
+
+    settings: Settings = get_settings()
+    api_key = _required_secret(
+        settings.deepseek_api_key.get_secret_value(), "DEEPSEEK_API_KEY"
+    )
+    logger.info("Initializing DeepSeek fallback model '%s'", settings.deepseek_model)
+    return ChatDeepSeek(
+        model=settings.deepseek_model,
+        api_key=api_key,
+        temperature=settings.deepseek_temperature,
+        max_tokens=settings.deepseek_max_tokens,
+        timeout=settings.deepseek_timeout_seconds,
+        max_retries=settings.llm_max_retries,
+    )
+
     
 
 @lru_cache
@@ -63,6 +83,7 @@ def get_criticizer_llm() -> ChatGroq:
         model=settings.groq_model,
         api_key=api_key,
         temperature=settings.groq_temperature,
+        max_tokens=settings.groq_max_tokens,
         timeout=settings.groq_timeout_seconds,
         max_retries=settings.llm_max_retries,
     )
@@ -79,25 +100,64 @@ def get_optimizer_llm() -> ChatOpenAI:
         model=settings.openai_model,
         api_key=api_key,
         temperature=settings.openai_temperature,
+        max_tokens=settings.openai_max_tokens,
         timeout=settings.openai_timeout_seconds,
         max_retries=settings.llm_max_retries,
     )
 
 
-async def invoke_structured(prompt: str, schema: type[ModelT], llm_factory: LLMFactory) -> ModelT:
-    """Invoke the selected provider with retries and validate its JSON response."""
+async def invoke_structured(
+    prompt: str,
+    schema: type[ModelT],
+    llm_factory: LLMFactory,
+    fallback_llm_factory: LLMFactory | None = get_deepseek_llm,
+) -> ModelT:
+    """Return validated structured output, falling back to DeepSeek after primary retries.
+
+    The fallback is invoked only after the primary provider exhausts all retries,
+    including failures caused by invalid JSON or schema validation.  It is never
+    used as a silent replacement when the primary succeeds.
+    """
 
     if not isinstance(prompt, str) or not prompt.strip():
         raise ValueError("prompt must be non-empty text")
     settings = get_settings()
+    try:
+        return await _invoke_with_retries(prompt, schema, llm_factory, settings.llm_max_retries)
+    except Exception as primary_error:
+        if fallback_llm_factory is None or llm_factory is fallback_llm_factory:
+            raise RuntimeError("Selected LLM did not produce valid structured output") from primary_error
+        logger.warning(
+            "Primary LLM '%s' exhausted %d attempts; trying DeepSeek fallback.",
+            getattr(llm_factory, "__name__", "primary"),
+            settings.llm_max_retries,
+        )
+        try:
+            return await _invoke_with_retries(prompt, schema, fallback_llm_factory, settings.llm_max_retries)
+        except Exception as fallback_error:
+            logger.error("DeepSeek fallback also failed after %d attempts.", settings.llm_max_retries)
+            raise RuntimeError("No configured LLM could produce valid structured output") from fallback_error
+
+
+async def _invoke_with_retries(
+    prompt: str, schema: type[ModelT], llm_factory: LLMFactory, max_attempts: int
+) -> ModelT:
+    """Invoke one provider repeatedly without leaking prompt content to logs."""
+
     last_error: Exception | None = None
-    for attempt in range(1, settings.llm_max_retries + 1):
+    for attempt in range(1, max_attempts + 1):
         try:
             response = await llm_factory().ainvoke(prompt)
             return parse_model_output(response.content, schema)  # type: ignore[arg-type, return-value]
         except Exception as exc:
             last_error = exc
-            logger.warning("Structured request failed (attempt %d/%d): %s", attempt, settings.llm_max_retries, exc)
-            if attempt < settings.llm_max_retries:
+            logger.warning(
+                "Structured request to '%s' failed (attempt %d/%d): %s",
+                getattr(llm_factory, "__name__", "provider"),
+                attempt,
+                max_attempts,
+                exc,
+            )
+            if attempt < max_attempts:
                 await sleep(attempt)
     raise RuntimeError("Selected LLM did not produce valid structured output") from last_error

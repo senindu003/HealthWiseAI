@@ -69,6 +69,13 @@ class Settings(BaseSettings):
         validation_alias="GEMINI_TIMEOUT_SECONDS",
     )
 
+    gemini_max_output_tokens: int = Field(
+        default=4096,
+        ge=256,
+        le=8192,
+        validation_alias="GEMINI_MAX_OUTPUT_TOKENS",
+    )
+
     deepseek_api_key: SecretStr = Field(
         default=SecretStr(""),
         validation_alias="DEEPSEEK_API_KEY",
@@ -90,6 +97,13 @@ class Settings(BaseSettings):
         default=45.0,
         gt=0,
         validation_alias="DEEPSEEK_TIMEOUT_SECONDS",
+    )
+
+    deepseek_max_tokens: int = Field(
+        default=2048,
+        ge=256,
+        le=8192,
+        validation_alias="DEEPSEEK_MAX_TOKENS",
     )
 
     openai_api_key: SecretStr = Field(
@@ -114,6 +128,13 @@ class Settings(BaseSettings):
         gt=0,
         validation_alias="OPENAI_TIMEOUT_SECONDS",
     )
+
+    openai_max_tokens: int = Field(
+        default=4096,
+        ge=256,
+        le=8192,
+        validation_alias="OPENAI_MAX_TOKENS",
+    )
     
     groq_api_key: SecretStr = Field(
             default=SecretStr(""),
@@ -136,6 +157,13 @@ class Settings(BaseSettings):
         default=45.0,
         gt=0,
         validation_alias="GROQ_TIMEOUT_SECONDS",
+    )
+
+    groq_max_tokens: int = Field(
+        default=2048,
+        ge=256,
+        le=8192,
+        validation_alias="GROQ_MAX_TOKENS",
     )
 
 

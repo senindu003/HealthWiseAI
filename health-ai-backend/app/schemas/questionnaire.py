@@ -45,7 +45,7 @@ class LifestyleProfile(BaseModel):
     alcohol: str | None = None
     physical_activity: str | None = Field(default=None, alias="physicalActivity")
     exercise_duration: float | None = Field(default=None, ge=0, alias="exerciseDuration")
-    sleep_hours: float | None = Field(default=None, ge=0, le=24, alias="sleepHours")
+    sleep_hours: float | None = Field(default=None, ge=0, alias="sleepHours")
     sleep_quality: str | None = Field(default=None, alias="sleepQuality")
     diet_patterns: str | None = Field(default=None, alias="dietPatterns")
     water_intake: str | None = Field(default=None, alias="waterIntake")
