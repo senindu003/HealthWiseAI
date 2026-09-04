@@ -44,12 +44,14 @@ flowchart LR
     Spring["Spring Boot API\nAuth · History · Dashboard"]
     FastAPI["FastAPI AI service\nRecommendations · Report analysis"]
     Mongo[("MongoDB\nUser-owned records")]
+    Neo4j[("Neo4j (optional)\nCurated terminology + cited evidence")]
     Models["Configured LLM providers\nGemini · Groq · OpenAI"]
 
     Browser -->|"HTTPS /api/v1"| Spring
     Browser -->|"HTTPS /api/v1"| FastAPI
     Spring --> Mongo
     FastAPI --> Models
+    FastAPI -. "aggregate graph status/import only" .-> Neo4j
 ```
 
 ### Questionnaire safety path
@@ -93,6 +95,7 @@ HealthWise AI/
 | Frontend | React 19, Vite, React Router, Tailwind CSS |
 | Core API | Java 21, Spring Boot 3, Spring Security, JWT |
 | Data | MongoDB, Spring Data MongoDB |
+| Curated knowledge graph | Neo4j 5 (optional): terminology, citations, and draft evidence only; never patient data |
 | AI service | Python, FastAPI, Pydantic, LangChain, LangGraph |
 | Document processing | PyMuPDF, Presidio Analyzer/Anonymizer, spaCy |
 | Model providers | Google Gemini, Groq, OpenAI, with DeepSeek fallback |
@@ -218,6 +221,9 @@ CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://your-frontend.u
 | `CORS_ORIGINS` | Production | JSON array of allowed frontend origins. |
 | `REPORT_MAX_FILE_SIZE_BYTES` | No | PDF size limit; default `20000000` (20 MB). |
 | `REPORT_UPLOAD_CHUNK_SIZE_BYTES` | No | Upload streaming chunk size. |
+| `NEO4J_ENABLED` | No | Enables the separate curated knowledge-graph connection; default `false`. |
+| `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD`, `NEO4J_DATABASE` | When Neo4j is enabled | Neo4j connection details. Keep the password only in local/deployment secrets. |
+| `KNOWLEDGE_GRAPH_RUNTIME_ENABLED` | No | Remains `false` while evidence records are clinically pending; graph content is not patient-facing runtime logic. |
 
 FastAPI CORS must be valid JSON:
 

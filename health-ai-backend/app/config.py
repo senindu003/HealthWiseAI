@@ -196,6 +196,20 @@ class Settings(BaseSettings):
         validation_alias="CORS_ORIGINS",
     )
 
+    # Curated clinical-evidence graph. This graph must never contain patient,
+    # report, authentication, or free-text session data.
+    neo4j_enabled: bool = Field(default=False, validation_alias="NEO4J_ENABLED")
+    neo4j_uri: str = Field(default="", validation_alias="NEO4J_URI")
+    neo4j_username: str = Field(default="neo4j", validation_alias="NEO4J_USERNAME")
+    neo4j_password: SecretStr = Field(default=SecretStr(""), validation_alias="NEO4J_PASSWORD")
+    neo4j_database: str = Field(default="neo4j", validation_alias="NEO4J_DATABASE")
+
+    # Kept false until each evidence record has passed a qualified clinical review.
+    knowledge_graph_runtime_enabled: bool = Field(
+        default=False,
+        validation_alias="KNOWLEDGE_GRAPH_RUNTIME_ENABLED",
+    )
+
 
 @lru_cache
 def get_settings() -> Settings:

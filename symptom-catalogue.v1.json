@@ -1,0 +1,2254 @@
+{
+  "schemaVersion": "1.1",
+  "catalogueName": "HealthWise AI Symptom Catalogue",
+  "generatedAt": "2026-09-04",
+  "scope": "Terminology catalogue only. It contains candidate symptom vocabulary from prognosis_kg_amended.csv and is not clinical evidence, diagnostic logic, or a condition-to-symptom mapping.",
+  "sourcePolicy": {
+    "allowedCandidateVocabularySources": ["prognosis_kg_amended_v1"],
+    "retiredSource": "The original prognosis_kg.csv is superseded for catalogue generation.",
+    "excludedSource": "SympScan is excluded because it lacks citation provenance."
+  },
+  "normalizationPolicy": {
+    "sourceOfTruth": "prognosis_kg_amended.csv",
+    "duplicateHeaders": "Already consolidated in the amended CSV using binary OR.",
+    "rule": "Every amended feature header is represented exactly once as a symptom or separately modelled record."
+  },
+  "termsRequiringSeparateModeling": [
+    {
+      "sourceTerm": "Family History",
+      "targetType": "risk_factor",
+      "reason": "History/risk information, not a symptom.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Hypertension",
+      "targetType": "condition_or_measurement",
+      "reason": "Condition or measurement concept, not a symptom.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Physical Disability",
+      "targetType": "functional_status",
+      "reason": "Functional-status concept, too broad for one symptom node.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Blood Clot",
+      "targetType": "clinical_finding",
+      "reason": "Clinical finding requiring anatomical and clinical context.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Corneal Damage",
+      "targetType": "clinical_finding",
+      "reason": "Examination or diagnostic finding rather than a patient-reported symptom.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Enlarged Liver",
+      "targetType": "clinical_finding",
+      "reason": "Examination or imaging finding rather than a patient-reported symptom.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Gingivitis",
+      "targetType": "condition",
+      "reason": "Condition label rather than a symptom.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Gum Abscess",
+      "targetType": "condition",
+      "reason": "Condition label rather than a symptom.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Gum Cavity",
+      "targetType": "needs_review",
+      "reason": "Non-standard dental label; preserve separately pending dental terminology review.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Paralysis",
+      "targetType": "clinical_finding",
+      "reason": "High-severity neurological deficit; requires separate urgent-triage safeguards.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    },
+    {
+      "sourceTerm": "Coma",
+      "targetType": "clinical_finding",
+      "reason": "Emergency consciousness state; requires separate urgent-triage safeguards.",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only"
+      },
+      "reviewStatus": "needs_terminology_review"
+    }
+  ],
+  "symptoms": [
+    {
+      "symptomId": "abdominal_bloating",
+      "displayName": "Abdominal Bloating",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Abdominal Bloating"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "abdominal_pain",
+      "displayName": "Abdominal Pain",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Abdominal Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "abdominal_swelling",
+      "displayName": "Abdominal Swelling",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Abdominal Swelling"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "menstrual_irregularity",
+      "displayName": "Menstrual irregularity",
+      "aliases": ["Abnormal menstruation"],
+      "bodySystem": "urinary_reproductive",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Menstrual irregularity"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "acidity",
+      "displayName": "Acidity",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Acidity"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "anal_burning",
+      "displayName": "Anal Burning",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Anal Burning"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "anal_pain",
+      "displayName": "Anal Pain",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Anal Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "anxiety",
+      "displayName": "Anxiety",
+      "aliases": [],
+      "bodySystem": "mental_health",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Anxiety"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "back_pain",
+      "displayName": "Back Pain",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Back Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "reduced_bladder_function",
+      "displayName": "Reduced bladder function",
+      "aliases": ["Bladder dysfunction"],
+      "bodySystem": "urinary_reproductive",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Reduced bladder function"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "bleeding_from_navel",
+      "displayName": "Bleeding From Navel",
+      "aliases": [],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Bleeding From Navel"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "blisters",
+      "displayName": "Blisters",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Blisters"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "bloody_diarrhea",
+      "displayName": "Bloody Diarrhea",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Bloody Diarrhea"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "bloody_stool",
+      "displayName": "Bloody Stool",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Bloody Stool"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "blurred_vision",
+      "displayName": "Blurred Vision",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Blurred Vision"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "generalized_body_numbness",
+      "displayName": "Generalized body numbness",
+      "aliases": ["Body numbness"],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Generalized body numbness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "body_pain",
+      "displayName": "Body Pain",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Body Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "bowed_legs",
+      "displayName": "Bowed Legs",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Bowed Legs"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "breast_enlargement",
+      "displayName": "Breast Enlargement",
+      "aliases": [],
+      "bodySystem": "urinary_reproductive",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Breast Enlargement"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "brittle_bones",
+      "displayName": "Brittle Bones",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Brittle Bones"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "brittle_teeth",
+      "displayName": "Brittle Teeth",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Brittle Teeth"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "bruised_tongue",
+      "displayName": "Bruised Tongue",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Bruised Tongue"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "bruising",
+      "displayName": "Bruising",
+      "aliases": [],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Bruising"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "burning_eyes",
+      "displayName": "Burning Eyes",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Burning Eyes"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "burning_sensation__skin",
+      "displayName": "Burning sensation (skin)",
+      "aliases": ["Burning sensation"],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Burning sensation (skin)"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "burning_urination",
+      "displayName": "Burning Urination",
+      "aliases": ["Painful urination", "Dysuria"],
+      "bodySystem": "urinary_reproductive",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Burning Urination"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "chest_pain",
+      "displayName": "Chest Pain",
+      "aliases": [],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Chest Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "chest_pressure_pain",
+      "displayName": "Chest Pressure Pain",
+      "aliases": [],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Chest Pressure Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "chills",
+      "displayName": "Chills",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Chills"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "clay_colored_stool",
+      "displayName": "Clay Colored Stool",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Clay Colored Stool"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "cognitive_decline",
+      "displayName": "Cognitive Decline",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Cognitive Decline"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "feeling_cold",
+      "displayName": "Feeling cold",
+      "aliases": ["Cold body"],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Feeling cold"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "constipation",
+      "displayName": "Constipation",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Constipation"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "continuous_sneezing",
+      "displayName": "Continuous Sneezing",
+      "aliases": [],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Continuous Sneezing"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "cough",
+      "displayName": "Cough",
+      "aliases": [],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Cough"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "productive_cough",
+      "displayName": "Productive cough",
+      "aliases": ["Cough with mucus"],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Productive cough"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "coughing_up_blood",
+      "displayName": "Coughing Up Blood",
+      "aliases": ["Haemoptysis"],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Coughing Up Blood"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "dark_gums",
+      "displayName": "Dark Gums",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Dark Gums"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "dark_urine",
+      "displayName": "Dark Urine",
+      "aliases": [],
+      "bodySystem": "urinary_reproductive",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Dark Urine"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "dehydration",
+      "displayName": "Dehydration",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Dehydration"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "deja_vu",
+      "displayName": "Deja Vu",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Deja Vu"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "diarrhea",
+      "displayName": "Diarrhea",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Diarrhea"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "difficulty_concentrating",
+      "displayName": "Difficulty Concentrating",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Difficulty Concentrating"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "difficulty_defecating",
+      "displayName": "Difficulty Defecating",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Difficulty Defecating"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "difficulty_swallowing",
+      "displayName": "Difficulty Swallowing",
+      "aliases": ["Dysphagia"],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Difficulty Swallowing"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "vaginal_discharge",
+      "displayName": "Vaginal discharge",
+      "aliases": ["Discharge"],
+      "bodySystem": "urinary_reproductive",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Vaginal discharge"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "dizziness",
+      "displayName": "Dizziness",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Dizziness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "double_vision",
+      "displayName": "Double Vision",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Double Vision"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "dry_or_rough_skin",
+      "displayName": "Dry or rough skin",
+      "aliases": ["Dry skin", "Rough skin"],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Dry or rough skin"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "ear_discharge",
+      "displayName": "Ear Discharge",
+      "aliases": [],
+      "bodySystem": "ear",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Ear Discharge"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "ear_pain",
+      "displayName": "Ear Pain",
+      "aliases": [],
+      "bodySystem": "ear",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Ear Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "excessive_bleeding",
+      "displayName": "Excessive Bleeding",
+      "aliases": [],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Excessive Bleeding"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "excessive_hunger",
+      "displayName": "Excessive Hunger",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Excessive Hunger"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "excessive_salivation",
+      "displayName": "Excessive Salivation",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Excessive Salivation"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "eye_discomfort",
+      "displayName": "Eye Discomfort",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Eye Discomfort"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "eye_pain",
+      "displayName": "Eye Pain",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Eye Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "eye_problems_likely_diabetes",
+      "displayName": "Eye problems (likely diabetes)",
+      "aliases": ["Eye problems"],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Eye problems (likely diabetes)"]
+      },
+      "reviewStatus": "normalized_candidate",
+      "evidenceEligibility": "not_eligible",
+      "normalizationNote": "User-selected legacy dataset label. It is vocabulary-only and must not be used as a diagnosis or evidence-backed condition relationship."
+    },
+    {
+      "symptomId": "facial_droop",
+      "displayName": "Facial Droop",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Facial Droop"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "fainting",
+      "displayName": "Fainting",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Fainting"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "fatigue",
+      "displayName": "Fatigue",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Fatigue"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "aerophobia__fear_of_drafts_or_fresh_air",
+      "displayName": "Aerophobia (fear of drafts or fresh air)",
+      "aliases": ["Fear of wind"],
+      "bodySystem": "mental_health",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Aerophobia (fear of drafts or fresh air)"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "fever",
+      "displayName": "Fever",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Fever"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "fragile_gums",
+      "displayName": "Fragile Gums",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Fragile Gums"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "frequent_urination",
+      "displayName": "Frequent Urination",
+      "aliases": ["Increased urination", "Passing urine more often"],
+      "bodySystem": "urinary_reproductive",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Frequent Urination"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "genital_pain",
+      "displayName": "Genital Pain",
+      "aliases": [],
+      "bodySystem": "urinary_reproductive",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Genital Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "headache",
+      "displayName": "Headache",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Headache"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "hearing_difficulty",
+      "displayName": "Hearing Difficulty",
+      "aliases": [],
+      "bodySystem": "ear",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Hearing Difficulty"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "hearing_loss",
+      "displayName": "Hearing Loss",
+      "aliases": [],
+      "bodySystem": "ear",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Hearing Loss"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "heartburn",
+      "displayName": "Heartburn",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Heartburn"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "heat_rash",
+      "displayName": "Heat Rash",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Heat Rash"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "chest_heaviness",
+      "displayName": "Chest heaviness",
+      "aliases": ["Heaviness"],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Chest heaviness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "high_fever",
+      "displayName": "High Fever",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["High Fever"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "hoarseness",
+      "displayName": "Hoarseness",
+      "aliases": [],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Hoarseness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "inability_to_walk",
+      "displayName": "Inability to Walk",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Inability to Walk"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "incoherent_speech",
+      "displayName": "Incoherent Speech",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Incoherent Speech"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "indigestion",
+      "displayName": "Indigestion",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Indigestion"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "insomnia",
+      "displayName": "Insomnia",
+      "aliases": [],
+      "bodySystem": "mental_health",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Insomnia"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "itching",
+      "displayName": "Itching",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Itching"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "joint_pain",
+      "displayName": "Joint Pain",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Joint Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "joint_stiffness",
+      "displayName": "Joint Stiffness",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Joint Stiffness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "joint_swelling",
+      "displayName": "Joint Swelling",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Joint Swelling"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "lightheadedness",
+      "displayName": "Lightheadedness",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Lightheadedness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "limb_stiffness",
+      "displayName": "Limb Stiffness",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Limb Stiffness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "lip_blisters",
+      "displayName": "Lip Blisters",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Lip Blisters"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "loose_teeth",
+      "displayName": "Loose Teeth",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Loose Teeth"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "loss_of_appetite",
+      "displayName": "Loss of Appetite",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Loss of Appetite"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "loss_of_balance",
+      "displayName": "Loss of Balance",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Loss of Balance"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "loss_of_consciousness",
+      "displayName": "Loss of Consciousness",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Loss of Consciousness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "memory_loss",
+      "displayName": "Memory Loss",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Memory Loss"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "mental_restlessness",
+      "displayName": "Mental Restlessness",
+      "aliases": [],
+      "bodySystem": "mental_health",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Mental Restlessness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "mood_swings",
+      "displayName": "Mood Swings",
+      "aliases": [],
+      "bodySystem": "mental_health",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Mood Swings"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "muscle_pain",
+      "displayName": "Muscle Pain",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Muscle Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "muscle_stiffness",
+      "displayName": "Muscle Stiffness",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Muscle Stiffness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "muscle_weakness",
+      "displayName": "Muscle Weakness",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Muscle Weakness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "nail_pitting",
+      "displayName": "Nail Pitting",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Nail Pitting"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "nasal_inflammation",
+      "displayName": "Nasal Inflammation",
+      "aliases": [],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Nasal Inflammation"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "nausea",
+      "displayName": "Nausea",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Nausea"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "neck_pain",
+      "displayName": "Neck Pain",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Neck Pain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "neck_swelling",
+      "displayName": "Neck Swelling",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Neck Swelling"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "numbness__unspecified_distribution",
+      "displayName": "Numbness (unspecified distribution)",
+      "aliases": ["Numbness"],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Numbness (unspecified distribution)"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "open_wound",
+      "displayName": "Open Wound",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Open Wound"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "pain_behind_eyes",
+      "displayName": "Pain Behind Eyes",
+      "aliases": ["Retro-orbital pain"],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Pain Behind Eyes"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "pain_in_hands_and_feet",
+      "displayName": "Pain in Hands and Feet",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Pain in Hands and Feet"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "painful_defecation",
+      "displayName": "Painful Defecation",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Painful Defecation"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "pale_skin_patches",
+      "displayName": "Pale Skin Patches",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Pale Skin Patches"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "phlegm",
+      "displayName": "Phlegm",
+      "aliases": [],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Phlegm"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "poor_night_vision",
+      "displayName": "Poor Night Vision",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Poor Night Vision"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "pus_filled_pimples",
+      "displayName": "Pus Filled Pimples",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Pus Filled Pimples"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "pus_from_gums",
+      "displayName": "Pus From Gums",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Pus From Gums"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "rapid_breathing",
+      "displayName": "Rapid Breathing",
+      "aliases": [],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Rapid Breathing"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "rapid_pulse",
+      "displayName": "Rapid Pulse",
+      "aliases": [],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Rapid Pulse"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "rash",
+      "displayName": "Rash",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Rash"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "red_eyes",
+      "displayName": "Red Eyes",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Red Eyes"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "reduced_color_perception",
+      "displayName": "Reduced Color Perception",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Reduced Color Perception"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "reduced_sense_of_smell_and_taste",
+      "displayName": "Reduced sense of smell and taste",
+      "aliases": ["Reduced smell and taste"],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Reduced sense of smell and taste"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "runny_nose",
+      "displayName": "Runny Nose",
+      "aliases": [],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Runny Nose"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "seizure",
+      "displayName": "Seizure",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Seizure"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "sensitivity_to_light",
+      "displayName": "Sensitivity to Light",
+      "aliases": ["Photophobia"],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Sensitivity to Light"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "shortness_of_breath",
+      "displayName": "Shortness of Breath",
+      "aliases": ["Breathlessness", "Dyspnea"],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Shortness of Breath"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "sleep_difficulty",
+      "displayName": "Sleep Difficulty",
+      "aliases": [],
+      "bodySystem": "mental_health",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Sleep Difficulty"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "slow_pulse",
+      "displayName": "Slow Pulse",
+      "aliases": [],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Slow Pulse"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "slurred_speech",
+      "displayName": "Slurred Speech",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Slurred Speech"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "small_skin_boils",
+      "displayName": "Small Skin Boils",
+      "aliases": [],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Small Skin Boils"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "sore_throat",
+      "displayName": "Sore Throat",
+      "aliases": [],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Sore Throat"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "speech_difficulty",
+      "displayName": "Speech Difficulty",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Speech Difficulty"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "sticky_eyelids",
+      "displayName": "Sticky Eyelids",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Sticky Eyelids"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "stiff_neck",
+      "displayName": "Stiff Neck",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Stiff Neck"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "sweating",
+      "displayName": "Sweating",
+      "aliases": [],
+      "bodySystem": "cardiovascular_or_hematological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Sweating"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "swelling",
+      "displayName": "Swelling",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Swelling"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "swollen_ankles",
+      "displayName": "Swollen Ankles",
+      "aliases": [],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Swollen Ankles"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "swollen_eyelids",
+      "displayName": "Swollen Eyelids",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Swollen Eyelids"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "swollen_gums",
+      "displayName": "Swollen Gums",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Swollen Gums"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "swollen_tongue",
+      "displayName": "Swollen Tongue",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Swollen Tongue"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "temporary_confusion",
+      "displayName": "Temporary Confusion",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Temporary Confusion"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "tender_tongue",
+      "displayName": "Tender Tongue",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Tender Tongue"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "sensation_of_mucus_in_the_throat",
+      "displayName": "Sensation of mucus in the throat",
+      "aliases": ["Throat mucus"],
+      "bodySystem": "respiratory",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Sensation of mucus in the throat"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "tingling_around_lips",
+      "displayName": "Tingling Around Lips",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Tingling Around Lips"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "tingling_in_hands_and_feet",
+      "displayName": "Tingling in Hands and Feet",
+      "aliases": ["Pins and needles in hands and feet"],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Tingling in Hands and Feet"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "tongue_ulcer",
+      "displayName": "Tongue Ulcer",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Tongue Ulcer"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "tremors_in_hands_and_feet",
+      "displayName": "Tremors in Hands and Feet",
+      "aliases": [],
+      "bodySystem": "neurological",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Tremors in Hands and Feet"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "vomiting",
+      "displayName": "Vomiting",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Vomiting"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "vomiting_blood",
+      "displayName": "Vomiting Blood",
+      "aliases": ["Haematemesis"],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Vomiting Blood"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "watery_eyes",
+      "displayName": "Watery Eyes",
+      "aliases": [],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Watery Eyes"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "perceived_joint_weakness",
+      "displayName": "Perceived joint weakness",
+      "aliases": ["Weak joints"],
+      "bodySystem": "musculoskeletal",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Perceived joint weakness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "generalized_weakness",
+      "displayName": "Generalized weakness",
+      "aliases": ["Weakness"],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Generalized weakness"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "weight_gain",
+      "displayName": "Weight Gain",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Weight Gain"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "weight_loss",
+      "displayName": "Weight Loss",
+      "aliases": [],
+      "bodySystem": "general_or_metabolic",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Weight Loss"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "white_patches_in_mouth",
+      "displayName": "White Patches in Mouth",
+      "aliases": [],
+      "bodySystem": "gastrointestinal_or_oral",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["White Patches in Mouth"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "yellowing_of_eyes",
+      "displayName": "Yellowing of eyes",
+      "aliases": ["Yellow eyes"],
+      "bodySystem": "eye",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Yellowing of eyes"]
+      },
+      "reviewStatus": "normalized_candidate"
+    },
+    {
+      "symptomId": "yellowing_of_skin",
+      "displayName": "Yellowing of skin",
+      "aliases": ["Yellow skin"],
+      "bodySystem": "skin",
+      "provenance": {
+        "sourceType": "legacy_dataset",
+        "sourceId": "prognosis_kg_amended_v1",
+        "sourceFile": "prognosis_kg_amended.csv",
+        "sourceRole": "candidate_vocabulary_only",
+        "sourceTerms": ["Yellowing of skin"]
+      },
+      "reviewStatus": "normalized_candidate"
+    }
+  ]
+}

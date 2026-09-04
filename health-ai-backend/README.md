@@ -12,6 +12,43 @@ It also provides a separate report-analysis pipeline: PDF upload → Docling Mar
 4. Set `GOOGLE_API_KEY` in `.env`.
 5. Start the API with `uvicorn app.main:app --host 0.0.0.0 --port 8000`.
 
+## Curated Neo4j knowledge graph
+
+Neo4j is optional and is reserved for the versioned, citation-linked clinical
+knowledge bundle at the repository root. It must **never** receive MongoDB
+patient records, uploaded reports, authentication data, names, or chat text.
+
+Set these environment variables only in your local secret store or deployment
+platform:
+
+```env
+NEO4J_ENABLED=true
+NEO4J_URI=neo4j+s://your-instance.databases.neo4j.io
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=replace-with-a-secret
+NEO4J_DATABASE=neo4j
+KNOWLEDGE_GRAPH_RUNTIME_ENABLED=false
+```
+
+First validate the three JSON files without contacting Neo4j:
+
+```bash
+python scripts/import_knowledge_graph.py --dry-run
+```
+
+Then import idempotently (safe to rerun):
+
+```bash
+python scripts/import_knowledge_graph.py
+```
+
+The importer creates only terminology, conditions, citations, and draft evidence
+nodes. It rejects direct legacy symptom-to-condition mappings and marks all
+draft tests/recommendations `runtimeEligible=false`. They remain unavailable to
+patient-facing recommendation flows until qualified clinical review approves a
+future release. `GET /api/v1/knowledge-graph/status` reports connectivity and
+aggregate counts only.
+
 The active client output limits are configurable through `GEMINI_MAX_OUTPUT_TOKENS`
 (default `4096`), `GROQ_MAX_TOKENS` (default `2048`), and
 `OPENAI_MAX_TOKENS` (default `4096`). These limits cap generated completion

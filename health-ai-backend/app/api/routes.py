@@ -10,6 +10,7 @@ from app.schemas.questionnaire import QuestionnaireRequest
 from app.schemas.response import RecommendationResponse
 from app.schemas.report import ReportAnalysisResponse, ReportAnalysisUploadRequest
 from app.config import get_settings
+from app.knowledge_graph.client import get_knowledge_graph_status
 from app.services.report_analysis_service import ReportAnalysisService, get_report_analysis_service
 from app.services.recommendation_service import RecommendationService, get_recommendation_service
 
@@ -36,6 +37,17 @@ async def health_check() -> dict[str, str]:
     """Return a lightweight liveness response without contacting any LLM."""
 
     return {"status": "ok"}
+
+
+@router.get("/knowledge-graph/status", status_code=status.HTTP_200_OK)
+async def knowledge_graph_status() -> dict[str, object]:
+    """Return only operational metadata for the curated evidence graph.
+
+    It deliberately exposes no patient data and does not make draft clinical
+    evidence eligible for the recommendation workflow.
+    """
+
+    return get_knowledge_graph_status()
 
 
 @router.post("/recommendations", response_model=RecommendationResponse, status_code=status.HTTP_200_OK)
