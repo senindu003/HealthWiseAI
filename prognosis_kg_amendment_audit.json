@@ -1,0 +1,48 @@
+{
+  "inputFile": "C:\\Users\\Lenovo\\Downloads\\prognosis_kg.csv",
+  "outputFile": "C:\\Users\\Lenovo\\Downloads\\Healthwise AI\\Healthwise AI\\prognosis_kg_amended.csv",
+  "rowsWritten": 754,
+  "rawColumnCount": 173,
+  "outputColumnCount": 162,
+  "duplicateRawHeadersMergedWithBinaryOr": {
+    "Hearing Difficulty": 2,
+    "Joint Pain": 2,
+    "Loss of Appetite": 3,
+    "Muscle Weakness": 2,
+    "Rash": 2,
+    "Seizure": 2,
+    "Sweating": 2
+  },
+  "explicitMergeTargets": {
+    "Rash": "Rash",
+    "Skin Rash": "Rash",
+    "Dry Skin": "Dry or rough skin",
+    "Rough Skin": "Dry or rough skin"
+  },
+  "renamedColumns": {
+    "Body Numbness": "Generalized body numbness",
+    "Numbness": "Numbness (unspecified distribution)",
+    "Burning Sensation": "Burning sensation (skin)",
+    "Cold Body": "Feeling cold",
+    "Cough With Mucus": "Productive cough",
+    "Discharge": "Vaginal discharge",
+    "Eye Problems": "Eye problems (likely diabetes)",
+    "Fear of Wind": "Aerophobia (fear of drafts or fresh air)",
+    "Heaviness": "Chest heaviness",
+    "Abnormal Menstruation": "Menstrual irregularity",
+    "Bladder Dysfunction": "Reduced bladder function",
+    "Reduced Smell and Taste": "Reduced sense of smell and taste",
+    "Throat Mucus": "Sensation of mucus in the throat",
+    "Weak Joints": "Perceived joint weakness",
+    "Weakness": "Generalized weakness",
+    "Yellow Eyes": "Yellowing of eyes",
+    "Yellow Skin": "Yellowing of skin"
+  },
+  "retiredColumns": {
+    "Cold": {
+      "reason": "Known Bengali-to-English translation collision; not retained as an atomic symptom.",
+      "positiveValuesExcluded": 43
+    }
+  },
+  "terminologyBoundary": "This is a vocabulary normalization audit. It does not validate medical relationships, diagnose conditions, or create clinical rules."
+}
