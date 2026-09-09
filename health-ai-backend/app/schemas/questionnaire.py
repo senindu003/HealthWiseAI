@@ -1,5 +1,6 @@
 """Validated models for the React health questionnaire payload."""
 
+import re
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -57,6 +58,10 @@ class SymptomsProfile(BaseModel):
 
     model_config = ConfigDict(extra="allow")
     selected_symptoms: list[str] = Field(default_factory=list, alias="selectedSymptoms")
+    finalized_symptom_facts: dict[str, "FinalizedSymptomFact"] = Field(
+        default_factory=dict,
+        alias="finalizedSymptomFacts",
+    )
 
     @field_validator("selected_symptoms")
     @classmethod
@@ -65,6 +70,49 @@ class SymptomsProfile(BaseModel):
 
         if any(not symptom.strip() for symptom in value):
             raise ValueError("selectedSymptoms cannot contain blank values")
+        return value
+
+    @field_validator("finalized_symptom_facts")
+    @classmethod
+    def validate_fact_ids(cls, value: dict[str, "FinalizedSymptomFact"]) -> dict[str, "FinalizedSymptomFact"]:
+        if len(value) > 40:
+            raise ValueError("finalizedSymptomFacts cannot contain more than 40 facts")
+        invalid = [fact_id for fact_id in value if not re.fullmatch(r"[a-z][a-z0-9_]{1,79}", fact_id)]
+        if invalid:
+            raise ValueError("finalizedSymptomFacts contains an invalid fact identifier")
+        return value
+
+
+class FinalizedSymptomFact(BaseModel):
+    """A machine-readable Stage 3 fact explicitly confirmed by the user.
+
+    These values are intentionally constrained to enumerated tokens. Free text,
+    model inferences, and unconfirmed chat content cannot trigger a safety rule.
+    """
+
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    value: str | list[str]
+    confirmed_by_user: bool = Field(alias="confirmedByUser")
+    source_question_ids: list[str] = Field(min_length=1, max_length=6, alias="sourceQuestionIds")
+
+    @field_validator("value")
+    @classmethod
+    def validate_value_tokens(cls, value: str | list[str]) -> str | list[str]:
+        values = [value] if isinstance(value, str) else value
+        if not values or any(not isinstance(item, str) or not re.fullmatch(r"[a-z0-9_]{1,80}", item) for item in values):
+            raise ValueError("finalized symptom fact values must be non-empty machine-readable tokens")
+        if len(values) != len(set(values)):
+            raise ValueError("finalized symptom fact values must be unique")
+        return value
+
+    @field_validator("source_question_ids")
+    @classmethod
+    def validate_source_question_ids(cls, value: list[str]) -> list[str]:
+        if any(not re.fullmatch(r"[a-z][a-z0-9_]{1,79}", item) for item in value):
+            raise ValueError("sourceQuestionIds must contain question identifiers")
+        if len(value) != len(set(value)):
+            raise ValueError("sourceQuestionIds must be unique")
         return value
 
 

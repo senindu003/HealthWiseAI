@@ -76,6 +76,27 @@ class Settings(BaseSettings):
         validation_alias="GEMINI_MAX_OUTPUT_TOKENS",
     )
 
+    symptom_chat_gemini_model: str = Field(
+        default="gemini-3.1-flash-lite",
+        validation_alias="SYMPTOM_CHAT_GEMINI_MODEL",
+    )
+
+    symptom_chat_max_output_tokens: int = Field(
+        default=700,
+        ge=256,
+        le=2048,
+        validation_alias="SYMPTOM_CHAT_MAX_OUTPUT_TOKENS",
+    )
+
+    # HMAC key for short-lived, tamper-evident Stage 3 plan and completion
+    # tokens. Set this to a high-entropy secret outside source control for any
+    # deployed environment. The development default is intentionally unusable
+    # when ENVIRONMENT is production (enforced by the symptom-chat service).
+    symptom_chat_token_secret: SecretStr = Field(
+        default=SecretStr("development-only-change-before-production"),
+        validation_alias="SYMPTOM_CHAT_TOKEN_SECRET",
+    )
+
     deepseek_api_key: SecretStr = Field(
         default=SecretStr(""),
         validation_alias="DEEPSEEK_API_KEY",
@@ -208,6 +229,13 @@ class Settings(BaseSettings):
     knowledge_graph_runtime_enabled: bool = Field(
         default=False,
         validation_alias="KNOWLEDGE_GRAPH_RUNTIME_ENABLED",
+    )
+
+    # Shared only with the Spring persistence service. It signs the already
+    # validated Stage 4 JSON so the browser cannot alter it before storage.
+    stage4_validation_secret: SecretStr = Field(
+        default=SecretStr("development-only-stage4-secret-change-before-production"),
+        validation_alias="STAGE4_VALIDATION_SECRET",
     )
 
 

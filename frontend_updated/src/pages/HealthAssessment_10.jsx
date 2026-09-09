@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { loadDashboard } from "../lib/api";
+import { loadDashboard, saveBaseline, sendSymptomChatTurn } from "../lib/api";
 
 // --- PROGRAMMATIC SCHEMAS & STATIC ARRAYS ---
 const ETHNICITIES = [
@@ -96,6 +96,109 @@ const MEDICAL_CONDITIONS = [
     hasSecondDegree: false,
   },
 ];
+
+const FAMILY_RELATIONSHIPS = [
+  { value: "parent", label: "Parent", degree: "first" },
+  { value: "sibling", label: "Sibling", degree: "first" },
+  { value: "child", label: "Child", degree: "first" },
+  { value: "grandparent", label: "Grandparent", degree: "second" },
+  { value: "aunt_uncle", label: "Aunt or uncle", degree: "second" },
+  { value: "cousin", label: "Cousin", degree: "second" },
+  { value: "other", label: "Other relative", degree: "other" },
+];
+
+const blankMedication = () => ({
+  name: "",
+  type: "prescription",
+  dose: "",
+  frequency: "",
+  reason: "",
+  status: "active",
+});
+
+const blankAllergy = () => ({
+  trigger: "",
+  reaction: "",
+  certainty: "known",
+});
+
+const blankFamilyHistory = () => ({
+  relationship: "parent",
+  condition: "",
+  approximateAgeAtDiagnosis: "",
+});
+
+const medicationProfileFromLegacy = (items) =>
+  (Array.isArray(items) ? items : [])
+    .map((item) =>
+      typeof item === "string"
+        ? { ...blankMedication(), name: item }
+        : { ...blankMedication(), ...(item || {}) },
+    )
+    .filter((item) => item.name?.trim());
+
+const allergyRecordsFromLegacy = (items) =>
+  (Array.isArray(items) ? items : [])
+    .map((item) =>
+      typeof item === "string"
+        ? { ...blankAllergy(), trigger: item }
+        : { ...blankAllergy(), ...(item || {}) },
+    )
+    .filter((item) => item.trigger?.trim());
+
+const familyRecordsFromLegacy = (
+  firstDegreeHistory = {},
+  secondDegreeHistory = {},
+) => {
+  const records = [];
+  const conditionById = new Map(
+    MEDICAL_CONDITIONS.map((item) => [item.id, item.label]),
+  );
+  Object.entries(firstDegreeHistory || {}).forEach(
+    ([conditionId, selected]) => {
+      if (selected)
+        records.push({
+          ...blankFamilyHistory(),
+          relationship: "parent",
+          condition: conditionById.get(conditionId) || conditionId,
+        });
+    },
+  );
+  Object.entries(secondDegreeHistory || {}).forEach(
+    ([conditionId, selected]) => {
+      if (selected)
+        records.push({
+          ...blankFamilyHistory(),
+          relationship: "grandparent",
+          condition: conditionById.get(conditionId) || conditionId,
+        });
+    },
+  );
+  return records;
+};
+
+const familyMapsFromRecords = (records) => {
+  const firstDegreeHistory = {};
+  const secondDegreeHistory = {};
+  const conditionByLabel = new Map(
+    MEDICAL_CONDITIONS.map((item) => [item.label.toLowerCase(), item.id]),
+  );
+  (Array.isArray(records) ? records : []).forEach((record) => {
+    const conditionId = conditionByLabel.get(
+      String(record.condition || "")
+        .trim()
+        .toLowerCase(),
+    );
+    const relationship = FAMILY_RELATIONSHIPS.find(
+      (item) => item.value === record.relationship,
+    );
+    if (!conditionId || !relationship) return;
+    if (relationship.degree === "first") firstDegreeHistory[conditionId] = true;
+    if (relationship.degree === "second")
+      secondDegreeHistory[conditionId] = true;
+  });
+  return { firstDegreeHistory, secondDegreeHistory };
+};
 
 const SYMPTOM_CATEGORIES = [
   {
@@ -270,6 +373,137 @@ const SYMPTOM_CATEGORIES = [
   },
 ];
 
+// Stage 3 is intentionally conversational. These internal markers only keep the
+// existing recommendations API compatible while the dedicated chat endpoint is
+// introduced; the user's own wording remains the primary Stage 3 context.
+const CHAT_SYMPTOM_MARKERS = [
+  { id: "chest_pain", phrases: ["chest pain", "pain in my chest"] },
+  {
+    id: "shortness_of_breath",
+    phrases: ["shortness of breath", "breathless", "difficulty breathing"],
+  },
+  { id: "fever", phrases: ["fever", "temperature"] },
+  { id: "headache", phrases: ["headache", "head pain"] },
+  {
+    id: "abdominal_pain",
+    phrases: ["abdominal pain", "stomach pain", "belly pain"],
+  },
+  { id: "nausea", phrases: ["nausea", "feeling sick"] },
+  { id: "vomiting", phrases: ["vomit", "throwing up"] },
+  { id: "diarrhea", phrases: ["diarrhea", "diarrhoea", "loose stool"] },
+  { id: "cough", phrases: ["cough"] },
+  { id: "sore_throat", phrases: ["sore throat"] },
+  { id: "rash", phrases: ["rash", "hives"] },
+  { id: "itching", phrases: ["itching", "itchy"] },
+  { id: "dizziness", phrases: ["dizziness", "dizzy"] },
+  { id: "fatigue", phrases: ["fatigue", "tired", "exhausted"] },
+  {
+    id: "frequent_urination",
+    phrases: ["frequent urination", "urinating often", "peeing often"],
+  },
+  {
+    id: "burning_urination",
+    phrases: ["burning urination", "burning when urinating"],
+  },
+  { id: "back_pain", phrases: ["back pain"] },
+  { id: "joint_pain", phrases: ["joint pain"] },
+  { id: "weakness", phrases: ["weakness", "weak"] },
+];
+
+const compactChatText = (value, limit) =>
+  String(value ?? "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .slice(0, limit);
+
+const selectScalar = (value, fallback = "") =>
+  Array.isArray(value) ? value[0] || fallback : (value ?? fallback);
+
+// Initial concern + intro + six questions + six answers + one optional final
+// clarification + final message.
+const MAX_CHAT_MESSAGES = 20;
+const STAGE3_OPENING_MESSAGE =
+  "I’m here to listen. What is bothering you today? You can describe what you are feeling in your own words.";
+
+const makeChatMessage = (
+  role,
+  content,
+  source = "user",
+  questionId = null,
+) => ({
+  id: `${role}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+  role,
+  content,
+  source,
+  questionId,
+  createdAt: new Date().toISOString(),
+});
+
+const inferConversationMarkers = (formData) => {
+  const knownLegacyMarkerIds = new Set(
+    SYMPTOM_CATEGORIES.flatMap((category) =>
+      category.symptoms.map((symptom) => symptom.id),
+    ),
+  );
+  const narrative = [
+    formData.currentConcern,
+    formData.symptomTimeline,
+    formData.symptomImpact,
+  ]
+    .map((value) => compactChatText(value, 1200).toLowerCase())
+    .join(" ");
+  const matched = CHAT_SYMPTOM_MARKERS.filter((marker) =>
+    marker.phrases.some((phrase) => narrative.includes(phrase)),
+  )
+    .map((marker) => marker.id)
+    .filter((markerId) => knownLegacyMarkerIds.has(markerId));
+
+  return matched.length > 0 ? matched : ["current_concern_reported"];
+};
+
+const buildSymptomChatPayload = (
+  formData,
+  flowStep,
+  initialConcern = null,
+  answers = [],
+  finalAdditionalClarification = null,
+  safetyAnswers = [],
+) => {
+  const questionnaire = toQuestionnairePayload(formData);
+
+  return {
+    schemaVersion: "2.0",
+    requestType: "symptom_clarification_plan",
+    flowStep,
+    planToken: formData.symptomChatPlanToken || null,
+    submittedAt: new Date().toISOString(),
+    modelRequest: {
+      provider: "gemini",
+      model: "gemini-3.1-flash-lite",
+      clientMayOverride: false,
+    },
+    patientContext: {
+      stage1: questionnaire.stage1,
+      stage2: questionnaire.stage2,
+    },
+    initialConcern:
+      flowStep === "create_plan" ? compactChatText(initialConcern, 1200) : null,
+    answers,
+    safetyAnswers,
+    finalAdditionalClarification:
+      flowStep === "complete_plan"
+        ? compactChatText(finalAdditionalClarification, 1200) || null
+        : null,
+    requestedResponse: {
+      purpose: "clarify_current_symptoms_only",
+      mustNotDiagnose: true,
+      mustNotPrescribeMedication: true,
+      mustUseApprovedKnowledgeGraphAndCitations: false,
+      responseFormat: "guided_six_question_clarification",
+    },
+  };
+};
+
 // This is the API-shaped version of the live wizard state. Keeping it separate
 // from the UI draft means other pages can safely use the current answers before
 // the user completes the final assessment submission.
@@ -295,23 +529,96 @@ const toQuestionnairePayload = (formData) => ({
     stressLevel: formData.stressLevel,
   },
   stage2: {
+    ...(() => {
+      const familyMaps = familyMapsFromRecords(formData.familyHistoryRecords);
+      return {
+        firstDegreeHistory:
+          Object.keys(familyMaps.firstDegreeHistory).length > 0
+            ? familyMaps.firstDegreeHistory
+            : formData.firstDegreeHistory || {},
+        secondDegreeHistory:
+          Object.keys(familyMaps.secondDegreeHistory).length > 0
+            ? familyMaps.secondDegreeHistory
+            : formData.secondDegreeHistory || {},
+      };
+    })(),
     personalHistory: formData.personalHistory || {},
-    firstDegreeHistory: formData.firstDegreeHistory || {},
-    secondDegreeHistory: formData.secondDegreeHistory || {},
+    // Keep the richer Stage 2 UI records as well as the normalized values used
+    // by FastAPI. The baseline endpoint persists these two stages verbatim.
+    familyHistoryRecords: formData.familyHistoryRecords || [],
+    knownConditionsNarrative: compactChatText(
+      formData.medicalHistoryNarrative,
+      1200,
+    ),
     earlyOnsetHeart: formData.earlyOnsetHeart,
     inheritedBlood: formData.inheritedBlood,
     multipleSharedDisease: formData.multipleSharedDisease,
-    medications: formData.medications || [],
+    medications: medicationProfileFromLegacy(
+      formData.medicationProfile || formData.medications,
+    )
+      .map((item) => item.name.trim())
+      .filter(Boolean),
+    medicationProfile: formData.medicationProfile || [],
     majorSurgery: Boolean(formData.majorSurgery),
+    surgeryDetails: compactChatText(formData.surgeryDetails, 1200),
     hospitalization: Boolean(formData.hospitalization),
-    allergies: formData.allergies || [],
+    hospitalizationDetails: compactChatText(
+      formData.hospitalizationDetails,
+      1200,
+    ),
+    allergies: allergyRecordsFromLegacy(
+      formData.allergyRecords || formData.allergies,
+    )
+      .map((item) => item.trigger.trim())
+      .filter(Boolean),
+    allergyRecords: formData.allergyRecords || [],
+    otherKnownConditions: formData.otherKnownConditions || [],
+    knownAbnormalResults: compactChatText(formData.knownAbnormalResults, 1200),
     pastLabsRoutine: formData.pastLabsRoutine,
     pastLabsAbnormal: formData.pastLabsAbnormal || [],
+    medicalContextLastConfirmedAt:
+      formData.medicalContextLastConfirmedAt || null,
   },
   stage3: {
-    selectedSymptoms: formData.selectedSymptoms || [],
+    selectedSymptoms:
+      formData.selectedSymptoms?.length > 0
+        ? formData.selectedSymptoms
+        : inferConversationMarkers(formData),
+    currentConcern: compactChatText(formData.currentConcern, 1200),
+    symptomTimeline: compactChatText(formData.symptomTimeline, 600),
+    symptomImpact: compactChatText(formData.symptomImpact, 800),
+    symptomChatApprovalToken: formData.symptomChatApprovalToken || null,
+    chatHistory: (formData.symptomChatMessages || [])
+      .slice(-MAX_CHAT_MESSAGES)
+      .map((message) => ({
+        role: message.role,
+        content: compactChatText(message.content, 1200),
+        createdAt: message.createdAt,
+        source: message.source || "user",
+      })),
+    symptomChatCompletion: formData.symptomChatCompletion || null,
+    clarificationPlan: (formData.symptomClarificationPlan || []).map(
+      ({ id, question, answerType, options }) => ({
+        id,
+        question,
+        answerType,
+        options,
+      }),
+    ),
+    clarificationAnswers: formData.symptomClarificationAnswers || [],
+    finalAdditionalClarification:
+      compactChatText(formData.symptomFinalClarification, 1200) || null,
+    finalizedSymptomFacts: formData.finalizedSymptomFacts || {},
   },
 });
+
+// Comparison deliberately excludes confirmation timestamps: they are metadata
+// written by the save itself, not a user change to the reusable baseline.
+const baselineFingerprint = (formData) => {
+  const payload = toQuestionnairePayload(formData);
+  const { medicalContextLastConfirmedAt, ...stage2 } = payload.stage2;
+  return JSON.stringify({ stage1: payload.stage1, stage2 });
+};
 
 export default function HealthAssessmentWizard() {
   const navigate = useNavigate();
@@ -319,10 +626,21 @@ export default function HealthAssessmentWizard() {
     Boolean(sessionStorage.getItem("healthwise_form_data")),
   );
   const hasFetchedSavedBaseline = useRef(false);
+  const lastSavedBaselineFingerprint = useRef(null);
   const [currentStep, setCurrentStep] = useState(1);
-  const [activeSymptomTab, setActiveSymptomTab] = useState("general");
-  const [symptomSearch, setSymptomSearch] = useState("");
-  const [expandedCategories, setExpandedCategories] = useState({});
+  const [symptomChatDraft, setSymptomChatDraft] = useState("");
+  const [symptomChatSelections, setSymptomChatSelections] = useState([]);
+  const [symptomChatError, setSymptomChatError] = useState("");
+  const [symptomChatState, setSymptomChatState] = useState(null);
+  const [isSymptomChatSending, setIsSymptomChatSending] = useState(false);
+  const [isBaselineSaving, setIsBaselineSaving] = useState(false);
+  const [symptomQuestionIndex, setSymptomQuestionIndex] = useState(0);
+  const [isReviewingSymptomAnswers, setIsReviewingSymptomAnswers] =
+    useState(false);
+  const [isAddingFinalClarification, setIsAddingFinalClarification] =
+    useState(false);
+  const [isSymptomChatResetDialogOpen, setIsSymptomChatResetDialogOpen] =
+    useState(false);
 
   // Multi-tier Fallback State Initialization Engine (Active Session -> Historical Record -> Default Empty)
   const [formData, setFormData] = useState(() => {
@@ -358,9 +676,14 @@ export default function HealthAssessmentWizard() {
           exerciseDuration: historicalData.stage1?.exerciseDuration || 0,
           sleepHours: historicalData.stage1?.sleepHours || 7,
           sleepQuality: historicalData.stage1?.sleepQuality || "Fair",
-          dietPatterns: historicalData.stage1?.dietPatterns || "Balanced",
+          dietPatterns: selectScalar(
+            historicalData.stage1?.dietPatterns,
+            "Balanced",
+          ),
           waterIntake: historicalData.stage1?.waterIntake || "Normal",
           stressLevel: historicalData.stage1?.stressLevel || "Medium",
+          baselineLastConfirmedAt:
+            historicalData.stage1?.baselineLastConfirmedAt || null,
 
           // Stage 2 Auto-completion Map
           personalHistory: historicalData.stage2?.personalHistory || {},
@@ -371,14 +694,53 @@ export default function HealthAssessmentWizard() {
           multipleSharedDisease:
             historicalData.stage2?.multipleSharedDisease || "No",
           medications: historicalData.stage2?.medications || [],
+          medicationProfile: medicationProfileFromLegacy(
+            historicalData.stage2?.medicationProfile ||
+              historicalData.stage2?.medications,
+          ),
           majorSurgery: historicalData.stage2?.majorSurgery || false,
           hospitalization: historicalData.stage2?.hospitalization || false,
           allergies: historicalData.stage2?.allergies || [],
+          allergyRecords: allergyRecordsFromLegacy(
+            historicalData.stage2?.allergyRecords ||
+              historicalData.stage2?.allergies,
+          ),
+          familyHistoryRecords:
+            historicalData.stage2?.familyHistoryRecords ||
+            familyRecordsFromLegacy(
+              historicalData.stage2?.firstDegreeHistory,
+              historicalData.stage2?.secondDegreeHistory,
+            ),
+          otherKnownConditions:
+            historicalData.stage2?.otherKnownConditions || [],
+          medicalHistoryNarrative:
+            historicalData.stage2?.knownConditionsNarrative || "",
+          surgeryDetails: historicalData.stage2?.surgeryDetails || "",
+          hospitalizationDetails:
+            historicalData.stage2?.hospitalizationDetails || "",
+          knownAbnormalResults:
+            historicalData.stage2?.knownAbnormalResults || "",
+          medicalContextLastConfirmedAt:
+            historicalData.stage2?.medicalContextLastConfirmedAt || null,
           pastLabsRoutine: historicalData.stage2?.pastLabsRoutine || "No",
           pastLabsAbnormal: historicalData.stage2?.pastLabsAbnormal || [],
 
           // Reset acute parameters to enforce current system reviews checks
           selectedSymptoms: [],
+          currentConcern: "",
+          symptomTimeline: "",
+          symptomImpact: "",
+          symptomChatMessages: [],
+          symptomChatPlanToken: null,
+          symptomChatApprovalToken: null,
+          symptomChatBaselineFingerprint: null,
+          symptomChatCompletion: null,
+          symptomClarificationPlan: [],
+          symptomClarificationAnswers: [],
+          symptomFinalClarification: "",
+          safetyConfirmationPlan: [],
+          safetyConfirmationAnswers: [],
+          finalizedSymptomFacts: {},
           deepDive: {},
         };
       } catch (e) {
@@ -404,9 +766,10 @@ export default function HealthAssessmentWizard() {
       exerciseDuration: 0,
       sleepHours: 7,
       sleepQuality: "Fair",
-      dietPatterns: [],
+      dietPatterns: "Balanced",
       waterIntake: "Normal",
       stressLevel: "Medium",
+      baselineLastConfirmedAt: null,
       personalHistory: {},
       firstDegreeHistory: {},
       secondDegreeHistory: {},
@@ -414,12 +777,35 @@ export default function HealthAssessmentWizard() {
       inheritedBlood: "No",
       multipleSharedDisease: "No",
       medications: [],
+      medicationProfile: [],
       majorSurgery: false,
       hospitalization: false,
       allergies: [],
+      allergyRecords: [],
+      familyHistoryRecords: [],
+      otherKnownConditions: [],
+      medicalHistoryNarrative: "",
+      surgeryDetails: "",
+      hospitalizationDetails: "",
+      knownAbnormalResults: "",
+      medicalContextLastConfirmedAt: null,
       pastLabsRoutine: "No",
       pastLabsAbnormal: [],
       selectedSymptoms: [],
+      currentConcern: "",
+      symptomTimeline: "",
+      symptomImpact: "",
+      symptomChatMessages: [],
+      symptomChatPlanToken: null,
+      symptomChatApprovalToken: null,
+      symptomChatBaselineFingerprint: null,
+      symptomChatCompletion: null,
+      symptomClarificationPlan: [],
+      symptomClarificationAnswers: [],
+      symptomFinalClarification: "",
+      safetyConfirmationPlan: [],
+      safetyConfirmationAnswers: [],
+      finalizedSymptomFacts: {},
       deepDive: {},
     };
   });
@@ -431,6 +817,18 @@ export default function HealthAssessmentWizard() {
       "healthwise_current_questionnaire",
       JSON.stringify(toQuestionnairePayload(formData)),
     );
+  }, [formData]);
+
+  // A restored baseline is already persisted. Establish its fingerprint once so
+  // simply visiting Stage 2 does not create an unnecessary MongoDB overwrite.
+  useEffect(() => {
+    if (
+      lastSavedBaselineFingerprint.current === null &&
+      (formData.baselineLastConfirmedAt ||
+        formData.medicalContextLastConfirmedAt)
+    ) {
+      lastSavedBaselineFingerprint.current = baselineFingerprint(formData);
+    }
   }, [formData]);
 
   // A new authenticated assessment uses the patient's latest saved Stage 1 baseline.
@@ -453,6 +851,7 @@ export default function HealthAssessmentWizard() {
           JSON.stringify(saved),
         );
         const stage1 = saved.stage1;
+        const stage2 = saved.stage2 || {};
         setFormData((current) => ({
           ...current,
           age: stage1.age ?? current.age,
@@ -468,9 +867,46 @@ export default function HealthAssessmentWizard() {
           exerciseDuration: stage1.exerciseDuration ?? current.exerciseDuration,
           sleepHours: stage1.sleepHours ?? current.sleepHours,
           sleepQuality: stage1.sleepQuality ?? current.sleepQuality,
-          dietPatterns: stage1.dietPatterns ?? current.dietPatterns,
+          dietPatterns: selectScalar(stage1.dietPatterns, current.dietPatterns),
           waterIntake: stage1.waterIntake ?? current.waterIntake,
           stressLevel: stage1.stressLevel ?? current.stressLevel,
+          baselineLastConfirmedAt:
+            stage1.baselineLastConfirmedAt ?? current.baselineLastConfirmedAt,
+          personalHistory: stage2.personalHistory ?? current.personalHistory,
+          firstDegreeHistory:
+            stage2.firstDegreeHistory ?? current.firstDegreeHistory,
+          secondDegreeHistory:
+            stage2.secondDegreeHistory ?? current.secondDegreeHistory,
+          medications: stage2.medications ?? current.medications,
+          medicationProfile: medicationProfileFromLegacy(
+            stage2.medicationProfile ||
+              stage2.medications ||
+              current.medicationProfile,
+          ),
+          allergies: stage2.allergies ?? current.allergies,
+          allergyRecords: allergyRecordsFromLegacy(
+            stage2.allergyRecords || stage2.allergies || current.allergyRecords,
+          ),
+          familyHistoryRecords:
+            stage2.familyHistoryRecords ||
+            familyRecordsFromLegacy(
+              stage2.firstDegreeHistory,
+              stage2.secondDegreeHistory,
+            ),
+          majorSurgery: stage2.majorSurgery ?? current.majorSurgery,
+          hospitalization: stage2.hospitalization ?? current.hospitalization,
+          pastLabsRoutine: stage2.pastLabsRoutine ?? current.pastLabsRoutine,
+          pastLabsAbnormal: stage2.pastLabsAbnormal ?? current.pastLabsAbnormal,
+          surgeryDetails: stage2.surgeryDetails ?? current.surgeryDetails,
+          hospitalizationDetails:
+            stage2.hospitalizationDetails ?? current.hospitalizationDetails,
+          knownAbnormalResults:
+            stage2.knownAbnormalResults ?? current.knownAbnormalResults,
+          medicalHistoryNarrative:
+            stage2.knownConditionsNarrative ?? current.medicalHistoryNarrative,
+          medicalContextLastConfirmedAt:
+            stage2.medicalContextLastConfirmedAt ??
+            current.medicalContextLastConfirmedAt,
         }));
       })
       .catch(() => {
@@ -482,57 +918,518 @@ export default function HealthAssessmentWizard() {
   }, []);
 
   const isStage1Complete =
-    formData.age &&
-    formData.sex &&
-    formData.height &&
-    formData.weight &&
-    formData.ethnicity &&
-    formData.country;
+    formData.age && formData.sex && formData.height && formData.weight;
 
   const isStage2Complete = true;
 
-  const isStage3Complete = formData.selectedSymptoms.length > 0;
+  const chatCompletion = symptomChatState || formData.symptomChatCompletion;
+  const clarificationPlan = formData.symptomClarificationPlan || [];
+  const clarificationAnswers = formData.symptomClarificationAnswers || [];
+  const finalClarification = compactChatText(
+    formData.symptomFinalClarification,
+    1200,
+  );
+  const safetyConfirmationPlan = formData.safetyConfirmationPlan || [];
+  const safetyConfirmationAnswers = formData.safetyConfirmationAnswers || [];
+  const hasPendingSafetyConfirmation =
+    safetyConfirmationPlan.length > 0 &&
+    chatCompletion?.endReason === "safety_confirmation_required" &&
+    !chatCompletion?.chatClosed;
+  const symptomChatMessages = formData.symptomChatMessages || [];
+  // Stage 3 is session-only, but every guided question and answer stays visible
+  // for the lifetime of the active session.
+  const visibleSymptomChatMessages = symptomChatMessages;
+  const activeClarificationQuestion =
+    clarificationPlan[symptomQuestionIndex] || null;
+  const isStage3ContextCurrent =
+    formData.symptomChatBaselineFingerprint === baselineFingerprint(formData);
+  const isStage3Complete = Boolean(
+    compactChatText(formData.currentConcern, 1200).length >= 10 &&
+    chatCompletion?.continueAllowed === true &&
+    chatCompletion?.chatClosed === true &&
+    isStage3ContextCurrent,
+  );
 
   const handleInputChange = (stage, field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleNestedToggle = (category, conditionId) => {
-    setFormData((prev) => {
-      const currentCategory = prev[category] || {};
-      return {
-        ...prev,
-        [category]: {
-          ...currentCategory,
-          [conditionId]: !currentCategory[conditionId],
-        },
-      };
-    });
-  };
-
-  const handleSymptomToggle = (symptomId) => {
-    setFormData((prev) => {
-      const exists = prev.selectedSymptoms.includes(symptomId);
-      const updated = exists
-        ? prev.selectedSymptoms.filter((id) => id !== symptomId)
-        : [...prev.selectedSymptoms, symptomId];
-      return { ...prev, selectedSymptoms: updated };
-    });
-  };
-
-  const handleDeepDiveChange = (symptomId, subField, value) => {
+  const addStructuredItem = (field, factory) => {
     setFormData((prev) => ({
       ...prev,
-      deepDive: {
-        ...prev.deepDive,
-        [symptomId]: { ...(prev.deepDive[symptomId] || {}), [subField]: value },
-      },
+      [field]: [...(prev[field] || []), factory()],
     }));
   };
 
-  const currentCategoryIdx = useMemo(() => {
-    return SYMPTOM_CATEGORIES.findIndex((cat) => cat.id === activeSymptomTab);
-  }, [activeSymptomTab]);
+  const updateStructuredItem = (field, index, property, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: (prev[field] || []).map((item, itemIndex) =>
+        itemIndex === index ? { ...item, [property]: value } : item,
+      ),
+    }));
+  };
+
+  const removeStructuredItem = (field, index) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: (prev[field] || []).filter(
+        (_, itemIndex) => itemIndex !== index,
+      ),
+    }));
+  };
+
+  const submitSymptomChatTurn = async () => {
+    if (
+      isSymptomChatSending ||
+      (symptomChatState || formData.symptomChatCompletion)?.chatClosed
+    )
+      return;
+    const plan = formData.symptomClarificationPlan || [];
+    const answers = formData.symptomClarificationAnswers || [];
+    const activeQuestion = plan[symptomQuestionIndex];
+    const rawAnswer =
+      activeQuestion?.answerType === "multiple_choice"
+        ? symptomChatSelections
+        : symptomChatDraft;
+    const messageText = Array.isArray(rawAnswer)
+      ? rawAnswer.map((value) => compactChatText(value, 1200)).filter(Boolean)
+      : compactChatText(rawAnswer, 1200);
+    const hasAnswer = Array.isArray(messageText)
+      ? messageText.length > 0
+      : messageText.length >= (plan.length ? 1 : 10);
+    if (!hasAnswer) {
+      setSymptomChatError(
+        plan.length
+          ? "Please choose or enter an answer before continuing."
+          : "Please describe what is bothering you in a little more detail.",
+      );
+      return;
+    }
+    setSymptomChatError("");
+    const existingMessages = formData.symptomChatMessages || [];
+    const answerLabel = Array.isArray(messageText)
+      ? messageText.join(", ")
+      : messageText;
+    const nextAnswers = activeQuestion
+      ? plan
+          .map((question, index) =>
+            index === symptomQuestionIndex
+              ? { questionId: question.id, value: messageText }
+              : answers[index],
+          )
+          .filter(Boolean)
+      : [];
+    const payload = buildSymptomChatPayload(
+      formData,
+      "create_plan",
+      messageText,
+    );
+    setIsSymptomChatSending(true);
+    try {
+      // The plan is fetched once. Answers are cached locally until the user
+      // explicitly reviews and submits the complete answer set.
+      if (activeQuestion) {
+        const nextQuestion = plan[symptomQuestionIndex + 1];
+        setFormData((current) => {
+          const messages = current.symptomChatMessages || [];
+          const existingAnswerIndex = messages.findIndex(
+            (message) =>
+              message.source === "guided_answer" &&
+              message.questionId === activeQuestion.id,
+          );
+          const withCurrentAnswer =
+            existingAnswerIndex >= 0
+              ? messages.map((message, index) =>
+                  index === existingAnswerIndex
+                    ? {
+                        ...message,
+                        content: answerLabel,
+                        createdAt: new Date().toISOString(),
+                      }
+                    : message,
+                )
+              : [
+                  ...messages,
+                  makeChatMessage(
+                    "user",
+                    answerLabel,
+                    "guided_answer",
+                    activeQuestion.id,
+                  ),
+                ];
+          const alreadyAskedNext = nextQuestion
+            ? withCurrentAnswer.some(
+                (message) =>
+                  message.source === "guided_question" &&
+                  message.questionId === nextQuestion.id,
+              )
+            : true;
+          const alreadyPromptedForFinalClarification = withCurrentAnswer.some(
+            (message) => message.source === "final_clarification_prompt",
+          );
+          return {
+            ...current,
+            symptomClarificationAnswers: nextAnswers,
+            symptomChatMessages: [
+              ...withCurrentAnswer,
+              ...(!alreadyAskedNext && nextQuestion
+                ? [
+                    makeChatMessage(
+                      "assistant",
+                      nextQuestion.question,
+                      "guided_question",
+                      nextQuestion.id,
+                    ),
+                  ]
+                : []),
+              ...(!nextQuestion && !alreadyPromptedForFinalClarification
+                ? [
+                    makeChatMessage(
+                      "assistant",
+                      "Would you like to add anything else about this answer? You may skip this step.",
+                      "final_clarification_prompt",
+                    ),
+                  ]
+                : []),
+            ].slice(-MAX_CHAT_MESSAGES),
+          };
+        });
+        setSymptomChatDraft("");
+        setSymptomChatSelections([]);
+        if (symptomQuestionIndex === plan.length - 1) {
+          setIsAddingFinalClarification(true);
+        } else {
+          const nextIndex = symptomQuestionIndex + 1;
+          const savedNextAnswer = nextAnswers[nextIndex]?.value;
+          setSymptomQuestionIndex(nextIndex);
+          if (nextQuestion?.answerType === "multiple_choice") {
+            setSymptomChatSelections(
+              Array.isArray(savedNextAnswer) ? savedNextAnswer : [],
+            );
+          } else {
+            setSymptomChatDraft(
+              typeof savedNextAnswer === "string" ? savedNextAnswer : "",
+            );
+          }
+        }
+        return;
+      }
+
+      const response = await sendSymptomChatTurn(payload);
+      const firstQuestion = response.clarificationPlan?.[0];
+      const nextMessages = [
+        ...existingMessages,
+        makeChatMessage("user", messageText),
+        makeChatMessage("assistant", response.assistantMessage, "llm"),
+        ...(firstQuestion
+          ? [
+              makeChatMessage(
+                "assistant",
+                firstQuestion.question,
+                "guided_question",
+                firstQuestion.id,
+              ),
+            ]
+          : []),
+      ];
+      const nextFormData = {
+        ...formData,
+        symptomChatPlanToken: response.planToken || null,
+        symptomChatApprovalToken: response.stage4ApprovalToken || null,
+        symptomChatBaselineFingerprint: null,
+        symptomChatMessages: nextMessages.slice(-MAX_CHAT_MESSAGES),
+        symptomChatCompletion: response,
+        symptomClarificationPlan: response.clarificationPlan || plan,
+        symptomClarificationAnswers: activeQuestion ? nextAnswers : [],
+        symptomFinalClarification: "",
+        currentConcern: activeQuestion ? formData.currentConcern : messageText,
+        symptomTimeline:
+          response.clarificationSummary?.onsetAndCourse ||
+          formData.symptomTimeline,
+        symptomImpact:
+          response.clarificationSummary?.impactAndAssociatedDetails ||
+          formData.symptomImpact,
+      };
+      sessionStorage.setItem(
+        "healthwise_symptom_chat_request",
+        JSON.stringify(payload),
+      );
+      sessionStorage.setItem(
+        "healthwise_symptom_chat_response",
+        JSON.stringify(response),
+      );
+      setFormData(nextFormData);
+      setSymptomChatState(response);
+      setSymptomChatDraft("");
+      setSymptomChatSelections([]);
+      setSymptomQuestionIndex(0);
+      setIsReviewingSymptomAnswers(false);
+      setIsAddingFinalClarification(false);
+    } catch (error) {
+      setSymptomChatError(
+        error?.message ||
+          "The symptom chat could not continue. Please try again.",
+      );
+    } finally {
+      setIsSymptomChatSending(false);
+    }
+  };
+
+  const finishFinalClarificationStep = () => {
+    const value = compactChatText(symptomChatDraft, 1200);
+    setFormData((current) => {
+      const messages = (current.symptomChatMessages || []).filter(
+        (message) => message.source !== "final_additional_clarification",
+      );
+      return {
+        ...current,
+        symptomFinalClarification: value,
+        symptomChatMessages: [
+          ...messages,
+          ...(value
+            ? [makeChatMessage("user", value, "final_additional_clarification")]
+            : []),
+        ].slice(-MAX_CHAT_MESSAGES),
+      };
+    });
+    setSymptomChatDraft("");
+    setSymptomChatSelections([]);
+    setSymptomChatError("");
+    setIsAddingFinalClarification(false);
+    setIsReviewingSymptomAnswers(true);
+  };
+
+  const openClarificationQuestion = (index) => {
+    const question = clarificationPlan[index];
+    const savedAnswer = clarificationAnswers[index]?.value;
+    if (!question) return;
+    setSymptomQuestionIndex(index);
+    setIsReviewingSymptomAnswers(false);
+    setIsAddingFinalClarification(false);
+    setSymptomChatError("");
+    if (question.answerType === "multiple_choice") {
+      setSymptomChatSelections(Array.isArray(savedAnswer) ? savedAnswer : []);
+      setSymptomChatDraft("");
+    } else {
+      setSymptomChatDraft(typeof savedAnswer === "string" ? savedAnswer : "");
+      setSymptomChatSelections([]);
+    }
+  };
+
+  const resetSymptomChat = () => {
+    // Only the current, session-only Stage 3 conversation is removed here.
+    // The reusable Stage 1–2 baseline saved in MongoDB remains unchanged.
+    setFormData((current) => ({
+      ...current,
+      selectedSymptoms: [],
+      currentConcern: "",
+      symptomTimeline: "",
+      symptomImpact: "",
+      symptomChatMessages: [],
+      symptomChatPlanToken: null,
+      symptomChatApprovalToken: null,
+      symptomChatBaselineFingerprint: null,
+      symptomChatCompletion: null,
+      symptomClarificationPlan: [],
+      symptomClarificationAnswers: [],
+      symptomFinalClarification: "",
+      safetyConfirmationPlan: [],
+      safetyConfirmationAnswers: [],
+      finalizedSymptomFacts: {},
+    }));
+    sessionStorage.removeItem("healthwise_symptom_chat_request");
+    sessionStorage.removeItem("healthwise_symptom_chat_response");
+    setSymptomChatDraft("");
+    setSymptomChatSelections([]);
+    setSymptomChatError("");
+    setSymptomChatState(null);
+    setSymptomQuestionIndex(0);
+    setIsReviewingSymptomAnswers(false);
+    setIsAddingFinalClarification(false);
+    setIsSymptomChatResetDialogOpen(false);
+  };
+
+  const completeSymptomClarification = async () => {
+    if (isSymptomChatSending) return;
+    if (
+      clarificationPlan.length === 0 ||
+      clarificationAnswers.length !== clarificationPlan.length ||
+      clarificationAnswers.some(
+        (answer, index) => answer?.questionId !== clarificationPlan[index]?.id,
+      )
+    ) {
+      setSymptomChatError(
+        "Please answer every question before continuing to review.",
+      );
+      return;
+    }
+
+    setSymptomChatError("");
+    setIsSymptomChatSending(true);
+    const payload = buildSymptomChatPayload(
+      formData,
+      "complete_plan",
+      null,
+      clarificationAnswers,
+      finalClarification,
+    );
+    try {
+      const response = await sendSymptomChatTurn(payload);
+      const nextFormData = {
+        ...formData,
+        symptomChatCompletion: response,
+        symptomChatPlanToken: response.planToken || null,
+        symptomChatApprovalToken: response.stage4ApprovalToken || null,
+        symptomChatBaselineFingerprint:
+          response.continueAllowed && response.chatClosed
+            ? baselineFingerprint(formData)
+            : null,
+        symptomChatMessages: [
+          ...(formData.symptomChatMessages || []),
+          makeChatMessage("assistant", response.assistantMessage, "llm"),
+          ...(response.safetyConfirmationPlan || []).map((question) =>
+            makeChatMessage(
+              "assistant",
+              question.question,
+              "safety_confirmation_question",
+              question.id,
+            ),
+          ),
+        ].slice(-MAX_CHAT_MESSAGES),
+        symptomTimeline:
+          response.clarificationSummary?.onsetAndCourse ||
+          formData.symptomTimeline,
+        symptomImpact:
+          response.clarificationSummary?.impactAndAssociatedDetails ||
+          formData.symptomImpact,
+        safetyConfirmationPlan: response.safetyConfirmationPlan || [],
+        safetyConfirmationAnswers: [],
+        finalizedSymptomFacts: response.finalizedSymptomFacts || {},
+      };
+      sessionStorage.setItem(
+        "healthwise_symptom_chat_request",
+        JSON.stringify(payload),
+      );
+      sessionStorage.setItem(
+        "healthwise_symptom_chat_response",
+        JSON.stringify(response),
+      );
+      setFormData(nextFormData);
+      setSymptomChatState(response);
+      if (response.continueAllowed && response.chatClosed) {
+        // Keep the completed transcript on Stage 3. The server response is the
+        // authority that unlocks the normal "Continue Form" control below.
+        setIsReviewingSymptomAnswers(false);
+      } else if ((response.safetyConfirmationPlan || []).length) {
+        setIsReviewingSymptomAnswers(false);
+      } else if (!(response.safetyConfirmationPlan || []).length) {
+        setSymptomChatError(
+          "The server could not validate every answer. Please review and try again.",
+        );
+      }
+    } catch (error) {
+      setSymptomChatError(
+        error?.message ||
+          "Your answers could not be verified. Please review them and try again.",
+      );
+    } finally {
+      setIsSymptomChatSending(false);
+    }
+  };
+
+  const updateSafetyConfirmationAnswer = (question, value) => {
+    setFormData((current) => {
+      const prior = current.safetyConfirmationAnswers || [];
+      const existing = prior.find(
+        (answer) => answer.questionId === question.id,
+      );
+      const values =
+        question.answerType === "multiple_choice"
+          ? (() => {
+              const currentValues = existing?.values || [];
+              if (value === "none_of_these") return [value];
+              const withoutNone = currentValues.filter(
+                (item) => item !== "none_of_these",
+              );
+              return withoutNone.includes(value)
+                ? withoutNone.filter((item) => item !== value)
+                : [...withoutNone, value];
+            })()
+          : [value];
+      return {
+        ...current,
+        safetyConfirmationAnswers: [
+          ...prior.filter((answer) => answer.questionId !== question.id),
+          { questionId: question.id, values },
+        ],
+      };
+    });
+    setSymptomChatError("");
+  };
+
+  const completeSafetyConfirmation = async () => {
+    const orderedAnswers = safetyConfirmationPlan.map((question) =>
+      safetyConfirmationAnswers.find(
+        (answer) => answer.questionId === question.id,
+      ),
+    );
+    if (orderedAnswers.some((answer) => !answer?.values?.length)) {
+      setSymptomChatError(
+        "Please answer every safety confirmation question before continuing.",
+      );
+      return;
+    }
+    setIsSymptomChatSending(true);
+    setSymptomChatError("");
+    const payload = buildSymptomChatPayload(
+      formData,
+      "complete_safety_confirmation",
+      null,
+      [],
+      null,
+      orderedAnswers,
+    );
+    try {
+      const response = await sendSymptomChatTurn(payload);
+      setFormData((current) => ({
+        ...current,
+        symptomChatCompletion: response,
+        symptomChatPlanToken: response.planToken || null,
+        symptomChatApprovalToken: response.stage4ApprovalToken || null,
+        symptomChatBaselineFingerprint:
+          response.continueAllowed && response.chatClosed
+            ? baselineFingerprint(current)
+            : null,
+        safetyConfirmationPlan: response.safetyConfirmationPlan || [],
+        finalizedSymptomFacts: response.finalizedSymptomFacts || {},
+        symptomChatMessages: [
+          ...(current.symptomChatMessages || []),
+          makeChatMessage(
+            "assistant",
+            response.assistantMessage,
+            "safety_confirmation_complete",
+          ),
+        ].slice(-MAX_CHAT_MESSAGES),
+      }));
+      sessionStorage.setItem(
+        "healthwise_symptom_chat_request",
+        JSON.stringify(payload),
+      );
+      sessionStorage.setItem(
+        "healthwise_symptom_chat_response",
+        JSON.stringify(response),
+      );
+      setSymptomChatState(response);
+    } catch (error) {
+      setSymptomChatError(
+        error?.message ||
+          "Your safety confirmation answers could not be verified.",
+      );
+    } finally {
+      setIsSymptomChatSending(false);
+    }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -541,7 +1438,42 @@ export default function HealthAssessmentWizard() {
     });
   };
 
-  const handleNext = () => {
+  const persistBaselineIfChanged = async () => {
+    if (sessionStorage.getItem("isLoggedIn") !== "true") return true;
+
+    const fingerprint = baselineFingerprint(formData);
+    if (fingerprint === lastSavedBaselineFingerprint.current) return true;
+
+    setIsBaselineSaving(true);
+    try {
+      const baseline = toQuestionnairePayload(formData);
+      const confirmedAt = new Date().toISOString();
+      await saveBaseline({
+        stage1: { ...baseline.stage1, baselineLastConfirmedAt: confirmedAt },
+        stage2: {
+          ...baseline.stage2,
+          medicalContextLastConfirmedAt: confirmedAt,
+        },
+      });
+      lastSavedBaselineFingerprint.current = fingerprint;
+      setFormData((current) => ({
+        ...current,
+        baselineLastConfirmedAt: confirmedAt,
+        medicalContextLastConfirmedAt: confirmedAt,
+      }));
+      return true;
+    } catch (error) {
+      alert(
+        error?.message ||
+          "Your Stage 1 and Stage 2 profile could not be saved. Please try again before continuing.",
+      );
+      return false;
+    } finally {
+      setIsBaselineSaving(false);
+    }
+  };
+
+  const handleNext = async () => {
     if (currentStep === 1 && !isStage1Complete) {
       alert("Please complete all required Stage 1 fields.");
       scrollToTop();
@@ -549,7 +1481,9 @@ export default function HealthAssessmentWizard() {
     }
 
     if (currentStep === 3 && !isStage3Complete) {
-      alert("Please select at least one symptom.");
+      alert(
+        "Continue is enabled only after the FastAPI symptom-chat response closes the clarification conversation.",
+      );
       scrollToTop();
       return;
     }
@@ -570,22 +1504,59 @@ export default function HealthAssessmentWizard() {
     }
 
     if (currentStep === 3) {
+      setFormData((prev) => ({
+        ...prev,
+        selectedSymptoms: inferConversationMarkers(prev),
+      }));
       setCurrentStep(4);
       return;
-    } else {
-      setCurrentStep((prev) => prev + 1);
     }
 
-    {
-      currentStep === 4;
+    if (currentStep === 2) {
+      if (!(await persistBaselineIfChanged())) return;
+      setCurrentStep(3);
+      return;
+    }
+
+    if (currentStep === 1) {
+      setFormData((prev) => ({
+        ...prev,
+        baselineLastConfirmedAt: new Date().toISOString(),
+      }));
+    }
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  const handleBack = async () => {
+    scrollToTop();
+    if (currentStep > 1) {
+      if (currentStep === 2 && !(await persistBaselineIfChanged())) return;
+      setCurrentStep((prev) => prev - 1);
     }
   };
 
-  const handleBack = () => {
-    scrollToTop();
-    if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
+  const navigateToStep = async (targetStep) => {
+    if (targetStep === 2 && !isStage1Complete) return;
+    if (targetStep === 3 && (!isStage1Complete || !isStage2Complete)) return;
+    if (
+      targetStep === 4 &&
+      (!isStage1Complete || !isStage2Complete || !isStage3Complete)
+    )
+      return;
+
+    // Save on every exit from Stage 2 and whenever a Stage 3 review is opened.
+    // If the baseline changed, the former signed Stage 3 approval cannot safely
+    // be reused, so clear only the transient symptom-form data before reopening it.
+    const shouldCheckBaseline = currentStep === 2 || targetStep === 3;
+    const baselineChanged =
+      baselineFingerprint(formData) !== lastSavedBaselineFingerprint.current;
+    if (shouldCheckBaseline && !(await persistBaselineIfChanged())) return;
+    if (targetStep === 3 && baselineChanged && currentStep !== 3) {
+      resetSymptomChat();
     }
+
+    scrollToTop();
+    setCurrentStep(targetStep);
   };
 
   const bmi = useMemo(() => {
@@ -760,6 +1731,9 @@ export default function HealthAssessmentWizard() {
   );
 
   const activeFamilyCount = useMemo(() => {
+    if (formData.familyHistoryRecords?.length) {
+      return formData.familyHistoryRecords.length;
+    }
     const prim = Object.values(formData.firstDegreeHistory).filter(
       Boolean,
     ).length;
@@ -767,25 +1741,15 @@ export default function HealthAssessmentWizard() {
       Boolean,
     ).length;
     return prim + sec;
-  }, [formData.firstDegreeHistory, formData.secondDegreeHistory]);
+  }, [
+    formData.familyHistoryRecords,
+    formData.firstDegreeHistory,
+    formData.secondDegreeHistory,
+  ]);
 
   const stepCompletionPercent = useMemo(
     () => `${currentStep * 25}%`,
     [currentStep],
-  );
-
-  const getCategorySelectedCount = (category) => {
-    return category.symptoms.filter((s) =>
-      formData.selectedSymptoms.includes(s.id),
-    ).length;
-  };
-
-  const filteredSymptomResults = SYMPTOM_CATEGORIES.flatMap((c) =>
-    c.symptoms.map((s) => ({ ...s, category: c.label })),
-  ).filter((s) =>
-    symptomSearch.trim()
-      ? s.label.toLowerCase().includes(symptomSearch.toLowerCase())
-      : false,
   );
 
   const handleFormSubmissionSubmit = (e) => {
@@ -838,7 +1802,7 @@ export default function HealthAssessmentWizard() {
             {[
               { step: 1, label: "Biometrics" },
               { step: 2, label: "Medical History" },
-              { step: 3, label: "Symptoms" },
+              { step: 3, label: "Current concern" },
               { step: 4, label: "Review" },
             ].map((item) => {
               const isLocked =
@@ -854,34 +1818,7 @@ export default function HealthAssessmentWizard() {
                   <button
                     type="button"
                     onClick={() => {
-                      if (item.step === 1) {
-                        scrollToTop();
-                        return setCurrentStep(1);
-                      }
-
-                      if (item.step === 2 && isStage1Complete) {
-                        scrollToTop();
-                        return setCurrentStep(2);
-                      }
-
-                      if (
-                        item.step === 3 &&
-                        isStage1Complete &&
-                        isStage2Complete
-                      ) {
-                        scrollToTop();
-                        return setCurrentStep(3);
-                      }
-
-                      if (
-                        item.step === 4 &&
-                        isStage1Complete &&
-                        isStage2Complete &&
-                        isStage3Complete
-                      ) {
-                        scrollToTop();
-                        return setCurrentStep(4);
-                      }
+                      void navigateToStep(item.step);
                     }}
                     className={`
             flex items-center justify-center
@@ -957,11 +1894,11 @@ export default function HealthAssessmentWizard() {
                     </div>
                     <div>
                       <h2 className="text-base font-black text-slate-900">
-                        Stage 1: Biometric Baseline Profiles
+                        Stage 1: Your health baseline
                       </h2>
                       <p className="text-xs text-slate-400 font-medium">
-                        Core body tracking indicators mapping measurements
-                        parameters
+                        Confirm your baseline details now; you can update them
+                        when something changes in a later assessment.
                       </p>
                     </div>
                   </div>
@@ -969,7 +1906,7 @@ export default function HealthAssessmentWizard() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700">
-                        Age(Years)
+                        Age (years)
                       </label>
                       <input
                         type="number"
@@ -1003,7 +1940,7 @@ export default function HealthAssessmentWizard() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700">
-                        Height(cm)
+                        Height (cm)
                       </label>
                       <input
                         type="number"
@@ -1019,7 +1956,7 @@ export default function HealthAssessmentWizard() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700">
-                        Weight(kg)
+                        Weight (kg)
                       </label>
                       <input
                         type="number"
@@ -1104,11 +2041,11 @@ export default function HealthAssessmentWizard() {
                     </div>
                     <div>
                       <h2 className="text-base font-black text-slate-900">
-                        Daily Lifestyle Habit Modulators
+                        Lifestyle Habits
                       </h2>
                       <p className="text-xs text-slate-400 font-medium">
-                        Environmental parameters impacting diagnostic baselines
-                        tracking profiles
+                        These may change over time. Review them before each new
+                        health conversation.
                       </p>
                     </div>
                   </div>
@@ -1163,7 +2100,7 @@ export default function HealthAssessmentWizard() {
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-700 block">
-                        Weekly Exercise Activity Metrics
+                        Weekly Exercise Frequency
                       </label>
                       <div className="flex flex-wrap gap-2">
                         {["None", "1-2 days", "3-4 days", "5+ days"].map(
@@ -1284,7 +2221,10 @@ export default function HealthAssessmentWizard() {
                             Diet Pattern
                           </label>
                           <select
-                            value={formData.dietPatterns}
+                            value={selectScalar(
+                              formData.dietPatterns,
+                              "Balanced",
+                            )}
                             onChange={(e) =>
                               handleInputChange(
                                 1,
@@ -1320,290 +2260,913 @@ export default function HealthAssessmentWizard() {
                   </div>
                   <div>
                     <h2 className="text-base font-black text-slate-900">
-                      Stage 2: Pedigree Risk Matrix
+                      Stage 2: Medical history and medicines
                     </h2>
                     <p className="text-xs text-slate-400 font-medium">
-                      Map structural lineage markers and clinical preconditions
-                      indices
+                      Record known clinician-confirmed history, current
+                      medicines, and family context. This is not a diagnosis
+                      screen.
                     </p>
                   </div>
                 </div>
 
-                <div className="overflow-hidden border border-slate-200 rounded-2xl bg-white shadow-inner">
-                  <table className="min-w-full divide-y divide-slate-100 text-left text-xs">
-                    <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider">
-                      <tr>
-                        <th className="px-5 py-4">Clinical Metric</th>
-                        <th className="px-5 py-4 text-center">
-                          Diagnosed in Me
-                        </th>
-                        <th className="px-5 py-4 text-center">
-                          1st-Degree Relative
-                        </th>
-                        <th className="px-5 py-4 text-center">
-                          2nd-Degree Relative
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                      {MEDICAL_CONDITIONS.map((cond) => (
-                        <tr
-                          key={cond.id}
-                          className="hover:bg-slate-50/60 transition-colors"
-                        >
-                          <td className="px-5 py-3.5 font-bold text-slate-900">
-                            {`${cond.icon} ${cond.label}` || cond.label}
-                          </td>
-                          <td className="px-5 py-3.5 text-center">
-                            <input
-                              type="checkbox"
-                              checked={
-                                formData.personalHistory[cond.id] || false
-                              }
-                              onChange={() =>
-                                handleNestedToggle("personalHistory", cond.id)
-                              }
-                              className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-0 cursor-pointer"
-                            />
-                          </td>
-                          <td className="px-5 py-3.5 text-center">
-                            <input
-                              type="checkbox"
-                              checked={
-                                formData.firstDegreeHistory[cond.id] || false
-                              }
-                              onChange={() =>
-                                handleNestedToggle(
-                                  "firstDegreeHistory",
-                                  cond.id,
-                                )
-                              }
-                              className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-0 cursor-pointer"
-                            />
-                          </td>
-                          <td className="px-5 py-3.5 text-center">
-                            {cond.hasSecondDegree ? (
-                              <input
-                                type="checkbox"
-                                checked={
-                                  formData.secondDegreeHistory[cond.id] || false
-                                }
-                                onChange={() =>
-                                  handleNestedToggle(
-                                    "secondDegreeHistory",
-                                    cond.id,
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <h3 className="font-black text-slate-900">
+                    Known medical conditions
+                  </h3>
+                  <p className="mt-1 text-xs leading-5 text-slate-500">
+                    Describe only conditions previously diagnosed by a
+                    healthcare professional. You can use sentences, commas,
+                    bullets, or any natural format that is easiest for you.
+                  </p>
+                  <textarea
+                    value={formData.medicalHistoryNarrative || ""}
+                    onChange={(event) =>
+                      handleInputChange(
+                        2,
+                        "medicalHistoryNarrative",
+                        event.target.value.slice(0, 1200),
+                      )
+                    }
+                    rows="4"
+                    maxLength="1200"
+                    placeholder="For example: I have been diagnosed with asthma and hypothyroidism."
+                    className="mt-4 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm leading-6"
+                  />
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <h3 className="font-black text-slate-900">
+                        Current medicines
+                      </h3>
+                      <p className="mt-1 text-xs leading-5 text-slate-500">
+                        Include prescription medicines, over-the-counter
+                        products, supplements, and herbal or traditional
+                        products. Do not change a medicine based on HealthWise
+                        AI.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        addStructuredItem("medicationProfile", blankMedication)
+                      }
+                      className="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-black text-white hover:bg-indigo-700"
+                    >
+                      Add medicine
+                    </button>
+                  </div>
+                  {(formData.medicationProfile || []).length === 0 ? (
+                    <p className="mt-4 text-sm text-slate-500">
+                      No medicine added. You can continue if you do not take
+                      any.
+                    </p>
+                  ) : (
+                    <div className="mt-4 space-y-3">
+                      {(formData.medicationProfile || []).map(
+                        (medicine, index) => (
+                          <div
+                            key={`medicine-${index}`}
+                            className="rounded-xl border border-slate-200 bg-white p-4"
+                          >
+                            <div className="mb-3 flex items-center justify-between">
+                              <p className="text-xs font-black uppercase tracking-wider text-slate-500">
+                                Medicine {index + 1}
+                              </p>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  removeStructuredItem(
+                                    "medicationProfile",
+                                    index,
                                   )
                                 }
-                                className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-0 cursor-pointer"
+                                className="text-xs font-bold text-rose-600"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                            <div className="grid gap-3 md:grid-cols-2">
+                              <input
+                                value={medicine.name}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "medicationProfile",
+                                    index,
+                                    "name",
+                                    event.target.value,
+                                  )
+                                }
+                                placeholder="Medicine name"
+                                className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm"
                               />
-                            ) : (
-                              <span className="text-[10px] text-slate-300 select-none font-bold">
-                                N/A
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                              <select
+                                value={medicine.type}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "medicationProfile",
+                                    index,
+                                    "type",
+                                    event.target.value,
+                                  )
+                                }
+                                className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm"
+                              >
+                                <option value="prescription">
+                                  Prescription
+                                </option>
+                                <option value="over_the_counter">
+                                  Over the counter
+                                </option>
+                                <option value="supplement">Supplement</option>
+                                <option value="herbal_traditional">
+                                  Herbal / traditional
+                                </option>
+                              </select>
+                              <input
+                                value={medicine.dose}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "medicationProfile",
+                                    index,
+                                    "dose",
+                                    event.target.value,
+                                  )
+                                }
+                                placeholder="Dose, if known"
+                                className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm"
+                              />
+                              <input
+                                value={medicine.frequency}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "medicationProfile",
+                                    index,
+                                    "frequency",
+                                    event.target.value,
+                                  )
+                                }
+                                placeholder="How often, if known"
+                                className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm"
+                              />
+                              <input
+                                value={medicine.reason}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "medicationProfile",
+                                    index,
+                                    "reason",
+                                    event.target.value,
+                                  )
+                                }
+                                placeholder="Reason taken, if known"
+                                className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm"
+                              />
+                              <select
+                                value={medicine.status}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "medicationProfile",
+                                    index,
+                                    "status",
+                                    event.target.value,
+                                  )
+                                }
+                                className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm"
+                              >
+                                <option value="active">Currently taking</option>
+                                <option value="stopped">
+                                  Recently stopped
+                                </option>
+                                <option value="unsure">Unsure</option>
+                              </select>
+                            </div>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
                 </div>
+
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 className="font-black text-slate-900">
+                          Allergies and reactions
+                        </h3>
+                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                          Record known allergies or suspected medicine
+                          reactions. Leave blank when unknown.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addStructuredItem("allergyRecords", blankAllergy)
+                        }
+                        className="shrink-0 rounded-xl border border-indigo-200 px-3 py-2 text-xs font-black text-indigo-700 hover:bg-indigo-50"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="mt-4 space-y-3">
+                      {(formData.allergyRecords || []).map((allergy, index) => (
+                        <div
+                          key={`allergy-${index}`}
+                          className="rounded-xl border border-slate-200 bg-white p-3"
+                        >
+                          <div className="grid gap-2">
+                            <input
+                              value={allergy.trigger}
+                              onChange={(event) =>
+                                updateStructuredItem(
+                                  "allergyRecords",
+                                  index,
+                                  "trigger",
+                                  event.target.value,
+                                )
+                              }
+                              placeholder="Allergen or medicine"
+                              className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                            />
+                            <input
+                              value={allergy.reaction}
+                              onChange={(event) =>
+                                updateStructuredItem(
+                                  "allergyRecords",
+                                  index,
+                                  "reaction",
+                                  event.target.value,
+                                )
+                              }
+                              placeholder="Reaction, if known"
+                              className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                            />
+                            <div className="flex justify-between gap-2">
+                              <select
+                                value={allergy.certainty}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "allergyRecords",
+                                    index,
+                                    "certainty",
+                                    event.target.value,
+                                  )
+                                }
+                                className="min-w-0 rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                              >
+                                <option value="known">Known allergy</option>
+                                <option value="suspected">
+                                  Suspected reaction
+                                </option>
+                                <option value="unsure">Unsure</option>
+                              </select>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  removeStructuredItem("allergyRecords", index)
+                                }
+                                className="text-xs font-bold text-rose-600"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 className="font-black text-slate-900">
+                          Family history details
+                        </h3>
+                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                          Add only what you know. Family history is context, not
+                          proof of a condition.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addStructuredItem(
+                            "familyHistoryRecords",
+                            blankFamilyHistory,
+                          )
+                        }
+                        className="shrink-0 rounded-xl border border-indigo-200 px-3 py-2 text-xs font-black text-indigo-700 hover:bg-indigo-50"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="mt-4 space-y-3">
+                      {(formData.familyHistoryRecords || []).map(
+                        (record, index) => (
+                          <div
+                            key={`family-${index}`}
+                            className="rounded-xl border border-slate-200 bg-white p-3"
+                          >
+                            <div className="grid gap-2">
+                              <select
+                                value={record.relationship}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "familyHistoryRecords",
+                                    index,
+                                    "relationship",
+                                    event.target.value,
+                                  )
+                                }
+                                className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                              >
+                                {FAMILY_RELATIONSHIPS.map((relationship) => (
+                                  <option
+                                    key={relationship.value}
+                                    value={relationship.value}
+                                  >
+                                    {relationship.label}
+                                  </option>
+                                ))}
+                              </select>
+                              <input
+                                value={record.condition}
+                                onChange={(event) =>
+                                  updateStructuredItem(
+                                    "familyHistoryRecords",
+                                    index,
+                                    "condition",
+                                    event.target.value,
+                                  )
+                                }
+                                placeholder="Known clinician-diagnosed condition"
+                                className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                              />
+                              <div className="flex justify-between gap-2">
+                                <input
+                                  value={record.approximateAgeAtDiagnosis}
+                                  onChange={(event) =>
+                                    updateStructuredItem(
+                                      "familyHistoryRecords",
+                                      index,
+                                      "approximateAgeAtDiagnosis",
+                                      event.target.value,
+                                    )
+                                  }
+                                  placeholder="Approx. age at diagnosis"
+                                  className="min-w-0 rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    removeStructuredItem(
+                                      "familyHistoryRecords",
+                                      index,
+                                    )
+                                  }
+                                  className="text-xs font-bold text-rose-600"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <h3 className="font-black text-slate-900">
+                    Previous care and results
+                  </h3>
+                  <p className="mt-1 text-xs leading-5 text-slate-500">
+                    Optional context. Upload and analyse laboratory reports
+                    through the recommendations page.
+                  </p>
+                  <div className="mt-4 grid gap-3 md:grid-cols-2">
+                    <label className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-sm font-bold text-slate-700">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(formData.majorSurgery)}
+                        onChange={() =>
+                          handleInputChange(
+                            2,
+                            "majorSurgery",
+                            !formData.majorSurgery,
+                          )
+                        }
+                        className="h-4 w-4 text-indigo-600"
+                      />
+                      Major surgery or procedure
+                    </label>
+                    <label className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-sm font-bold text-slate-700">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(formData.hospitalization)}
+                        onChange={() =>
+                          handleInputChange(
+                            2,
+                            "hospitalization",
+                            !formData.hospitalization,
+                          )
+                        }
+                        className="h-4 w-4 text-indigo-600"
+                      />
+                      Previous hospital admission
+                    </label>
+                    <textarea
+                      value={formData.surgeryDetails || ""}
+                      onChange={(event) =>
+                        handleInputChange(
+                          2,
+                          "surgeryDetails",
+                          event.target.value,
+                        )
+                      }
+                      placeholder="Procedure details, if you wish to record them"
+                      rows="3"
+                      className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm"
+                    />
+                    <textarea
+                      value={formData.hospitalizationDetails || ""}
+                      onChange={(event) =>
+                        handleInputChange(
+                          2,
+                          "hospitalizationDetails",
+                          event.target.value,
+                        )
+                      }
+                      placeholder="Admission details, if you wish to record them"
+                      rows="3"
+                      className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <p className="rounded-2xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-xs leading-5 text-indigo-800">
+                  Keep this context up to date when it changes. It supports more
+                  useful future conversations, but does not replace professional
+                  medical or medication review.
+                </p>
               </div>
             )}
 
             {/* STAGE 3 UI */}
             {currentStep === 3 && (
               <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200/60 shadow-sm space-y-6">
-                <div className="flex items-center gap-3">
+                <div className="flex items-start justify-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
                     🩺
                   </div>
                   <div>
                     <h2 className="text-base font-black text-slate-900">
-                      Stage 3: Review of Systems Screening
+                      Stage 3: Current symptoms
                     </h2>
                     <p className="text-xs text-slate-400 font-medium">
-                      Select every symptom you are currently experiencing.
+                      A short guided check-in to clarify what you are feeling.
                     </p>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsSymptomChatResetDialogOpen(true)}
+                    disabled={isSymptomChatSending}
+                    className="shrink-0 rounded-xl border border-rose-200 bg-white px-3 py-2 text-xs font-black text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Clear responses
+                  </button>
                 </div>
 
-                <div className="space-y-2 relative">
-                  <label className="text-xs font-bold text-slate-700">
-                    Search Symptoms
-                  </label>
-                  <input
-                    type="text"
-                    value={symptomSearch}
-                    onChange={(e) => setSymptomSearch(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-
-                        if (filteredSymptomResults.length > 0) {
-                          const symptom = filteredSymptomResults[0];
-
-                          if (!formData.selectedSymptoms.includes(symptom.id)) {
-                            handleSymptomToggle(symptom.id);
-                          }
-
-                          setSymptomSearch("");
-                        }
-                      }
-                    }}
-                    placeholder="Type a symptom..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm"
-                  />
-
-                  {symptomSearch.trim() && (
-                    <div className="absolute z-20 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-64 overflow-y-auto">
-                      {filteredSymptomResults.length > 0 ? (
-                        filteredSymptomResults.map((symptom) => (
-                          <button
-                            key={symptom.id}
-                            type="button"
-                            onClick={() => {
-                              if (
-                                !formData.selectedSymptoms.includes(symptom.id)
-                              ) {
-                                handleSymptomToggle(symptom.id);
-                              }
-                              setSymptomSearch("");
-                            }}
-                            className="w-full text-left px-4 py-3 hover:bg-slate-50 border-b border-slate-100 last:border-b-0"
-                          >
-                            <div className="text-sm font-medium text-slate-800">
-                              {symptom.label}
-                            </div>
-                            <div className="text-xs text-slate-400">
-                              {symptom.category}
-                            </div>
-                          </button>
-                        ))
-                      ) : (
-                        <div className="px-4 py-3 text-sm text-slate-400">
-                          No matching symptoms found
-                        </div>
-                      )}
-                    </div>
-                  )}
+                <div className="rounded-2xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-xs leading-5 text-indigo-900">
+                  Describe the concern in your own words, then answer a small
+                  number of focused questions. This supports a later
+                  health-insight review and does not diagnose a condition or
+                  replace professional care.
                 </div>
 
-                {formData.selectedSymptoms.length > 0 && (
-                  <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-2xl">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-700 mb-3">
-                      Selected Symptoms ({formData.selectedSymptoms.length})
-                    </h4>
-
-                    <div className="flex flex-wrap gap-2">
-                      {formData.selectedSymptoms.map((symptomId) => {
-                        const symptom = SYMPTOM_CATEGORIES.flatMap(
-                          (c) => c.symptoms,
-                        ).find((s) => s.id === symptomId);
-
-                        return (
-                          <button
-                            key={symptomId}
-                            type="button"
-                            onClick={() => handleSymptomToggle(symptomId)}
-                            className="bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold"
-                          >
-                            {symptom?.label} ✕
-                          </button>
-                        );
-                      })}
+                <div className="space-y-4 rounded-3xl border border-slate-200 bg-slate-50/70 p-4 md:p-6">
+                  {/* The transcript remains available only as temporary form data; Stage 3 is intentionally not presented as a chat. */}
+                  <div className="hidden" aria-hidden="true">
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-sm font-black text-white">
+                        HW
+                      </div>
+                      <div className="max-w-2xl rounded-2xl rounded-tl-sm bg-indigo-600 px-4 py-3 text-sm leading-6 text-white shadow-sm">
+                        {STAGE3_OPENING_MESSAGE}
+                      </div>
                     </div>
-                  </div>
-                )}
-
-                <div className="space-y-4">
-                  {SYMPTOM_CATEGORIES.map((category) => {
-                    const selectedCount = getCategorySelectedCount(category);
-
-                    const filteredSymptoms = category.symptoms.filter(
-                      (symptom) =>
-                        symptom.label
-                          .toLowerCase()
-                          .includes(symptomSearch.toLowerCase()),
-                    );
-
-                    return (
+                    {visibleSymptomChatMessages.map((message) => (
                       <div
-                        key={category.id}
-                        className="border border-slate-200 rounded-2xl overflow-hidden"
+                        key={message.id}
+                        className={
+                          message.role === "user"
+                            ? "flex justify-end"
+                            : "flex items-start gap-3"
+                        }
                       >
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setExpandedCategories((prev) => ({
-                              ...prev,
-                              [category.id]: !prev[category.id],
-                            }))
-                          }
-                          className="w-full flex items-center justify-between px-5 py-4 bg-slate-50 hover:bg-slate-100 transition"
-                        >
-                          <div>
-                            <span className="font-bold text-slate-900">
-                              {category.label}
-                            </span>
-
-                            <span className="ml-3 text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">
-                              {selectedCount} selected
-                            </span>
+                        {message.role === "assistant" && (
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-sm font-black text-white">
+                            HW
                           </div>
-
-                          <span
-                            className={`transition-transform duration-300 ${
-                              expandedCategories[category.id]
-                                ? "rotate-180"
-                                : "rotate-0"
-                            }`}
-                          >
-                            ▼
-                          </span>
-                        </button>
-
+                        )}
                         <div
-                          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                            expandedCategories[category.id]
-                              ? "max-h-[1000px] opacity-100"
-                              : "max-h-0 opacity-0"
-                          }`}
+                          className={
+                            message.role === "user"
+                              ? "max-w-2xl rounded-2xl rounded-tr-sm bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-sm ring-1 ring-slate-200"
+                              : "max-w-2xl rounded-2xl rounded-tl-sm bg-indigo-600 px-4 py-3 text-sm leading-6 text-white shadow-sm"
+                          }
                         >
-                          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {filteredSymptoms.map((symptom) => {
-                              const checked =
-                                formData.selectedSymptoms.includes(symptom.id);
-
-                              return (
-                                <label
-                                  key={symptom.id}
-                                  className={`flex items-start p-3 rounded-xl border cursor-pointer transition-all ${
-                                    checked
-                                      ? "bg-indigo-50 border-indigo-300"
-                                      : "bg-white border-slate-200 hover:bg-slate-50"
-                                  }`}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    checked={checked}
-                                    onChange={() =>
-                                      handleSymptomToggle(symptom.id)
-                                    }
-                                    className="mt-1 w-4 h-4"
-                                  />
-
-                                  <span className="ml-3 text-sm font-medium text-slate-700">
-                                    {symptom.label}
-                                  </span>
-                                </label>
-                              );
-                            })}
-                          </div>
+                          {message.content}
                         </div>
                       </div>
-                    );
-                  })}
+                    ))}
+                  </div>
+
+                  <div className="border-t border-slate-200 pt-4">
+                    {!clarificationPlan.length &&
+                      !chatCompletion?.chatClosed && (
+                        <div className="mb-4">
+                          <p className="text-sm font-black text-slate-900">
+                            What is concerning you today?
+                          </p>
+                          <p className="mt-1 text-xs leading-5 text-slate-500">
+                            Share current symptoms or discomfort. Avoid names
+                            and other identifying details.
+                          </p>
+                        </div>
+                      )}
+                    {isReviewingSymptomAnswers &&
+                      clarificationPlan.length > 0 &&
+                      !chatCompletion?.chatClosed && (
+                        <div className="space-y-3">
+                          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+                            <p className="mt-1 text-xs leading-5 text-emerald-800">
+                              Check the details below. You can edit any answer
+                              before continuing.
+                            </p>
+                          </div>
+                          {clarificationPlan.map((question, index) => {
+                            const answer = clarificationAnswers[index]?.value;
+                            const answerText = Array.isArray(answer)
+                              ? answer.join(", ")
+                              : answer || "Not answered";
+                            return (
+                              <div
+                                key={question.id}
+                                className="rounded-xl border border-slate-200 bg-white p-4"
+                              >
+                                <div className="flex items-start justify-between gap-3">
+                                  <div>
+                                    <p className="text-xs font-black uppercase tracking-wider text-slate-400">
+                                      Question {index + 1}
+                                    </p>
+                                    <p className="mt-1 text-sm font-bold text-slate-800">
+                                      {question.question}
+                                    </p>
+                                    <p className="mt-2 text-sm text-slate-600">
+                                      {answerText}
+                                    </p>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      openClarificationQuestion(index)
+                                    }
+                                    className="shrink-0 rounded-lg border border-indigo-200 px-3 py-2 text-xs font-black text-indigo-700 hover:bg-indigo-50"
+                                  >
+                                    Edit
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                          {finalClarification && (
+                            <div className="rounded-xl border border-slate-200 bg-white p-4">
+                              <p className="text-xs font-black uppercase tracking-wider text-slate-400">
+                                Additional detail
+                              </p>
+                              <p className="mt-2 text-sm text-slate-600">
+                                {finalClarification}
+                              </p>
+                            </div>
+                          )}
+                          <div className="flex justify-end gap-3 pt-1">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                openClarificationQuestion(
+                                  clarificationPlan.length - 1,
+                                )
+                              }
+                              disabled={isSymptomChatSending}
+                              className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-black text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                            >
+                              Back to questions
+                            </button>
+                            <button
+                              type="button"
+                              onClick={completeSymptomClarification}
+                              disabled={isSymptomChatSending}
+                              className="rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-black text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+                            >
+                              {isSymptomChatSending
+                                ? "Verifying answers..."
+                                : "Confirm"}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                    {hasPendingSafetyConfirmation && (
+                      <div className="space-y-4">
+                        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
+                          <p className="text-sm font-black text-amber-950">
+                            Brief safety confirmation
+                          </p>
+                          <p className="mt-1 text-xs leading-5 text-amber-900">
+                            Please confirm only what applies to you. These
+                            answers are checked before the health review.
+                          </p>
+                        </div>
+                        {safetyConfirmationPlan.map((question, index) => {
+                          const answer = safetyConfirmationAnswers.find(
+                            (item) => item.questionId === question.id,
+                          );
+                          const selected = answer?.values || [];
+                          return (
+                            <div
+                              key={question.id}
+                              className="rounded-2xl border border-amber-200 bg-white p-4"
+                            >
+                              <p className="text-xs font-black uppercase tracking-wider text-amber-700">
+                                Safety check {index + 1} of{" "}
+                                {safetyConfirmationPlan.length}
+                              </p>
+                              <p className="mt-2 text-sm font-bold leading-6 text-slate-800">
+                                {question.question}
+                              </p>
+                              <div className="mt-3 grid gap-2">
+                                {question.options.map((option) => (
+                                  <label
+                                    key={option.value}
+                                    className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:border-amber-300"
+                                  >
+                                    <input
+                                      type={
+                                        question.answerType ===
+                                        "multiple_choice"
+                                          ? "checkbox"
+                                          : "radio"
+                                      }
+                                      name={question.id}
+                                      checked={selected.includes(option.value)}
+                                      onChange={() =>
+                                        updateSafetyConfirmationAnswer(
+                                          question,
+                                          option.value,
+                                        )
+                                      }
+                                      disabled={isSymptomChatSending}
+                                      className="h-4 w-4 text-amber-600"
+                                    />
+                                    {option.label}
+                                  </label>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                        <div className="flex justify-end">
+                          <button
+                            type="button"
+                            onClick={completeSafetyConfirmation}
+                            disabled={isSymptomChatSending}
+                            className="rounded-xl bg-amber-600 px-4 py-2.5 text-xs font-black text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            {isSymptomChatSending
+                              ? "Confirming..."
+                              : "Confirm safety answers"}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {clarificationPlan.length > 0 &&
+                      !hasPendingSafetyConfirmation &&
+                      !chatCompletion?.chatClosed &&
+                      !isAddingFinalClarification &&
+                      !isReviewingSymptomAnswers && (
+                        <div className="mb-4 rounded-2xl border border-indigo-100 bg-indigo-50 px-4 py-3">
+                          <p className="text-xs font-black uppercase tracking-wider text-indigo-700">
+                            Question {symptomQuestionIndex + 1} of{" "}
+                            {clarificationPlan.length}
+                          </p>
+                          <p className="mt-2 text-sm font-bold leading-6 text-slate-800">
+                            {activeClarificationQuestion?.question}
+                          </p>
+                          {activeClarificationQuestion?.helperText && (
+                            <p className="mt-1 text-xs leading-5 text-slate-500">
+                              {activeClarificationQuestion.helperText}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                    {activeClarificationQuestion?.answerType ===
+                      "single_choice" &&
+                      !hasPendingSafetyConfirmation &&
+                      !isAddingFinalClarification &&
+                      !isReviewingSymptomAnswers &&
+                      !chatCompletion?.chatClosed && (
+                        <div className="grid gap-2">
+                          {activeClarificationQuestion.options.map((option) => (
+                            <label
+                              key={option}
+                              className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:border-indigo-300"
+                            >
+                              <input
+                                type="radio"
+                                name={activeClarificationQuestion.id}
+                                checked={symptomChatDraft === option}
+                                onChange={() => {
+                                  setSymptomChatDraft(option);
+                                  setSymptomChatError("");
+                                }}
+                                disabled={isSymptomChatSending}
+                                className="h-4 w-4 text-indigo-600"
+                              />
+                              {option}
+                            </label>
+                          ))}
+                        </div>
+                      )}
+
+                    {activeClarificationQuestion?.answerType ===
+                      "multiple_choice" &&
+                      !hasPendingSafetyConfirmation &&
+                      !isAddingFinalClarification &&
+                      !isReviewingSymptomAnswers &&
+                      !chatCompletion?.chatClosed && (
+                        <div className="grid gap-2">
+                          {activeClarificationQuestion.options.map((option) => (
+                            <label
+                              key={option}
+                              className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:border-indigo-300"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={symptomChatSelections.includes(option)}
+                                onChange={() => {
+                                  setSymptomChatSelections((current) =>
+                                    current.includes(option)
+                                      ? current.filter(
+                                          (value) => value !== option,
+                                        )
+                                      : [...current, option],
+                                  );
+                                  setSymptomChatError("");
+                                }}
+                                disabled={isSymptomChatSending}
+                                className="h-4 w-4 rounded text-indigo-600"
+                              />
+                              {option}
+                            </label>
+                          ))}
+                        </div>
+                      )}
+
+                    {(isAddingFinalClarification ||
+                      !activeClarificationQuestion ||
+                      activeClarificationQuestion.answerType ===
+                        "short_text") &&
+                      !hasPendingSafetyConfirmation &&
+                      !isReviewingSymptomAnswers &&
+                      !chatCompletion?.chatClosed && (
+                        <>
+                          <label
+                            htmlFor="symptom-chat-input"
+                            className="sr-only"
+                          >
+                            Your response
+                          </label>
+                          <textarea
+                            id="symptom-chat-input"
+                            value={symptomChatDraft}
+                            onChange={(event) => {
+                              setSymptomChatDraft(
+                                event.target.value.slice(0, 1200),
+                              );
+                              if (symptomChatError) setSymptomChatError("");
+                            }}
+                            rows="3"
+                            maxLength="1200"
+                            disabled={isSymptomChatSending}
+                            placeholder={
+                              isAddingFinalClarification
+                                ? "Optional: add any explanation for further clarification."
+                                : clarificationPlan.length
+                                  ? "Type your answer here."
+                                  : "What is worrying you today? Describe what you are feeling in your own words."
+                            }
+                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-800 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                          />
+                        </>
+                      )}
+                    {!isReviewingSymptomAnswers &&
+                      !chatCompletion?.chatClosed &&
+                      !hasPendingSafetyConfirmation && (
+                        <div className="mt-3 flex items-center justify-between gap-3">
+                          <p className="text-xs text-slate-400">
+                            {clarificationPlan.length > 0
+                              ? `${clarificationAnswers.length}/${clarificationPlan.length} answered`
+                              : `${symptomChatDraft.length}/1200`}
+                          </p>
+                          <div className="flex gap-2">
+                            {clarificationPlan.length > 0 &&
+                              (isAddingFinalClarification ||
+                                symptomQuestionIndex > 0) && (
+                                <button
+                                  type="button"
+                                  disabled={isSymptomChatSending}
+                                  onClick={() =>
+                                    openClarificationQuestion(
+                                      isAddingFinalClarification
+                                        ? symptomQuestionIndex
+                                        : symptomQuestionIndex - 1,
+                                    )
+                                  }
+                                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-black text-slate-700 transition hover:bg-slate-50 disabled:opacity-60"
+                                >
+                                  {isAddingFinalClarification
+                                    ? "Previous"
+                                    : "Previous"}
+                                </button>
+                              )}
+                            <button
+                              type="button"
+                              disabled={
+                                isSymptomChatSending ||
+                                (
+                                  symptomChatState ||
+                                  formData.symptomChatCompletion
+                                )?.chatClosed ||
+                                (clarificationPlan.length > 0 &&
+                                  !activeClarificationQuestion)
+                              }
+                              onClick={
+                                isAddingFinalClarification
+                                  ? finishFinalClarificationStep
+                                  : submitSymptomChatTurn
+                              }
+                              className="rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-black text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+                            >
+                              {isSymptomChatSending
+                                ? "Preparing..."
+                                : isAddingFinalClarification
+                                  ? symptomChatDraft.trim()
+                                    ? "Save and review answers"
+                                    : "Skip"
+                                  : clarificationPlan.length === 0
+                                    ? "Continue"
+                                    : symptomQuestionIndex ===
+                                        clarificationPlan.length - 1
+                                      ? "Next"
+                                      : "Next"}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    {symptomChatError && (
+                      <p className="mt-2 text-xs font-semibold text-rose-600">
+                        {symptomChatError}
+                      </p>
+                    )}
+                    {chatCompletion?.chatClosed &&
+                      !hasPendingSafetyConfirmation && (
+                        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+                          <p className="text-sm font-black text-emerald-950">
+                            Your symptom details are ready for analysis
+                          </p>
+                          <p className="mt-1 text-xs leading-5 text-emerald-800">
+                            You can continue to the Review step when you are
+                            ready.
+                          </p>
+                        </div>
+                      )}
+                  </div>
                 </div>
+
+                <p className="text-xs leading-5 text-slate-500">
+                  Each sent response is added to the session-only chat history
+                  and a backend-ready payload is prepared. FastAPI—not the
+                  browser—must send that payload to Gemini and apply safety,
+                  knowledge-graph, and citation controls.
+                </p>
               </div>
             )}
 
@@ -1628,7 +3191,7 @@ export default function HealthAssessmentWizard() {
                         {Math.round(
                           activeConditionsCount * 5 +
                             activeFamilyCount * 3 +
-                            formData.selectedSymptoms.length * 2,
+                            (formData.currentConcern ? 2 : 0),
                         )}
                       </div>
                       <div className="text-xs uppercase tracking-wider text-indigo-200">
@@ -1722,45 +3285,50 @@ export default function HealthAssessmentWizard() {
                       <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
                         🩺
                       </div>
-                      <h3 className="font-black">Symptoms</h3>
+                      <h3 className="font-black">Current concern</h3>
                     </div>
 
                     <div className="text-center py-4">
                       <div className="text-5xl font-black text-emerald-600">
-                        {formData.selectedSymptoms.length}
+                        {formData.currentConcern ? "Ready" : "Missing"}
                       </div>
 
                       <p className="text-xs uppercase tracking-wider text-slate-500 mt-2">
-                        Symptoms Selected
+                        Conversation status
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* SELECTED SYMPTOMS */}
+                {/* CURRENT CONCERN REVIEW */}
                 <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-                  <h3 className="font-black mb-4">Selected Symptoms Review</h3>
+                  <h3 className="font-black mb-4">Current concern review</h3>
 
-                  <div className="flex flex-wrap gap-2">
-                    {formData.selectedSymptoms.length > 0 ? (
-                      formData.selectedSymptoms.map((symptomId) => {
-                        const symptom = SYMPTOM_CATEGORIES.flatMap(
-                          (c) => c.symptoms,
-                        ).find((s) => s.id === symptomId);
-
-                        return (
-                          <span
-                            key={symptomId}
-                            className="bg-indigo-50 border border-indigo-200 text-indigo-700 px-3 py-2 rounded-full text-xs font-semibold"
-                          >
-                            {symptom?.label}
-                          </span>
-                        );
-                      })
-                    ) : (
-                      <span className="text-slate-400 text-sm">
-                        No symptoms selected
-                      </span>
+                  <div className="space-y-4 text-sm leading-6 text-slate-700">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-wider text-slate-400">
+                        What is happening
+                      </p>
+                      <p className="mt-1">
+                        {formData.currentConcern ||
+                          "No current concern recorded"}
+                      </p>
+                    </div>
+                    {formData.symptomTimeline && (
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-wider text-slate-400">
+                          Timeline
+                        </p>
+                        <p className="mt-1">{formData.symptomTimeline}</p>
+                      </div>
+                    )}
+                    {formData.symptomImpact && (
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-wider text-slate-400">
+                          Impact and context
+                        </p>
+                        <p className="mt-1">{formData.symptomImpact}</p>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -1813,9 +3381,20 @@ export default function HealthAssessmentWizard() {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md shadow-indigo-600/10 transition-all hover:scale-[1.01]"
+                    disabled={
+                      isBaselineSaving ||
+                      (currentStep === 3 && !isStage3Complete)
+                    }
+                    title={
+                      isBaselineSaving
+                        ? "Saving your Stage 1 and Stage 2 profile."
+                        : currentStep === 3 && !isStage3Complete
+                          ? "Wait for FastAPI to close the symptom clarification chat."
+                          : undefined
+                    }
+                    className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md shadow-indigo-600/10 transition-all hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
                   >
-                    Continue Form
+                    {isBaselineSaving ? "Saving profile..." : "Continue Form"}
                   </button>
                 ) : null}
               </div>
@@ -1950,6 +3529,44 @@ export default function HealthAssessmentWizard() {
           </aside>
         </div>
       </main>
+      {isSymptomChatResetDialogOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="reset-symptom-chat-title"
+        >
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+            <h2
+              id="reset-symptom-chat-title"
+              className="text-lg font-black text-slate-900"
+            >
+              Clear your Stage 3 responses?
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              Your current symptom details, generated questions, and answers
+              will be cleared from this browser session. Your saved Stage 1 and
+              Stage 2 profile will not be changed.
+            </p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setIsSymptomChatResetDialogOpen(false)}
+                className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-black text-slate-700 hover:bg-slate-50"
+              >
+                Keep responses
+              </button>
+              <button
+                type="button"
+                onClick={resetSymptomChat}
+                className="rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-black text-white hover:bg-rose-700"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,607 @@
+{
+  "schemaVersion": "1.0",
+  "purpose": "Clinician-review candidates for deterministic Stage 4 care-urgency routing. This registry contains no patient data and is separate from condition evidence.",
+  "clinicalBoundary": "These candidates are not diagnoses. They must not be activated or evaluated in production until a qualified clinician reviews and approves each individual rule.",
+  "citations": [
+    {
+      "citationId": "nice_ng127_sudden_speech_language_referral",
+      "title": "Suspected neurological conditions: recognition and referral",
+      "url": "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16",
+      "sectionTitle": "1.13.1 Sudden-onset speech or language disturbance",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2019,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng127_rapid_symmetrical_weakness_referral",
+      "title": "Suspected neurological conditions: recognition and referral",
+      "url": "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16",
+      "sectionTitle": "1.7.2 Rapidly progressive symmetrical limb weakness; 1.10.2 rapidly progressive symmetrical numbness and weakness or imbalance",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2019,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng127_cauda_equina_immediate_referral",
+      "title": "Suspected neurological conditions: recognition and referral",
+      "url": "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16",
+      "sectionTitle": "1.7.3 Severe low back pain together with new bladder, bowel, sexual-function disturbance or perineal numbness",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2019,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng127_weakness_breathlessness_immediate_referral",
+      "title": "Suspected neurological conditions: recognition and referral",
+      "url": "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16",
+      "sectionTitle": "1.7.5 Slowly progressive limb or neck weakness with breathlessness at rest or when lying flat",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2019,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_cg95_possible_acs_emergency_referral",
+      "title": "Recent-onset chest pain of suspected cardiac origin: assessment and diagnosis",
+      "url": "https://www.nice.org.uk/guidance/cg95/chapter/Recommendations",
+      "sectionTitle": "1.2.1.3 to 1.2.1.7 Initial assessment and emergency referral for suspected acute coronary syndrome",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2010,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_qs185_sudden_hearing_loss_immediate_referral",
+      "title": "Hearing loss in adults",
+      "url": "https://www.nice.org.uk/guidance/qs185/chapter/Quality-statement-2-Sudden-onset-of-hearing-loss",
+      "sectionTitle": "Quality statement 2: Sudden onset of hearing loss; immediate referral within 24 hours when onset was within 30 days",
+      "publisher": "NICE",
+      "sourceType": "quality_standard",
+      "publishedYear": 2019,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng258_suspected_anaphylaxis_features",
+      "title": "Anaphylaxis: assessment and referral after emergency treatment",
+      "url": "https://www.nice.org.uk/guidance/ng258/chapter/Documenting-suspected-anaphylaxis",
+      "sectionTitle": "1.1.1 Acute clinical features of suspected anaphylaxis",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2026,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng143_child_fever_red_features",
+      "title": "Fever in under 5s: assessment and initial management",
+      "url": "https://www.nice.org.uk/guidance/ng143/chapter/recommendations",
+      "sectionTitle": "Table 2: red features; 1.3.2 to 1.3.4 remote assessment and referral",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2019,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng126_early_pregnancy_pain_bleeding_emergency_referral",
+      "title": "Ectopic pregnancy and miscarriage: diagnosis and initial management",
+      "url": "https://www.nice.org.uk/guidance/ng126/chapter/symptoms-and-signs-of-ectopic-pregnancy-and-initial-assessment",
+      "sectionTitle": "1.4.1 and 1.4.3: pain or bleeding in early pregnancy; direct A&E referral when unstable or when there is significant concern",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2019,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng51_suspected_sepsis_high_risk_outside_hospital",
+      "title": "Suspected sepsis: recognition, diagnosis and early management",
+      "url": "https://www.nice.org.uk/guidance/ng51/resources/sepsis-recognition-diagnosis-and-earlymanagement-1837508256709",
+      "sectionTitle": "Risk stratification and 1.6: managing suspected sepsis outside acute hospital settings",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2016,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_cg141_severe_upper_gi_bleeding_immediate_management",
+      "title": "Acute upper gastrointestinal bleeding in over 16s: management",
+      "url": "https://www.nice.org.uk/guidance/cg141/chapter/Recommendations",
+      "sectionTitle": "1.2 Resuscitation and initial management; 1.3.1 immediate endoscopy after resuscitation for unstable severe acute upper gastrointestinal bleeding",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2012,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng17_sudden_vision_loss_emergency_ophthalmology",
+      "title": "Type 1 diabetes in adults: diagnosis and management",
+      "url": "https://www.nice.org.uk/guidance/ng17/chapter/recommendations",
+      "sectionTitle": "1.14.7 Eye disease: emergency ophthalmology review for sudden loss of vision",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2015,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    },
+    {
+      "citationId": "nice_ng225_self_harm_urgent_emergency_mental_health",
+      "title": "Self-harm: assessment, management and preventing recurrence",
+      "url": "https://www.nice.org.uk/guidance/ng225/chapter/recommendations",
+      "sectionTitle": "1.7.12 to 1.7.14 and 1.7.26: immediate safety concerns and referral to urgent and emergency mental health services",
+      "publisher": "NICE",
+      "sourceType": "clinical_guideline",
+      "publishedYear": 2022,
+      "lastCheckedAt": "2026-09-07",
+      "sourceStatus": "source_verified"
+    }
+  ],
+  "rules": [
+    {
+      "safetyRuleId": "adult_sudden_speech_or_language_disturbance",
+      "title": "Sudden speech or language disturbance",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.speech_or_language_disturbance",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.onset_timing",
+              "operator": "contains_any",
+              "values": ["sudden", "within_hours"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your confirmed symptom pattern needs immediate in-person assessment. Do not delay seeking care in order to obtain laboratory tests or a HealthWise recommendation.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng127_sudden_speech_language_referral"],
+      "excludedFromLlmEvaluation": true,
+      "review": {
+        "clinicalReviewStatus": "approved",
+        "reviewedBy": "user_designated_clinical_reviewer",
+        "reviewedAt": "2026-09-07",
+        "notes": ["Approved by the designated project reviewer. Confirm local emergency-service instructions before public deployment."]
+      }
+    },
+    {
+      "safetyRuleId": "adult_rapid_symmetrical_neurological_change",
+      "title": "Rapidly progressive symmetrical weakness, numbness or imbalance",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.symmetrical_limb_weakness",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.progression_timing",
+              "operator": "contains_any",
+              "values": ["within_four_weeks"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.symmetrical_numbness_with_weakness_or_imbalance",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.progression_timing",
+              "operator": "contains_any",
+              "values": ["within_hours", "within_days"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your confirmed symptom pattern needs immediate in-person assessment. Do not delay seeking care in order to obtain laboratory tests or a HealthWise recommendation.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng127_rapid_symmetrical_weakness_referral"],
+      "excludedFromLlmEvaluation": true,
+      "review": {
+        "clinicalReviewStatus": "approved",
+        "reviewedBy": "user_designated_clinical_reviewer",
+        "reviewedAt": "2026-09-07",
+        "notes": ["Approved by the designated project reviewer. Confirm the interpretation of user-reported symmetry, weakness, numbness, and imbalance before public deployment."]
+      }
+    },
+    {
+      "safetyRuleId": "adult_back_pain_with_cauda_equina_features",
+      "title": "Severe radiating back pain with new cauda-equina features",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.severe_low_back_pain_radiating_to_leg",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.new_bladder_bowel_or_sexual_function_disturbance",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.severe_low_back_pain_radiating_to_leg",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.new_perineal_numbness",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your confirmed symptom pattern needs immediate in-person assessment. Do not delay seeking care in order to obtain laboratory tests or a HealthWise recommendation.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng127_cauda_equina_immediate_referral"],
+      "excludedFromLlmEvaluation": true,
+      "review": {
+        "clinicalReviewStatus": "approved",
+        "reviewedBy": "user_designated_clinical_reviewer",
+        "reviewedAt": "2026-09-07",
+        "notes": ["Approved by the designated project reviewer. Confirm local wording and reliable capture of all required features before public deployment."]
+      }
+    },
+    {
+      "safetyRuleId": "adult_progressive_weakness_with_rest_breathlessness",
+      "title": "Progressive weakness with breathlessness at rest or lying flat",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.progressive_limb_or_neck_weakness",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.breathlessness_at_rest_or_lying_flat",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your confirmed symptom pattern needs immediate in-person assessment. Do not delay seeking care in order to obtain laboratory tests or a HealthWise recommendation.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng127_weakness_breathlessness_immediate_referral"],
+      "excludedFromLlmEvaluation": true,
+      "review": {
+        "clinicalReviewStatus": "approved",
+        "reviewedBy": "user_designated_clinical_reviewer",
+        "reviewedAt": "2026-09-07",
+        "notes": ["Approved by the designated project reviewer. Confirm local wording and accessibility of breathlessness questions before public deployment."]
+      }
+    },
+    {
+      "safetyRuleId": "adult_current_chest_pain_with_possible_acs_features",
+      "title": "Current chest pain with possible acute-coronary-syndrome features",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.current_chest_pain_or_discomfort",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.possible_acs_feature",
+              "operator": "contains_any",
+              "values": ["pain_over_fifteen_minutes", "pain_in_arm_back_or_jaw", "nausea_or_vomiting", "marked_sweating", "breathlessness", "haemodynamic_instability"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your confirmed chest-pain pattern needs immediate in-person assessment. Do not delay transfer or seek laboratory testing first.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_cg95_possible_acs_emergency_referral"],
+      "excludedFromLlmEvaluation": true,
+      "review": {
+        "clinicalReviewStatus": "approved",
+        "reviewedBy": "clinician_reviewed_user_approved",
+        "reviewedAt": "2026-09-07",
+        "notes": ["Approved following clinician review. Implement clinician-approved Stage 3 confirmation questions before runtime use."]
+      }
+    },
+    {
+      "safetyRuleId": "adult_recent_sudden_hearing_loss",
+      "title": "Sudden hearing loss within the past 30 days",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.sudden_hearing_loss",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.hearing_loss_onset_timing",
+              "operator": "contains_any",
+              "values": ["within_three_days_and_within_thirty_days"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.external_or_middle_ear_explanation",
+              "operator": "equals",
+              "values": ["not_known_or_not_present"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "urgent_same_day",
+        "action": "seek_same_day_in_person_assessment",
+        "message": "Your confirmed hearing-change pattern needs immediate specialist medical assessment. Do not wait for a HealthWise test recommendation.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_qs185_sudden_hearing_loss_immediate_referral"],
+      "excludedFromLlmEvaluation": true,
+      "review": {
+        "clinicalReviewStatus": "approved",
+        "reviewedBy": "clinician_reviewed_user_approved",
+        "reviewedAt": "2026-09-07",
+        "notes": ["Approved following clinician review. Preserve the distinction between sudden and other hearing changes in runtime questions."]
+      }
+    },
+    {
+      "safetyRuleId": "adult_rapidly_developing_anaphylaxis_features",
+      "title": "Rapidly developing airway, breathing or circulation features after a possible allergen exposure",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {
+              "factRef": "stage3.finalizedSymptomFacts.rapidly_developing_airway_breathing_or_circulation_problem",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            },
+            {
+              "factRef": "stage3.finalizedSymptomFacts.possible_recent_allergen_exposure",
+              "operator": "equals",
+              "values": ["present"],
+              "requiredUserConfirmation": true
+            }
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your confirmed rapidly developing symptom pattern needs immediate emergency assessment. Do not delay care to obtain laboratory tests or a HealthWise recommendation.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng258_suspected_anaphylaxis_features"],
+      "excludedFromLlmEvaluation": true,
+      "review": {
+        "clinicalReviewStatus": "approved",
+        "reviewedBy": "clinician_reviewed_user_approved",
+        "reviewedAt": "2026-09-07",
+        "notes": ["Approved following clinician review. Use clinician-approved confirmation wording for airway, breathing, circulation and exposure facts."]
+      }
+    },
+    {
+      "safetyRuleId": "child_under_five_fever_with_non_blanching_rash",
+      "title": "Fever with a non-blanching rash in a child under 5",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "children_under_5",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {"factRef": "stage3.finalizedSymptomFacts.fever", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true},
+            {"factRef": "stage3.finalizedSymptomFacts.non_blanching_rash", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true}
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "A child with confirmed fever and a non-blanching rash needs urgent in-person medical assessment. Do not wait for laboratory-test recommendations.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng143_child_fever_red_features"],
+      "excludedFromLlmEvaluation": true,
+      "review": {"clinicalReviewStatus": "approved", "reviewedBy": "clinician_reviewed_user_approved", "reviewedAt": "2026-09-07", "notes": ["Approved following clinician review. Preserve child-age capture, rash explanation and local emergency wording."]}
+    },
+    {
+      "safetyRuleId": "pregnancy_with_significant_pain_or_bleeding",
+      "title": "Possible or confirmed pregnancy with significant pain or bleeding",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "pregnant_or_recently_pregnant",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {"factRef": "stage3.finalizedSymptomFacts.possible_or_confirmed_pregnancy", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true},
+            {"factRef": "stage3.finalizedSymptomFacts.significant_abdominal_or_pelvic_pain_or_vaginal_bleeding", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true}
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Confirmed pregnancy-related pain or bleeding can need urgent assessment. Seek immediate in-person medical care rather than waiting for testing recommendations.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng126_early_pregnancy_pain_bleeding_emergency_referral"],
+      "excludedFromLlmEvaluation": true,
+      "review": {"clinicalReviewStatus": "approved", "reviewedBy": "clinician_reviewed_user_approved", "reviewedAt": "2026-09-07", "notes": ["Approved following clinician review. Implement the clinician-approved user-facing confirmation questions for pain and bleeding."]}
+    },
+    {
+      "safetyRuleId": "adult_possible_infection_with_high_risk_features",
+      "title": "Possible infection with high-risk deterioration features",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {"factRef": "stage3.finalizedSymptomFacts.possible_infection", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true},
+            {"factRef": "stage3.finalizedSymptomFacts.high_risk_infection_feature", "operator": "contains_any", "values": ["blue_or_mottled_skin", "non_blanching_rash", "not_passed_urine_for_18_hours"], "requiredUserConfirmation": true}
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your confirmed infection-related symptom pattern needs immediate in-person assessment. Do not wait for a HealthWise recommendation or laboratory tests.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng51_suspected_sepsis_high_risk_outside_hospital"],
+      "excludedFromLlmEvaluation": true,
+      "review": {"clinicalReviewStatus": "approved", "reviewedBy": "clinician_reviewed_user_approved", "reviewedAt": "2026-09-07", "notes": ["Approved following clinician review. This remains a routing rule and must not substitute for professional sepsis assessment or NEWS2."]}
+    },
+    {
+      "safetyRuleId": "adult_possible_upper_gi_bleeding_with_instability",
+      "title": "Possible upper gastrointestinal bleeding with instability features",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {"factRef": "stage3.finalizedSymptomFacts.possible_upper_gastrointestinal_bleeding", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true},
+            {"factRef": "stage3.finalizedSymptomFacts.instability_feature", "operator": "contains_any", "values": ["fainting_or_collapse", "confusion", "marked_weakness_or_dizziness"], "requiredUserConfirmation": true}
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your confirmed bleeding-related symptom pattern needs immediate in-person assessment. Do not wait for outpatient tests or a HealthWise recommendation.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_cg141_severe_upper_gi_bleeding_immediate_management"],
+      "excludedFromLlmEvaluation": true,
+      "review": {"clinicalReviewStatus": "approved", "reviewedBy": "clinician_reviewed_user_approved", "reviewedAt": "2026-09-07", "notes": ["Approved following clinician review. Use clinician-approved user-facing definitions of upper gastrointestinal bleeding and instability."]}
+    },
+    {
+      "safetyRuleId": "adult_type_1_diabetes_with_sudden_vision_loss",
+      "title": "Sudden vision loss in an adult with type 1 diabetes",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "adults_16_and_over",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {"factRef": "stage3.finalizedSymptomFacts.type_1_diabetes", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true},
+            {"factRef": "stage3.finalizedSymptomFacts.sudden_vision_loss", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true}
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Sudden vision loss needs emergency eye assessment. Do not wait for laboratory tests or a HealthWise recommendation.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng17_sudden_vision_loss_emergency_ophthalmology"],
+      "excludedFromLlmEvaluation": true,
+      "review": {"clinicalReviewStatus": "approved", "reviewedBy": "clinician_reviewed_user_approved", "reviewedAt": "2026-09-07", "notes": ["Approved following clinician review. This rule remains limited to adults with type 1 diabetes and must not be generalized."]}
+    },
+    {
+      "safetyRuleId": "self_harm_with_immediate_safety_concern",
+      "title": "Self-harm with an immediate safety concern",
+      "status": "approved",
+      "runtimeEligible": true,
+      "appliesTo": "all_ages",
+      "triggerAlternatives": [
+        {
+          "allOf": [
+            {"factRef": "stage3.finalizedSymptomFacts.self_harm_has_occurred", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true},
+            {"factRef": "stage3.finalizedSymptomFacts.immediate_safety_concern", "operator": "equals", "values": ["present"], "requiredUserConfirmation": true}
+          ]
+        }
+      ],
+      "disposition": {
+        "level": "emergency_now",
+        "action": "seek_immediate_in_person_assessment",
+        "message": "Your safety matters. Please seek immediate in-person emergency or crisis support now, rather than continuing with a HealthWise review.",
+        "blocksBasicInvestigationRecommendations": true
+      },
+      "citationRefs": ["nice_ng225_self_harm_urgent_emergency_mental_health"],
+      "excludedFromLlmEvaluation": true,
+      "review": {"clinicalReviewStatus": "approved", "reviewedBy": "clinician_reviewed_user_approved", "reviewedAt": "2026-09-07", "notes": ["Approved following clinician review. Runtime requires an approved safeguarding protocol, local crisis contacts, age-appropriate handling and a non-LLM confirmation flow."]}
+    }
+  ]
+}

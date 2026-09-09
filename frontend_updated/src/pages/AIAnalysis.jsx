@@ -11,6 +11,8 @@ export default function AIAnalysis() {
   );
   const hasRunPipeline = useRef(false);
   const [pipelineError, setPipelineError] = useState("");
+  const [safetyBlock, setSafetyBlock] = useState(null);
+  const [evidenceUnavailable, setEvidenceUnavailable] = useState(false);
   const [retryToken, setRetryToken] = useState(0);
 
   const incomingPayload = location.state?.payload;
@@ -51,6 +53,8 @@ export default function AIAnalysis() {
     if (hasRunPipeline.current) return;
     hasRunPipeline.current = true;
     setPipelineError("");
+    setSafetyBlock(null);
+    setEvidenceUnavailable(false);
 
     const startPipelineExecution = async () => {
       try {
@@ -124,6 +128,14 @@ export default function AIAnalysis() {
       } catch (err) {
         console.error("API Pipeline Error:", err);
         hasRunPipeline.current = false;
+        if (err?.status === 409 && (err?.detail?.code === "SAFETY_RULE_MATCHED" || err?.detail?.status === "SAFETY_RULE_MATCHED")) {
+          setSafetyBlock(err.detail);
+          return;
+        }
+        if (err?.detail?.code === "EVIDENCE_UNAVAILABLE") {
+          setEvidenceUnavailable(true);
+          return;
+        }
         setPipelineError(
           err.message ||
             "The recommendation service is unavailable. Please try again.",
@@ -171,6 +183,20 @@ export default function AIAnalysis() {
                 Back to assessment
               </button>
             </div>
+          </div>
+        )}
+        {safetyBlock && (
+          <div role="alert" className="rounded-2xl border border-amber-400/40 bg-amber-400/10 p-5 space-y-3">
+            <p className="text-sm font-black uppercase tracking-wide text-amber-300">Safety review required</p>
+            <p className="text-sm leading-6 text-amber-100">{safetyBlock.message || "Your answers need an appropriate healthcare safety review before this educational recommendation flow can continue."}</p>
+            <button onClick={() => navigate("/assessment/profile")} className="rounded-xl border border-amber-300/50 px-4 py-2 text-xs font-bold text-amber-100">Return to assessment</button>
+          </div>
+        )}
+        {evidenceUnavailable && (
+          <div role="status" className="rounded-2xl border border-amber-400/40 bg-amber-400/10 p-5 space-y-3">
+            <p className="text-sm font-black text-amber-200">Evidence unavailable</p>
+            <p className="text-sm leading-6 text-amber-100">A citation-supported review could not be prepared, so no recommendation has been generated.</p>
+            <button onClick={() => navigate("/assessment/profile")} className="rounded-xl border border-amber-300/50 px-4 py-2 text-xs font-bold text-amber-100">Return to assessment</button>
           </div>
         )}
         <div className="text-center space-y-2">

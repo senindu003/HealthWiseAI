@@ -2,7 +2,26 @@ const AI_BASE_URL = import.meta.env.VITE_AI_API_URL || "http://127.0.0.1:8000/ap
 const SPRING_BASE_URL = import.meta.env.VITE_SPRING_API_URL || "http://127.0.0.1:8080/api/v1";
 
 export class ApiError extends Error {
-  constructor(message, status) { super(message); this.status = status; }
+  constructor(message, status, detail = null) { super(message); this.status = status; this.detail = detail; }
+}
+
+function readableApiError(body, fallback) {
+  const detail = body?.message || body?.detail;
+  if (typeof detail === "string" && detail.trim()) return detail;
+  if (Array.isArray(detail)) {
+    const messages = detail
+      .map((item) => {
+        if (typeof item === "string") return item;
+        if (!item || typeof item !== "object") return null;
+        const field = Array.isArray(item.loc)
+          ? item.loc.filter((part) => part !== "body").join(".")
+          : "";
+        return field ? `${field}: ${item.msg || "is invalid"}` : item.msg;
+      })
+      .filter(Boolean);
+    if (messages.length) return messages.join(" ");
+  }
+  return fallback;
 }
 
 async function request(url, options = {}) {
@@ -13,8 +32,9 @@ async function request(url, options = {}) {
     return text ? JSON.parse(text) : null;
   }
   let message = "The request could not be completed.";
-  try { const body = await response.json(); message = body.message || body.detail || message; } catch { /* non-JSON error */ }
-  throw new ApiError(message, response.status);
+  let body = null;
+  try { body = await response.json(); message = readableApiError(body, message); } catch { /* non-JSON error */ }
+  throw new ApiError(message, response.status, body?.detail || body);
 }
 
 function authHeaders(extra = {}) {
@@ -24,6 +44,10 @@ function authHeaders(extra = {}) {
 
 export const generateRecommendations = (questionnaire) => request(`${AI_BASE_URL}/recommendations`, {
   method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(questionnaire),
+});
+
+export const sendSymptomChatTurn = (payload) => request(`${AI_BASE_URL}/symptom-chat/turn`, {
+  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
 });
 
 export const analyzeReports = (reportFiles, questionnaire) => {
@@ -40,14 +64,16 @@ export const saveQuestionnaire = (questionnaire) => request(`${SPRING_BASE_URL}/
 });
 
 export const saveRecommendation = async ({ questionnaire, aiResponse }) => {
+  if (!aiResponse?.validationToken) {
+    throw new ApiError("This recommendation result has not passed evidence validation and cannot be saved.", 422);
+  }
   const savedQuestionnaire = await saveQuestionnaire(questionnaire);
   return request(`${SPRING_BASE_URL}/recommendations`, {
     method: "POST",
     headers: authHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify({
       questionnaireId: savedQuestionnaire.id,
-      summary: aiResponse.summary,
-      recommendations: aiResponse.recommendations || [],
+      stage4ValidationToken: aiResponse.validationToken,
     }),
   });
 };
@@ -81,6 +107,13 @@ export const getReportFile = async (reportId, reportName = "laboratory-report.pd
 
 export const deleteReport = (reportId) => request(`${SPRING_BASE_URL}/reports/${reportId}`, {
   method: "DELETE", headers: authHeaders(),
+});
+
+// One overwriteable baseline per user. Stage 3 is deliberately excluded.
+export const saveBaseline = ({ stage1, stage2 }) => request(`${SPRING_BASE_URL}/questionnaires/baseline`, {
+  method: "PUT",
+  headers: authHeaders({ "Content-Type": "application/json" }),
+  body: JSON.stringify({ questionnaire: { stage1, stage2 } }),
 });
 
 export const saveAnalysis = ({ recommendationId, reportIds, analysisType, complete, analysis }) =>

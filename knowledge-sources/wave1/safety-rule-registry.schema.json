@@ -1,0 +1,343 @@
+{
+  "$defs": {
+    "SafetyCitation": {
+      "additionalProperties": false,
+      "properties": {
+        "citationId": {
+          "minLength": 3,
+          "title": "Citationid",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 3,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "sectionTitle": {
+          "minLength": 3,
+          "title": "Sectiontitle",
+          "type": "string"
+        },
+        "publisher": {
+          "minLength": 2,
+          "title": "Publisher",
+          "type": "string"
+        },
+        "sourceType": {
+          "enum": [
+            "clinical_guideline",
+            "quality_standard"
+          ],
+          "title": "Sourcetype",
+          "type": "string"
+        },
+        "publishedYear": {
+          "maximum": 2100,
+          "minimum": 1900,
+          "title": "Publishedyear",
+          "type": "integer"
+        },
+        "lastCheckedAt": {
+          "format": "date",
+          "title": "Lastcheckedat",
+          "type": "string"
+        },
+        "sourceStatus": {
+          "const": "source_verified",
+          "title": "Sourcestatus",
+          "type": "string"
+        }
+      },
+      "required": [
+        "citationId",
+        "title",
+        "url",
+        "sectionTitle",
+        "publisher",
+        "sourceType",
+        "publishedYear",
+        "lastCheckedAt",
+        "sourceStatus"
+      ],
+      "title": "SafetyCitation",
+      "type": "object"
+    },
+    "SafetyCriterion": {
+      "additionalProperties": false,
+      "properties": {
+        "factRef": {
+          "pattern": "^stage3\\.finalizedSymptomFacts\\.[a-z][a-z0-9_]*$",
+          "title": "Factref",
+          "type": "string"
+        },
+        "operator": {
+          "enum": [
+            "equals",
+            "contains_any"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Values",
+          "type": "array"
+        },
+        "requiredUserConfirmation": {
+          "const": true,
+          "title": "Requireduserconfirmation",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "factRef",
+        "operator",
+        "values",
+        "requiredUserConfirmation"
+      ],
+      "title": "SafetyCriterion",
+      "type": "object"
+    },
+    "SafetyDisposition": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "enum": [
+            "emergency_now",
+            "urgent_same_day",
+            "routine_clinician_review",
+            "insufficient_information"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "action": {
+          "enum": [
+            "seek_immediate_in_person_assessment",
+            "seek_same_day_in_person_assessment"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 500,
+          "minLength": 20,
+          "title": "Message",
+          "type": "string"
+        },
+        "blocksBasicInvestigationRecommendations": {
+          "title": "Blocksbasicinvestigationrecommendations",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "level",
+        "action",
+        "message",
+        "blocksBasicInvestigationRecommendations"
+      ],
+      "title": "SafetyDisposition",
+      "type": "object"
+    },
+    "SafetyReview": {
+      "additionalProperties": false,
+      "properties": {
+        "clinicalReviewStatus": {
+          "enum": [
+            "pending_clinical_review",
+            "approved",
+            "rejected"
+          ],
+          "title": "Clinicalreviewstatus",
+          "type": "string"
+        },
+        "reviewedBy": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewedby"
+        },
+        "reviewedAt": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewedat"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "clinicalReviewStatus",
+        "reviewedBy",
+        "reviewedAt"
+      ],
+      "title": "SafetyReview",
+      "type": "object"
+    },
+    "SafetyRule": {
+      "additionalProperties": false,
+      "properties": {
+        "safetyRuleId": {
+          "pattern": "^[a-z][a-z0-9_]+$",
+          "title": "Safetyruleid",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 5,
+          "title": "Title",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "approved",
+            "retired"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "runtimeEligible": {
+          "title": "Runtimeeligible",
+          "type": "boolean"
+        },
+        "appliesTo": {
+          "enum": [
+            "adults_16_and_over",
+            "children_under_5",
+            "pregnant_or_recently_pregnant",
+            "all_ages"
+          ],
+          "title": "Appliesto",
+          "type": "string"
+        },
+        "triggerAlternatives": {
+          "items": {
+            "$ref": "#/$defs/SafetyTriggerAlternative"
+          },
+          "minItems": 1,
+          "title": "Triggeralternatives",
+          "type": "array"
+        },
+        "disposition": {
+          "$ref": "#/$defs/SafetyDisposition"
+        },
+        "citationRefs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Citationrefs",
+          "type": "array"
+        },
+        "excludedFromLlmEvaluation": {
+          "const": true,
+          "title": "Excludedfromllmevaluation",
+          "type": "boolean"
+        },
+        "review": {
+          "$ref": "#/$defs/SafetyReview"
+        }
+      },
+      "required": [
+        "safetyRuleId",
+        "title",
+        "status",
+        "runtimeEligible",
+        "appliesTo",
+        "triggerAlternatives",
+        "disposition",
+        "citationRefs",
+        "excludedFromLlmEvaluation",
+        "review"
+      ],
+      "title": "SafetyRule",
+      "type": "object"
+    },
+    "SafetyTriggerAlternative": {
+      "additionalProperties": false,
+      "properties": {
+        "allOf": {
+          "items": {
+            "$ref": "#/$defs/SafetyCriterion"
+          },
+          "minItems": 1,
+          "title": "Allof",
+          "type": "array"
+        }
+      },
+      "required": [
+        "allOf"
+      ],
+      "title": "SafetyTriggerAlternative",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0",
+      "title": "Schemaversion",
+      "type": "string"
+    },
+    "purpose": {
+      "minLength": 20,
+      "title": "Purpose",
+      "type": "string"
+    },
+    "clinicalBoundary": {
+      "minLength": 20,
+      "title": "Clinicalboundary",
+      "type": "string"
+    },
+    "citations": {
+      "items": {
+        "$ref": "#/$defs/SafetyCitation"
+      },
+      "minItems": 1,
+      "title": "Citations",
+      "type": "array"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/SafetyRule"
+      },
+      "minItems": 1,
+      "title": "Rules",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "purpose",
+    "clinicalBoundary",
+    "citations",
+    "rules"
+  ],
+  "title": "SafetyRuleRegistry",
+  "type": "object"
+}

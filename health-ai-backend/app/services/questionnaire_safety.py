@@ -30,7 +30,7 @@ _PROMPT_INJECTION_PATTERNS = (
 _ALLOWED_SEX_VALUES = {"male", "female", "prefer_not"}
 _ALLOWED_PREGNANCY_VALUES = {"yes", "no", "unsure", "prefer not"}
 _ALLOWED_ACTIVITY_VALUES = {"none", "1-2 days", "3-4 days", "5+ days"}
-_MAX_FREE_TEXT_LENGTH = 500
+_MAX_FREE_TEXT_LENGTH = 1200
 _MAX_LIST_ITEMS = 40
 
 
@@ -76,7 +76,17 @@ def validate_questionnaire_for_recommendations(questionnaire: QuestionnaireReque
     if not questionnaire.stage3.selected_symptoms:
         raise UnsafeQuestionnaireError("Safety check: select at least one current symptom before requesting recommendations.")
 
-    _validate_untrusted_text(questionnaire.as_clinical_context())
+    stage3_extra = questionnaire.stage3.model_extra or {}
+    if "chatHistory" in stage3_extra or "currentConcern" in stage3_extra:
+        completion = stage3_extra.get("symptomChatCompletion")
+        if not isinstance(completion, Mapping) or not (
+            completion.get("continueAllowed") is True and completion.get("chatClosed") is True
+        ):
+            raise UnsafeQuestionnaireError(
+                "Safety check: complete the server-controlled symptom clarification chat before requesting recommendations."
+            )
+
+    validate_untrusted_health_text(questionnaire.as_clinical_context())
 
 
 def _require_range(label: str, value: float, *, minimum: float, maximum: float) -> None:
@@ -95,7 +105,7 @@ def _require_profile_value(label: str, value: float | None, *, minimum: float, m
     _require_range(label, value, minimum=minimum, maximum=maximum)
 
 
-def _validate_untrusted_text(value: Any) -> None:
+def validate_untrusted_health_text(value: Any) -> None:
     """Bound arbitrary JSON and reject instruction-like text before prompt construction."""
 
     if isinstance(value, str):
@@ -110,7 +120,7 @@ def _validate_untrusted_text(value: Any) -> None:
         return
     if isinstance(value, Mapping):
         for item in value.values():
-            _validate_untrusted_text(item)
+            validate_untrusted_health_text(item)
         return
     if isinstance(value, Sequence) and not isinstance(value, (bytes, bytearray)):
         if len(value) > _MAX_LIST_ITEMS:
@@ -118,4 +128,4 @@ def _validate_untrusted_text(value: Any) -> None:
                 "Safety check: a questionnaire list contains too many entries. Please provide only relevant health information."
             )
         for item in value:
-            _validate_untrusted_text(item)
+            validate_untrusted_health_text(item)

@@ -6,6 +6,8 @@ from collections.abc import Callable
 from functools import lru_cache
 from typing import Any, TypeVar
 
+from pydantic import BaseModel
+
 from langchain_deepseek import ChatDeepSeek
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
@@ -38,6 +40,23 @@ def get_evaluator_llm() -> ChatGoogleGenerativeAI:
         api_key=api_key,
         temperature=settings.gemini_temperature,
         max_output_tokens=settings.gemini_max_output_tokens,
+        request_timeout=settings.gemini_timeout_seconds,
+        retries=settings.llm_max_retries,
+    )
+
+
+@lru_cache
+def get_symptom_chat_llm() -> ChatGoogleGenerativeAI:
+    """Return the constrained Gemini client used only for Stage 3 clarification."""
+
+    settings: Settings = get_settings()
+    api_key = _required_secret(settings.google_api_key.get_secret_value(), "GOOGLE_API_KEY")
+    logger.info("Initializing Gemini symptom-chat model '%s'", settings.symptom_chat_gemini_model)
+    return ChatGoogleGenerativeAI(
+        model=settings.symptom_chat_gemini_model,
+        api_key=api_key,
+        temperature=0.1,
+        max_output_tokens=settings.symptom_chat_max_output_tokens,
         request_timeout=settings.gemini_timeout_seconds,
         retries=settings.llm_max_retries,
     )
@@ -137,6 +156,31 @@ async def invoke_structured(
         except Exception as fallback_error:
             logger.error("DeepSeek fallback also failed after %d attempts.", settings.llm_max_retries)
             raise RuntimeError("No configured LLM could produce valid structured output") from fallback_error
+
+
+async def invoke_structured_once(
+    prompt: str,
+    schema: type[ModelT],
+    llm_factory: LLMFactory,
+) -> ModelT:
+    """Make one native structured-output call and validate it with Pydantic.
+
+    This is intentionally separate from ``invoke_structured``. It is for flows
+    such as Stage 3 where product behaviour requires exactly one LLM request,
+    with no parser retry and no provider fallback.
+    """
+
+    if not isinstance(prompt, str) or not prompt.strip():
+        raise ValueError("prompt must be non-empty text")
+    if not isinstance(schema, type) or not issubclass(schema, BaseModel):
+        raise TypeError("schema must be a Pydantic model class")
+
+    model = llm_factory()
+    structured_model = model.with_structured_output(schema, method="json_schema")
+    result = await structured_model.ainvoke(prompt)
+    if isinstance(result, schema):
+        return result
+    return schema.model_validate(result)
 
 
 async def _invoke_with_retries(

@@ -21,11 +21,19 @@ except ModuleNotFoundError:  # Allows JSON dry-run validation before dependencie
 from app.config import Settings
 
 
+ACTIVE_REGISTRY_FILENAME = "citation-registry.wave1.full-tree-expanded.json"
+ACTIVE_EVIDENCE_FILENAME = "condition-evidence.wave1.full-tree-expanded.json"
+CANDIDATE_MAPPING_FILENAME = "knowledge-sources/wave1/symptom-evidence-candidates.wave1.json"
+REVIEWED_MAPPING_FILENAME = "knowledge-sources/wave1/reviewed-symptom-evidence-mappings.wave1.json"
+
+
 @dataclass(frozen=True)
 class Bundle:
     catalogue: dict[str, Any]
     registry: dict[str, Any]
     evidence: dict[str, Any]
+    candidate_symptom_evidence_mappings: dict[str, Any]
+    reviewed_symptom_evidence_mappings: dict[str, Any]
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -40,11 +48,15 @@ def load_and_validate_bundle(data_dir: Path) -> Bundle:
     """Load the three curated files and validate their cross-file references."""
 
     catalogue = _read_json(data_dir / "symptom-catalogue.v1.json")
-    registry = _read_json(data_dir / "citation-registry.wave1.nice-who.json")
-    evidence = _read_json(data_dir / "condition-evidence.wave1.json")
+    registry = _read_json(data_dir / ACTIVE_REGISTRY_FILENAME)
+    evidence = _read_json(data_dir / ACTIVE_EVIDENCE_FILENAME)
+    candidate_mappings = _read_json(data_dir / CANDIDATE_MAPPING_FILENAME)
+    reviewed_mappings = _read_json(data_dir / REVIEWED_MAPPING_FILENAME)
 
-    if evidence.get("sourceCitationRegistry") != "citation-registry.wave1.nice-who.json":
-        raise ValueError("condition evidence must reference citation-registry.wave1.nice-who.json")
+    if evidence.get("sourceCitationRegistry") != ACTIVE_REGISTRY_FILENAME:
+        raise ValueError(
+            f"condition evidence must reference {ACTIVE_REGISTRY_FILENAME}"
+        )
 
     symptom_ids = [item.get("symptomId") for item in catalogue.get("symptoms", [])]
     if not symptom_ids or len(symptom_ids) != len(set(symptom_ids)) or any(not item for item in symptom_ids):
@@ -87,7 +99,58 @@ def load_and_validate_bundle(data_dir: Path) -> Bundle:
                         )
     if set(registry_conditions) != {record.get("conditionId") for record in evidence.get("records", [])}:
         raise ValueError("registry and evidence must cover exactly the same condition IDs")
-    return Bundle(catalogue=catalogue, registry=registry, evidence=evidence)
+
+    symptom_id_set = set(symptom_ids)
+    evidence_by_id = {record.get("evidenceId"): record for record in evidence.get("records", [])}
+    candidate_ids: set[str] = set()
+    for mapping in candidate_mappings.get("mappings", []):
+        mapping_id = mapping.get("mappingId")
+        if not mapping_id or mapping_id in candidate_ids:
+            raise ValueError("candidate symptom-evidence mappings must have unique IDs")
+        candidate_ids.add(mapping_id)
+        if mapping.get("relationshipType") != "candidate_legacy_association":
+            raise ValueError(f"candidate mapping {mapping_id} has an unexpected relationship type")
+        review = mapping.get("review", {})
+        if review.get("runtimeEligible") is not False or review.get("clinicalReviewStatus") != "pending_clinical_review":
+            raise ValueError(f"candidate mapping {mapping_id} must remain non-runtime pending clinical review")
+        if mapping.get("symptomId") not in symptom_id_set:
+            raise ValueError(f"candidate mapping {mapping_id} references an unknown symptom")
+        evidence_record = evidence_by_id.get(mapping.get("evidenceId"))
+        if evidence_record is None or evidence_record.get("conditionId") != mapping.get("conditionId"):
+            raise ValueError(f"candidate mapping {mapping_id} does not match a Wave 1 evidence record")
+        known_refs = {ref.get("citationId") for ref in evidence_record.get("citationRefs", [])}
+        if not set(mapping.get("evidenceCitationRefs", [])).issubset(known_refs):
+            raise ValueError(f"candidate mapping {mapping_id} has citations not linked to its evidence record")
+    candidate_by_id = {mapping["mappingId"]: mapping for mapping in candidate_mappings.get("mappings", [])}
+    reviewed_ids: set[str] = set()
+    for mapping in reviewed_mappings.get("mappings", []):
+        mapping_id = mapping.get("mappingId")
+        if not mapping_id or mapping_id in reviewed_ids:
+            raise ValueError("reviewed symptom-evidence mappings must have unique IDs")
+        reviewed_ids.add(mapping_id)
+        candidate = candidate_by_id.get(mapping_id)
+        if candidate is None:
+            raise ValueError(f"reviewed mapping {mapping_id} has no candidate provenance record")
+        if mapping.get("relationshipType") != "reviewed_symptom_evidence":
+            raise ValueError(f"reviewed mapping {mapping_id} has an unexpected relationship type")
+        review = mapping.get("review", {})
+        if (
+            review.get("runtimeEligible") is not True
+            or review.get("clinicalReviewStatus") != "approved"
+            or not review.get("reviewedBy")
+            or not review.get("reviewedAt")
+        ):
+            raise ValueError(f"reviewed mapping {mapping_id} lacks explicit runtime clinical approval")
+        for key in ("symptomId", "conditionId", "evidenceId", "evidenceCitationRefs"):
+            if mapping.get(key) != candidate.get(key):
+                raise ValueError(f"reviewed mapping {mapping_id} differs from candidate provenance for {key}")
+    return Bundle(
+        catalogue=catalogue,
+        registry=registry,
+        evidence=evidence,
+        candidate_symptom_evidence_mappings=candidate_mappings,
+        reviewed_symptom_evidence_mappings=reviewed_mappings,
+    )
 
 
 def _slug(value: str) -> str:
@@ -123,12 +186,16 @@ class KnowledgeGraphImporter:
             self._import_separate_terms(session, bundle.catalogue)
             self._import_registry(session, bundle.registry)
             self._import_evidence(session, bundle.evidence)
+            self._import_candidate_symptom_evidence_mappings(session, bundle.candidate_symptom_evidence_mappings)
+            self._import_reviewed_symptom_evidence_mappings(session, bundle.reviewed_symptom_evidence_mappings)
         return {
             "symptoms": len(bundle.catalogue.get("symptoms", [])),
             "separateTerms": len(bundle.catalogue.get("termsRequiringSeparateModeling", [])),
             "conditions": len(bundle.registry.get("conditions", [])),
             "citations": sum(len(c.get("citations", [])) for c in bundle.registry.get("conditions", [])),
             "evidenceRecords": len(bundle.evidence.get("records", [])),
+            "candidateSymptomEvidenceMappings": len(bundle.candidate_symptom_evidence_mappings.get("mappings", [])),
+            "reviewedSymptomEvidenceMappings": len(bundle.reviewed_symptom_evidence_mappings.get("mappings", [])),
         }
 
     @staticmethod
@@ -346,4 +413,68 @@ class KnowledgeGraphImporter:
             MERGE (r)-[:SUPPORTED_BY]->(c)
             """,
             rows=recommendation_citation_rows,
+        ).consume()
+
+    @staticmethod
+    def _import_candidate_symptom_evidence_mappings(session: Any, registry: dict[str, Any]) -> None:
+        """Store legacy sparse-matrix associations as visibly non-runtime edges."""
+
+        rows = []
+        for mapping in registry.get("mappings", []):
+            review = mapping.get("review", {})
+            rows.append({
+                "mappingId": mapping["mappingId"],
+                "symptomId": mapping["symptomId"],
+                "evidenceId": mapping["evidenceId"],
+                "conditionId": mapping["conditionId"],
+                "sourcePrognosisLabels": mapping.get("sourcePrognosisLabels", []),
+                "observedPositiveRows": mapping.get("observedPositiveRows", 0),
+                "evidenceCitationRefs": mapping.get("evidenceCitationRefs", []),
+                "provenanceJson": json.dumps(mapping.get("provenance", {}), sort_keys=True),
+                "clinicalReviewStatus": review.get("clinicalReviewStatus"),
+                "runtimeEligible": False,
+                "reviewJson": json.dumps(review, sort_keys=True),
+            })
+        session.run(
+            """
+            UNWIND $rows AS row
+            MATCH (symptom:Symptom {symptomId: row.symptomId})
+            MATCH (evidence:EvidenceRecord {evidenceId: row.evidenceId})
+            MERGE (symptom)-[relation:CANDIDATE_LEGACY_ASSOCIATION {mappingId: row.mappingId}]->(evidence)
+            SET relation += row
+            """,
+            rows=rows,
+        ).consume()
+
+    @staticmethod
+    def _import_reviewed_symptom_evidence_mappings(session: Any, registry: dict[str, Any]) -> None:
+        """Import clinician-approved, runtime-eligible evidence navigation edges."""
+
+        rows = []
+        for mapping in registry.get("mappings", []):
+            review = mapping["review"]
+            rows.append({
+                "mappingId": mapping["mappingId"],
+                "symptomId": mapping["symptomId"],
+                "evidenceId": mapping["evidenceId"],
+                "conditionId": mapping["conditionId"],
+                "sourcePrognosisLabels": mapping.get("sourcePrognosisLabels", []),
+                "observedPositiveRows": mapping.get("observedPositiveRows", 0),
+                "evidenceCitationRefs": mapping.get("evidenceCitationRefs", []),
+                "provenanceJson": json.dumps(mapping.get("provenance", {}), sort_keys=True),
+                "clinicalReviewStatus": review["clinicalReviewStatus"],
+                "runtimeEligible": True,
+                "reviewedBy": review["reviewedBy"],
+                "reviewedAt": review["reviewedAt"],
+                "reviewJson": json.dumps(review, sort_keys=True),
+            })
+        session.run(
+            """
+            UNWIND $rows AS row
+            MATCH (symptom:Symptom {symptomId: row.symptomId})
+            MATCH (evidence:EvidenceRecord {evidenceId: row.evidenceId})
+            MERGE (symptom)-[relation:REVIEWED_SYMPTOM_EVIDENCE {mappingId: row.mappingId}]->(evidence)
+            SET relation += row
+            """,
+            rows=rows,
         ).consume()

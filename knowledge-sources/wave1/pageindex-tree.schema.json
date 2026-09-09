@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://healthwise.local/schemas/pageindex-tree.schema.json",
+  "title": "HealthWise PageIndex Source Tree",
+  "description": "A normalized, source-pinned navigation tree created from a public clinical source. It contains no patient data and does not itself constitute clinical evidence or recommendation logic.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "document", "generation", "tree", "validation"],
+  "properties": {
+    "schemaVersion": {"const": "1.0"},
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["documentId", "citationIds", "title", "sourceUrl", "contentHash", "pageCount", "sourceTier"],
+      "properties": {
+        "documentId": {"type": "string", "minLength": 1},
+        "citationIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "title": {"type": "string", "minLength": 1},
+        "sourceUrl": {"type": "string", "format": "uri"},
+        "contentHash": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+        "pageCount": {"type": "integer", "minimum": 1},
+        "sourceTier": {"enum": ["full_tree", "section_slice", "full_tree_html_rendered"]},
+        "sourceSelection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sourceAuditDocumentId", "originalPageRanges"],
+          "properties": {
+            "sourceAuditDocumentId": {"type": "string", "minLength": 1},
+            "originalPageRanges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["startPage", "endPage"],
+                "properties": {
+                  "startPage": {"type": "integer", "minimum": 1},
+                  "endPage": {"type": "integer", "minimum": 1}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine", "engineVersion", "indexModel", "pageIndexDocumentId", "generatedAt", "rawExportPath"],
+      "properties": {
+        "engine": {"const": "PageIndex"},
+        "engineVersion": {"type": "string", "minLength": 1},
+        "indexModel": {"const": "gpt-4o-mini"},
+        "pageIndexDocumentId": {"type": "string", "minLength": 1},
+        "generatedAt": {"type": "string", "format": "date-time"},
+        "rawExportPath": {"type": "string", "minLength": 1}
+        ,"indexingMode": {"enum": ["standard", "flash"]}
+      }
+    },
+    "tree": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/node"}
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "validatedAt", "normalizerVersion"],
+      "properties": {
+        "status": {"const": "validated"},
+        "validatedAt": {"type": "string", "format": "date-time"},
+        "normalizerVersion": {"const": "1.0"}
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodeId", "title", "pageLocator", "keyItems", "children"],
+      "properties": {
+        "nodeId": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "pageLocator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["startPage", "endPage"],
+          "properties": {
+            "startPage": {"type": "integer", "minimum": 1},
+            "endPage": {"type": "integer", "minimum": 1}
+          }
+        },
+        "summary": {"type": "string", "minLength": 1},
+        "keyItems": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "children": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/node"}
+        }
+      }
+    }
+  }
+}

@@ -62,6 +62,14 @@ tmp/
 temp/
 uploads/
 
+# Local licensed clinical-source cache and PageIndex runtime artifacts
+knowledge-sources/wave1/html/
+knowledge-sources/wave1/pdf/
+knowledge-sources/wave1/.pageindex/
+knowledge-sources/wave1/.pageindex-venv/
+knowledge-sources/wave1/pageindex-trees/
+knowledge-sources/wave1/slices/
+
 # Local database data and backups
 mongo-data/
 mongodb-data/

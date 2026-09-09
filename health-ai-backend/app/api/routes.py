@@ -9,10 +9,15 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, s
 from app.schemas.questionnaire import QuestionnaireRequest
 from app.schemas.response import RecommendationResponse
 from app.schemas.report import ReportAnalysisResponse, ReportAnalysisUploadRequest
+from app.schemas.symptom_chat import SymptomChatTurnRequest, SymptomChatTurnResponse
 from app.config import get_settings
 from app.knowledge_graph.client import get_knowledge_graph_status
+from app.knowledge_graph.safety_evaluator import SafetyRuleMatched
 from app.services.report_analysis_service import ReportAnalysisService, get_report_analysis_service
 from app.services.recommendation_service import RecommendationService, get_recommendation_service
+from app.services.symptom_chat_service import SymptomChatService, get_symptom_chat_service
+from app.services.stage4_result_signer import Stage4ResultSigner
+from app.services.stage4_evidence_bundle_service import GroundedEvidenceUnavailableError
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1", tags=["recommendations"])
@@ -50,6 +55,26 @@ async def knowledge_graph_status() -> dict[str, object]:
     return get_knowledge_graph_status()
 
 
+@router.post("/symptom-chat/turn", response_model=SymptomChatTurnResponse, status_code=status.HTTP_200_OK)
+async def symptom_chat_turn(
+    request: SymptomChatTurnRequest,
+    service: Annotated[SymptomChatService, Depends(get_symptom_chat_service)],
+) -> SymptomChatTurnResponse:
+    """Clarify Stage 3 symptoms under server-controlled safety and turn limits."""
+
+    try:
+        return await service.respond(request)
+    except ValueError as exc:
+        logger.warning("Invalid symptom-chat input: %s", exc)
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        logger.exception("Symptom chat generation failed")
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Unable to continue the symptom clarification chat at this time.",
+        ) from exc
+
+
 @router.post("/recommendations", response_model=RecommendationResponse, status_code=status.HTTP_200_OK)
 async def create_recommendations(
     questionnaire: QuestionnaireRequest,
@@ -58,7 +83,20 @@ async def create_recommendations(
     """Evaluate a questionnaire and return structured lab-test recommendations."""
 
     try:
-        return await service.recommend(questionnaire)
+        result = await service.recommend(questionnaire)
+        return result.model_copy(update={"validation_token": Stage4ResultSigner().sign(result)})
+    except SafetyRuleMatched as exc:
+        logger.warning("Recommendation generation blocked by safety rule(s): %s", [match.safety_rule_id for match in exc.result.matched_rules])
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=exc.result.as_api_detail(),
+        ) from exc
+    except GroundedEvidenceUnavailableError as exc:
+        logger.warning("Stage 4 evidence unavailable: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"code": "EVIDENCE_UNAVAILABLE", "message": "Citation-supported evidence is unavailable for this review. No recommendation was generated."},
+        ) from exc
     except (ValueError, TypeError) as exc:
         logger.warning("Invalid recommendation workflow input: %s", exc)
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc

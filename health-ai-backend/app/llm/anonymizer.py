@@ -109,3 +109,20 @@ def anonymize_report_markdown(markdown: str) -> str:
     sanitized = re.sub(r"(?im)^(patient|name|address|doctor|hospital)\s*:\s*[^\n]+", r"\1: <PII>", result.text)
     logger.info("Anonymized laboratory report before LLM processing; %d PII entities replaced", len(findings))
     return sanitized
+
+
+def anonymize_chat_text(text: str) -> str:
+    """Replace identifiable text before a symptom-chat message reaches an LLM."""
+
+    if not isinstance(text, str) or not text.strip():
+        raise ValueError("chat text must be non-empty")
+    try:
+        findings = _get_analyzer().analyze(text=text, entities=_TARGET_ENTITIES, language="en")
+        result = _get_anonymizer().anonymize(
+            text=text,
+            analyzer_results=findings,
+            operators={entity: OperatorConfig("replace", {"new_value": f"<{entity}>"}) for entity in _TARGET_ENTITIES},
+        )
+    except Exception as exc:
+        raise RuntimeError("Presidio anonymization failed; chat text was not sent to the LLM") from exc
+    return result.text

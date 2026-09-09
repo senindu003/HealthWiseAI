@@ -1,0 +1,273 @@
+{
+  "schemaVersion": "1.0",
+  "purpose": "Non-clinical citation-locator review queue generated from Wave 1 source structure inspection.",
+  "generatedAt": "2026-09-06T03:20:15.127966+00:00",
+  "items": [
+    {
+      "citationId": "who_dengue_lab_testing_2025",
+      "condition": "Dengue",
+      "title": "Laboratory testing for dengue virus: interim guidance, April 2025",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/B09394",
+      "registrySectionTitleOriginal": "Overview and diagnostic algorithm for suspected dengue cases",
+      "sourceDocument": "knowledge-sources/wave1/pdf/B09394-eng.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_varicella_position_paper_2025",
+      "condition": "Varicella (chickenpox)",
+      "title": "WHO position paper on varicella vaccines – November 2025",
+      "publisher": "WHO",
+      "url": "https://www.who.int/teams/immunization-vaccines-and-biologicals/policies/position-papers/varicella",
+      "registrySectionTitleOriginal": "WHO position paper on varicella vaccines – November 2025",
+      "sourceDocument": "knowledge-sources/wave1/pdf/WER10047-567-590.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_varicella_herpes_zoster_position_paper_2014",
+      "condition": "Varicella (chickenpox)",
+      "title": "Varicella and herpes zoster vaccines: WHO position paper, June 2014",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/who-wer-8925-265-288",
+      "registrySectionTitleOriginal": "Varicella disease and vaccine position",
+      "sourceDocument": "knowledge-sources/wave1/pdf/WER8925.PDF",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "nice_qs62_constipation_children_overview",
+      "condition": "Idiopathic constipation in children and young people",
+      "title": "Constipation in children and young people",
+      "publisher": "NICE",
+      "url": "https://www.nice.org.uk/guidance/qs62",
+      "registrySectionTitleOriginal": "Overview",
+      "sourceDocument": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_qs62_6db7659ac256.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_fungal_disease_blueprint_2026",
+      "condition": "Ringworm (tinea)",
+      "title": "Blueprint for strengthening responses to fungal disease and antifungal resistance",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/9789240122529",
+      "registrySectionTitleOriginal": "Overview — diagnostics and fungal disease response",
+      "sourceDocument": "knowledge-sources/wave1/pdf/9789240122529-eng.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [
+        {
+          "tocPath": [
+            "Executive summary",
+            "5.1 \tOverview"
+          ],
+          "tocHeading": "5.1 \tOverview",
+          "pdfPageStart": 24
+        }
+      ],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_cholera_surveillance_standards_2018",
+      "condition": "Cholera",
+      "title": "Vaccine-preventable diseases surveillance standards: Cholera",
+      "publisher": "WHO",
+      "url": "https://www.who.int/docs/default-source/immunization/vpd_surveillance/vpd-surveillance-standards-publication/b-w/who-surveillancevaccinepreventable-02-cholera-bw-r2.pdf",
+      "registrySectionTitleOriginal": "Laboratory diagnosis of cholera",
+      "sourceDocument": "knowledge-sources/wave1/pdf/www_who_int_docs_default_source_immunization_vpd_surveillance_vpd_surveillance_stand_1350718e80c3.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_pneumonia_diarrhoea_children_guideline_2024",
+      "condition": "Pneumonia",
+      "title": "Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/9789240103412",
+      "registrySectionTitleOriginal": "Diagnosis of children with pneumonia",
+      "sourceDocument": "knowledge-sources/wave1/pdf/9789240103412-eng.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_searo_chikungunya_clinical_management",
+      "condition": "Chikungunya fever",
+      "title": "Guidelines on Clinical Management of Chikungunya Fever",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/sea-cd-180",
+      "registrySectionTitleOriginal": "Guideline overview",
+      "sourceDocument": "knowledge-sources/wave1/pdf/B3234.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_influenza_clinical_practice_guideline_2024",
+      "condition": "Influenza",
+      "title": "Clinical practice guidelines for influenza",
+      "publisher": "WHO",
+      "url": "https://iris.who.int/bitstream/handle/10665/378872/9789240097759-eng.pdf",
+      "registrySectionTitleOriginal": "Clinical practice guidelines for influenza",
+      "sourceDocument": "knowledge-sources/wave1/pdf/9789240097759-eng.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [
+        {
+          "tocPath": [
+            "1. Executive summary",
+            "1.4 New recommendations for antiviral and antibiotic treatment of patients with non-severe influenza"
+          ],
+          "tocHeading": "1.4 New recommendations for antiviral and antibiotic treatment of patients with non-severe influenza",
+          "pdfPageStart": 20
+        },
+        {
+          "tocPath": [
+            "1. Executive summary",
+            "1.5 New recommendations for antiviral treatment of patients with severe influenza (including infection with novel influenza A associated with high mortality or unknown risk of severe disease)"
+          ],
+          "tocHeading": "1.5 New recommendations for antiviral treatment of patients with severe influenza (including infection with novel influenza A associated with high mortality or unknown risk of severe disease)",
+          "pdfPageStart": 20
+        },
+        {
+          "tocPath": [
+            "1. Executive summary",
+            "1.6 New recommendations for adjunctive treatment of patients with severe influenza"
+          ],
+          "tocHeading": "1.6 New recommendations for adjunctive treatment of patients with severe influenza",
+          "pdfPageStart": 21
+        },
+        {
+          "tocPath": [
+            "1. Executive summary",
+            "1.7 New recommendations for prevention amongst persons with exposure to seasonal influenza virus but without infection"
+          ],
+          "tocHeading": "1.7 New recommendations for prevention amongst persons with exposure to seasonal influenza virus but without infection",
+          "pdfPageStart": 21
+        },
+        {
+          "tocPath": [
+            "1. Executive summary",
+            "1.8 New recommendations for prevention amongst persons with exposure to zoonotic influenza virus (novel influenza A associated with high mortality) but without infection"
+          ],
+          "tocHeading": "1.8 New recommendations for prevention amongst persons with exposure to zoonotic influenza virus (novel influenza A associated with high mortality) but without infection",
+          "pdfPageStart": 21
+        },
+        {
+          "tocPath": [
+            "1. Executive summary",
+            "1.9 New recommendations for testing strategies for patients with suspected seasonal influenza virus infection"
+          ],
+          "tocHeading": "1.9 New recommendations for testing strategies for patients with suspected seasonal influenza virus infection",
+          "pdfPageStart": 22
+        },
+        {
+          "tocPath": [
+            "1. Executive summary",
+            "1.10 About these guidelines"
+          ],
+          "tocHeading": "1.10 About these guidelines",
+          "pdfPageStart": 22
+        },
+        {
+          "tocPath": [
+            "2. Introduction",
+            "2.1 Seasonal and pandemic influenza"
+          ],
+          "tocHeading": "2.1 Seasonal and pandemic influenza",
+          "pdfPageStart": 24
+        }
+      ],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_influenza_clinical_management_2022",
+      "condition": "Influenza",
+      "title": "Guidelines for the clinical management of severe illness from influenza virus infections",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/9789240040816",
+      "registrySectionTitleOriginal": "Overview",
+      "sourceDocument": "knowledge-sources/wave1/pdf/9789240040816-eng.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_typhoid_surveillance_standards",
+      "condition": "Typhoid fever / enteric fever",
+      "title": "Typhoid and other invasive salmonellosis",
+      "publisher": "WHO",
+      "url": "https://www.who.int/docs/default-source/immunization/vpd_surveillance/vpd-surveillance-standards-publication/who-surveillancevaccinepreventable-21-typhoid-r2.pdf?download=true&sfvrsn=993904a6_10",
+      "registrySectionTitleOriginal": "Laboratory confirmation",
+      "sourceDocument": "knowledge-sources/wave1/pdf/www_who_int_docs_default_source_immunization_vpd_surveillance_vpd_surveillance_stand_492def3bbe74.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_childhood_conditions_typhoid_2012",
+      "condition": "Typhoid fever / enteric fever",
+      "title": "Recommendations for management of common childhood conditions",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/9789241502825",
+      "registrySectionTitleOriginal": "Common causes of fever — typhoid fever",
+      "sourceDocument": "knowledge-sources/wave1/pdf/9789241502825_eng.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_pneumonia_diarrhoea_children_guideline_2024_diarrhoea",
+      "condition": "Acute diarrhoea/gastroenteritis in children",
+      "title": "Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/9789240103412",
+      "registrySectionTitleOriginal": "Guideline overview — diarrhoea",
+      "sourceDocument": "knowledge-sources/wave1/pdf/9789240103412-eng.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "who_childhood_conditions_diarrhoea_2012",
+      "condition": "Acute diarrhoea/gastroenteritis in children",
+      "title": "Recommendations for management of common childhood conditions",
+      "publisher": "WHO",
+      "url": "https://www.who.int/publications/i/item/9789241502825",
+      "registrySectionTitleOriginal": "Management of diarrhoea",
+      "sourceDocument": "knowledge-sources/wave1/pdf/9789241502825_eng.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "nice_ng28_hypoglycaemia_overview",
+      "condition": "Hypoglycaemia in adults with type 2 diabetes",
+      "title": "Type 2 diabetes in adults: management",
+      "publisher": "NICE",
+      "url": "https://www.nice.org.uk/guidance/ng28",
+      "registrySectionTitleOriginal": "Overview",
+      "sourceDocument": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng28_6f78bdcdfedb.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    },
+    {
+      "citationId": "nice_ng153_impetigo_visual_summary",
+      "condition": "Impetigo",
+      "title": "Impetigo: antimicrobial prescribing",
+      "publisher": "NICE",
+      "url": "https://www.nice.org.uk/guidance/ng153/resources/visual-summary-pdf-7084853533",
+      "registrySectionTitleOriginal": "Visual summary",
+      "sourceDocument": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng153_resources_visual_summary_pdf_7084853533_a410ceda5563.pdf",
+      "reason": "No unambiguous match was found in the publisher bookmarks or front-matter contents pages.",
+      "publisherStructureCandidates": [],
+      "requiredAction": "Confirm an exact publisher heading from the official document before this citation is used for extraction or PDF slicing."
+    }
+  ]
+}

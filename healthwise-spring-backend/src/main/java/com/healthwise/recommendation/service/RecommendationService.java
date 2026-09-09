@@ -10,6 +10,7 @@ import com.healthwise.report.entity.Report;
 import com.healthwise.report.repository.ReportRepository;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -24,30 +25,43 @@ public class RecommendationService {
     private final ReportRepository reports;
     private final AnalysisHistoryRepository analyses;
     private final GridFsTemplate gridFs;
+    private final Stage4ResultVerifier stage4Results;
 
     public RecommendationService(RecommendationRepository recommendations, ReportRepository reports,
-                                 AnalysisHistoryRepository analyses, GridFsTemplate gridFs) {
+                                 AnalysisHistoryRepository analyses, GridFsTemplate gridFs, Stage4ResultVerifier stage4Results) {
         this.recommendations = recommendations;
         this.reports = reports;
         this.analyses = analyses;
         this.gridFs = gridFs;
+        this.stage4Results = stage4Results;
     }
 
     private Response dto(Recommendation recommendation) {
         return new Response(recommendation.getId(), recommendation.getQuestionnaireId(), recommendation.getGeneratedAt(),
-            recommendation.getSummary(), recommendation.getRecommendations());
+            recommendation.getSummary(), recommendation.getRecommendations(), recommendation.getValidatedResult());
     }
 
     public Response save(String userId, Create request) {
         if (recommendations.countByUserId(userId) >= MAX_RECOMMENDATION_SETS) {
             throw new IllegalArgumentException("You can keep up to five recommendation sets. Delete an older set before creating another.");
         }
+        Map<String,Object> validated = stage4Results.verifiedResult(request.stage4ValidationToken());
+        Object rawRecommendations = validated.get("recommendations");
+        if (!(rawRecommendations instanceof List<?> rawList)) {
+            throw new IllegalArgumentException("The validated Stage 4 result has no recommendation list.");
+        }
+        List<Map<String,Object>> tests = rawList.stream().map(item -> {
+            if (!(item instanceof Map<?,?> raw)) throw new IllegalArgumentException("The validated Stage 4 result is malformed.");
+            @SuppressWarnings("unchecked") Map<String,Object> typed = (Map<String,Object>) raw;
+            return typed;
+        }).toList();
         Recommendation recommendation = new Recommendation();
         recommendation.setUserId(userId);
         recommendation.setQuestionnaireId(request.questionnaireId());
         recommendation.setGeneratedAt(Instant.now());
-        recommendation.setSummary(request.summary());
-        recommendation.setRecommendations(List.copyOf(request.recommendations()));
+        recommendation.setSummary(String.valueOf(validated.getOrDefault("summary", "Validated Stage 4 review")));
+        recommendation.setRecommendations(List.copyOf(tests));
+        recommendation.setValidatedResult(validated);
         return dto(recommendations.save(recommendation));
     }
 

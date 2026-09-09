@@ -1,0 +1,1620 @@
+{
+  "schemaVersion": "1.0",
+  "registryName": "Wave 1 expanded full-tree registry",
+  "generatedAt": "2026-09-06T11:10:06.081647+00:00",
+  "sourcePolicy": {
+    "allowedPublishers": [
+      "AAAAI/ACAAI",
+      "ARIA-EAACI",
+      "American Academy of Family Physicians",
+      "American Academy of Otolaryngology\u2013Head and Neck Surgery Foundation",
+      "American Diabetes Association",
+      "American Family Physician",
+      "CDC",
+      "Canadian Paediatric Society",
+      "ESPGHAN and NASPGHAN",
+      "NICE",
+      "SA Health (Government of South Australia)",
+      "SEIMC, SEIP, AEV, SEMFYC and SEMPSPGS",
+      "WHO"
+    ],
+    "minimumCitationsPerCondition": 2,
+    "rule": "A condition becomes eligible for clinical-content generation only after clinical review. Source-verified records are evidence collection, not runtime medical logic.",
+    "exceptionPolicy": "When NICE/WHO do not provide a publicly accessible condition-specific clinical guideline, use a publicly accessible guideline from a recognised international specialty organisation and record that exception explicitly."
+  },
+  "conditions": [
+    {
+      "condition": "Diabetes",
+      "normalizedCondition": "Type 2 diabetes risk pattern",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ph38_1_4_1",
+          "title": "Type 2 diabetes: prevention in people at high risk",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ph38/chapter/recommendations",
+          "sectionTitle": "1.4 Risk identification (stage 2), recommendation 1.4.1",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2012,
+          "lastUpdatedYear": 2017,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_qs209_quality_statement_1",
+          "title": "Quality statement 1: Preventing type 2 diabetes",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/qs209/chapter/Quality-statement-1-Preventing-type-2-diabetes",
+          "sectionTitle": "Definitions of terms used in this quality statement \u2014 High risk of type 2 diabetes",
+          "sourceType": "quality_standard",
+          "publisher": "NICE",
+          "publishedYear": 2022,
+          "lastUpdatedYear": 2022,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Dengue",
+      "normalizedCondition": "Dengue",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_dengue_lab_testing_2025",
+          "title": "Laboratory testing for dengue virus: interim guidance, April 2025",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/B09394",
+          "sectionTitle": "Overview and diagnostic algorithm for suspected dengue cases",
+          "sourceType": "technical_guidance",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_arboviral_clinical_management_2025_dengue",
+          "title": "WHO guidelines for clinical management of arboviral diseases: dengue, chikungunya, Zika and yellow fever",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789240111110",
+          "sectionTitle": "2.2 Dengue",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "cdc_mmwr_dengue_zika_diagnostic_testing_2019",
+          "title": "Dengue and Zika Virus Diagnostic Testing for Patients with a Clinically Compatible Illness and Risk for Infection with Both Viruses",
+          "doi": "10.15585/mmwr.rr6801a1",
+          "url": "https://stacks.cdc.gov/view/cdc/79095/cdc_79095_DS1.pdf",
+          "sectionTitle": "Dengue and Zika Virus Diagnostic Testing",
+          "sourceType": "technical_guidance",
+          "publisher": "CDC",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Chickenpox",
+      "normalizedCondition": "Varicella (chickenpox)",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_varicella_position_paper_2025",
+          "title": "WHO position paper on varicella vaccines \u2013 November 2025",
+          "doi": null,
+          "url": "https://www.who.int/teams/immunization-vaccines-and-biologicals/policies/position-papers/varicella",
+          "sectionTitle": "WHO position paper on varicella vaccines \u2013 November 2025",
+          "sourceType": "position_paper",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_varicella_herpes_zoster_position_paper_2014",
+          "title": "Varicella and herpes zoster vaccines: WHO position paper, June 2014",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/who-wer-8925-265-288",
+          "sectionTitle": "Varicella disease and vaccine position",
+          "sourceType": "position_paper",
+          "publisher": "WHO",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2014,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "cdc_varicella_clinician_testing_2025",
+          "title": "Test Types Typically Available to Clinicians and Descriptions for Measles, Mumps, Rubella, and Varicella",
+          "doi": null,
+          "url": "https://stacks.cdc.gov/view/cdc/257238/cdc_257238_DS1.pdf",
+          "sectionTitle": "Varicella \u2013 Recommendations for Testing for Clinicians",
+          "sourceType": "technical_guidance",
+          "publisher": "CDC",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Constipation",
+      "normalizedCondition": "Idiopathic constipation in children and young people",
+      "status": "source_verified_with_population_limit",
+      "populationLimit": "These NICE sources apply to children and young people up to age 18; they must not be generalized to adults.",
+      "citations": [
+        {
+          "citationId": "nice_cg99_constipation_recommendations",
+          "title": "Constipation in children and young people: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg99/chapter/Recommendations",
+          "sectionTitle": "1.1 Diagnosis and 1.3 Clinical investigations",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2010,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_qs62_constipation_children_overview",
+          "title": "Constipation in children and young people",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/qs62",
+          "sectionTitle": "Overview",
+          "sourceType": "quality_standard",
+          "publisher": "NICE",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2014,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "espghan_naspghan_functional_constipation_2014",
+          "title": "Evaluation and Treatment of Functional Constipation in Infants and Children: Evidence-Based Recommendations From ESPGHAN and NASPGHAN",
+          "doi": "10.1097/MPG.0000000000000266",
+          "url": "https://www.naspghan.org/files/documents/pdfs/cme/jpgn/Evaluation_and_Treatment_of_Functional.24.pdf",
+          "sectionTitle": "Diagnostic evaluation",
+          "sourceType": "clinical_guideline",
+          "publisher": "ESPGHAN and NASPGHAN",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2014,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Ringworm",
+      "normalizedCondition": "Ringworm (tinea)",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_ringworm_tinea_fact_sheet_2025",
+          "title": "Ringworm (tinea)",
+          "doi": null,
+          "url": "https://www.who.int/news-room/fact-sheets/detail/ringworm-%28tinea%29",
+          "sectionTitle": "Key facts and Overview",
+          "sourceType": "fact_sheet",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_fungal_disease_blueprint_2026",
+          "title": "Blueprint for strengthening responses to fungal disease and antifungal resistance",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789240122529",
+          "sectionTitle": "Overview \u2014 diagnostics and fungal disease response",
+          "sourceType": "implementation_guidance",
+          "publisher": "WHO",
+          "publishedYear": 2026,
+          "lastUpdatedYear": 2026,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "aafp_tinea_diagnosis_management_2014",
+          "title": "Diagnosis and Management of Tinea Infections",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2014/1115/p702.pdf",
+          "sectionTitle": "Diagnostic Tests for Tinea Infections",
+          "sourceType": "clinical_review",
+          "publisher": "American Family Physician",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2014,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Cholera",
+      "normalizedCondition": "Cholera",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_cholera_fact_sheet_2024",
+          "title": "Cholera",
+          "doi": null,
+          "url": "https://www.who.int/news-room/fact-sheets/detail/cholera",
+          "sectionTitle": "Key facts, Overview and Symptoms",
+          "sourceType": "fact_sheet",
+          "publisher": "WHO",
+          "publishedYear": 2024,
+          "lastUpdatedYear": 2024,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_cholera_surveillance_standards_2018",
+          "title": "Vaccine-preventable diseases surveillance standards: Cholera",
+          "doi": null,
+          "url": "https://www.who.int/docs/default-source/immunization/vpd_surveillance/vpd-surveillance-standards-publication/b-w/who-surveillancevaccinepreventable-02-cholera-bw-r2.pdf",
+          "sectionTitle": "Laboratory diagnosis of cholera",
+          "sourceType": "technical_guidance",
+          "publisher": "WHO",
+          "publishedYear": 2018,
+          "lastUpdatedYear": 2018,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_cholera_clinical_tools_2024",
+          "title": "Clinical tools for cholera treatment facilities",
+          "doi": "10.2471/B09194",
+          "url": "https://www.who.int/publications/i/item/B09194",
+          "sectionTitle": "Cholera patient treatment flowchart",
+          "sourceType": "clinical_guidance",
+          "publisher": "WHO",
+          "publishedYear": 2024,
+          "lastUpdatedYear": 2024,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "supplementary_source_verified_claim_mapping_pending",
+          "localPath": "knowledge-sources/wave1/updated-short-documents/05_cholera_who_clinical_tools_2024.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Pneumonia",
+      "normalizedCondition": "Pneumonia",
+      "status": "source_verified_with_population_limit",
+      "populationLimit": "The formal management guideline applies to children up to age 10; do not use it as adult management guidance.",
+      "citations": [
+        {
+          "citationId": "who_pneumonia_diarrhoea_children_guideline_2024",
+          "title": "Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789240103412",
+          "sectionTitle": "Diagnosis of children with pneumonia",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2024,
+          "lastUpdatedYear": 2024,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "who_pneumonia_health_topic",
+          "title": "Pneumonia",
+          "doi": null,
+          "url": "https://www.who.int/health-topics/pneumonia/",
+          "sectionTitle": "Overview and Symptoms",
+          "sourceType": "health_topic",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "aafp_paediatric_cap_rapid_review_2021",
+          "title": "Community-Acquired Pneumonia in Children: Rapid Evidence Review",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2021/1200/p618.pdf",
+          "sectionTitle": "Diagnosis and diagnostic testing",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2021,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "superseded_by_cps_practice_point",
+          "localPath": "knowledge-sources/wave1/candidate-validation/cap_children.pdf"
+        },
+        {
+          "citationId": "canadian_paediatric_society_uncomplicated_pneumonia_2024",
+          "title": "Uncomplicated pneumonia in healthy Canadian children and youth: Practice points for management",
+          "doi": null,
+          "url": "https://cps.ca/en/documents/position/pneumonia-management-children-youth",
+          "sectionTitle": "Investigations",
+          "sourceType": "clinical_practice_point",
+          "publisher": "Canadian Paediatric Society",
+          "publishedYear": 2018,
+          "lastUpdatedYear": 2018,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/pdf/canadian_paediatric_society_uncomplicated_pneumonia.html-render.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Malaria",
+      "normalizedCondition": "Malaria",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_malaria_guidelines_2025_diagnosis",
+          "title": "WHO guidelines for malaria",
+          "doi": null,
+          "url": "https://www.who.int/publications-detail-redirect/guidelines-for-malaria",
+          "sectionTitle": "Diagnosis of malaria",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "who_malaria_diagnostic_testing",
+          "title": "Diagnostic testing for malaria",
+          "doi": null,
+          "url": "https://www.who.int/activities/diagnostic-testing-for-malaria",
+          "sectionTitle": "Overview",
+          "sourceType": "technical_guidance",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "cdc_malaria_diagnosis_treatment_algorithm_2026",
+          "title": "Algorithm for Diagnosis and Treatment of Malaria in the United States",
+          "doi": null,
+          "url": "https://www.cdc.gov/malaria/media/pdfs/2026/06/Treatment-Algorithm_6-17-26.pdf",
+          "sectionTitle": "Order immediate diagnostic testing",
+          "sourceType": "public_health_guidance",
+          "publisher": "CDC",
+          "publishedYear": 2026,
+          "lastUpdatedYear": 2026,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/malaria_algorithm.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Otitis Media",
+      "normalizedCondition": "Acute otitis media",
+      "status": "source_verified_with_population_limit",
+      "populationLimit": "NICE NG91 evidence and recommendations are principally for children and young people under 18.",
+      "citations": [
+        {
+          "citationId": "nice_ng91_otitis_media_overview",
+          "title": "Otitis media (acute): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng91",
+          "sectionTitle": "Overview",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2018,
+          "lastUpdatedYear": 2022,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng91_otitis_media_evidence",
+          "title": "Otitis media (acute): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng91/chapter/Summary-of-the-evidence",
+          "sectionTitle": "Summary of the evidence",
+          "sourceType": "evidence_summary",
+          "publisher": "NICE",
+          "publishedYear": 2018,
+          "lastUpdatedYear": 2022,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Chikungunya",
+      "normalizedCondition": "Chikungunya fever",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_arboviral_clinical_management_2025_chikungunya",
+          "title": "WHO guidelines for clinical management of arboviral diseases: dengue, chikungunya, Zika and yellow fever",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789240111110",
+          "sectionTitle": "Chikungunya",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_searo_chikungunya_clinical_management",
+          "title": "Guidelines on Clinical Management of Chikungunya Fever",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/sea-cd-180",
+          "sectionTitle": "Guideline overview",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2017,
+          "lastUpdatedYear": 2017,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "cdc_chikungunya_clinician_information_2014",
+          "title": "Chikungunya: Information for Healthcare Providers",
+          "doi": null,
+          "url": "https://stacks.cdc.gov/view/cdc/24001/cdc_24001_DS1.pdf",
+          "sectionTitle": "Information for healthcare providers",
+          "sourceType": "clinical_reference",
+          "publisher": "CDC",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2014,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Influenza",
+      "normalizedCondition": "Influenza",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_influenza_clinical_practice_guideline_2024",
+          "title": "Clinical practice guidelines for influenza",
+          "doi": null,
+          "url": "https://iris.who.int/bitstream/handle/10665/378872/9789240097759-eng.pdf",
+          "sectionTitle": "Clinical practice guidelines for influenza",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2024,
+          "lastUpdatedYear": 2024,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_influenza_clinical_management_2022",
+          "title": "Guidelines for the clinical management of severe illness from influenza virus infections",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789240040816",
+          "sectionTitle": "Overview",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2022,
+          "lastUpdatedYear": 2022,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "multisociety_influenza_consensus_2023",
+          "title": "Executive Summary: Diagnosis, Treatment and Prophylaxis of Influenza Virus Infection",
+          "doi": "10.1016/j.anpedi.2022.12.001",
+          "url": "https://diposit.ub.edu/server/api/core/bitstreams/c2b610c8-1180-4f66-8348-307b459b6336/content",
+          "sectionTitle": "Diagnosis",
+          "sourceType": "clinical_guideline",
+          "publisher": "SEIMC, SEIP, AEV, SEMFYC and SEMPSPGS",
+          "publishedYear": 2023,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Sinusitis",
+      "normalizedCondition": "Acute sinusitis",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng79_sinusitis_recommendations",
+          "title": "Sinusitis (acute): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng79/chapter/Recommendations",
+          "sectionTitle": "1.1 Managing acute sinusitis",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2017,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng79_sinusitis_evidence",
+          "title": "Sinusitis (acute): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng79/chapter/Summary-of-the-evidence",
+          "sectionTitle": "Committee discussion on no antibiotics",
+          "sourceType": "evidence_summary",
+          "publisher": "NICE",
+          "publishedYear": 2017,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Bronchitis",
+      "normalizedCondition": "Acute bronchitis",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng120_acute_cough_recommendations",
+          "title": "Cough (acute): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng120/chapter/recommendations",
+          "sectionTitle": "1.1 Managing acute cough",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng120_acute_bronchitis_evidence",
+          "title": "Cough (acute): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng120/chapter/Summary-of-the-evidence",
+          "sectionTitle": "Acute cough associated with acute bronchitis",
+          "sourceType": "evidence_summary",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Tuberculosis",
+      "normalizedCondition": "Tuberculosis",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_tb_module3_diagnosis_2025",
+          "title": "WHO consolidated guidelines on tuberculosis: module 3: diagnosis",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789240107984",
+          "sectionTitle": "Recommendations for diagnosis of TB disease",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_tb_module2_screening_2021",
+          "title": "WHO consolidated guidelines on tuberculosis: module 2: screening: systematic screening for tuberculosis disease",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789240022676",
+          "sectionTitle": "Screening tools and approaches",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2021,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "cdc_igra_guidance_2010",
+          "title": "Updated Guidelines for Using Interferon Gamma Release Assays to Detect Mycobacterium tuberculosis Infection \u2014 United States, 2010",
+          "doi": null,
+          "url": "https://www.cdc.gov/mmwr/pdf/rr/rr5905.pdf",
+          "sectionTitle": "Recommendations: general recommendations for use of IGRAs",
+          "sourceType": "public_health_guidance",
+          "publisher": "CDC",
+          "publishedYear": 2010,
+          "lastUpdatedYear": 2010,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/tb_igra.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Typhoid",
+      "normalizedCondition": "Typhoid fever / enteric fever",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "who_typhoid_surveillance_standards",
+          "title": "Typhoid and other invasive salmonellosis",
+          "doi": null,
+          "url": "https://www.who.int/docs/default-source/immunization/vpd_surveillance/vpd-surveillance-standards-publication/who-surveillancevaccinepreventable-21-typhoid-r2.pdf?download=true&sfvrsn=993904a6_10",
+          "sectionTitle": "Laboratory confirmation",
+          "sourceType": "technical_guidance",
+          "publisher": "WHO",
+          "publishedYear": 2018,
+          "lastUpdatedYear": 2018,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "who_childhood_conditions_typhoid_2012",
+          "title": "Recommendations for management of common childhood conditions",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789241502825",
+          "sectionTitle": "Common causes of fever \u2014 typhoid fever",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2012,
+          "lastUpdatedYear": 2012,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "cdc_typhoid_paratyphoid_clinician_2020",
+          "title": "Typhoid and Paratyphoid Fever: Information for Healthcare Professionals",
+          "doi": null,
+          "url": "https://stacks.cdc.gov/view/cdc/90752/cdc_90752_DS1.pdf",
+          "sectionTitle": "Information for healthcare professionals",
+          "sourceType": "clinical_reference",
+          "publisher": "CDC",
+          "publishedYear": 2020,
+          "lastUpdatedYear": 2020,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "GERD",
+      "normalizedCondition": "Gastro-oesophageal reflux disease (GORD)",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_cg184_gord_recommendations",
+          "title": "Gastro-oesophageal reflux disease and dyspepsia in adults: investigation and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg184/chapter/Recommendations",
+          "sectionTitle": "1.6 Gastro-oesophageal reflux disease",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "nice_cg184_gord_endoscopy",
+          "title": "Gastro-oesophageal reflux disease and dyspepsia in adults: investigation and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg184/chapter/Recommendations",
+          "sectionTitle": "1.6.11 Endoscopy considerations for people with GORD",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "aafp_gerd_common_questions_2015",
+          "title": "Common Questions About the Management of Gastroesophageal Reflux Disease",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2015/0515/p692.pdf",
+          "sectionTitle": "Diagnosis and testing",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2015,
+          "lastUpdatedYear": 2015,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/gerd_common_questions.pdf"
+        },
+        {
+          "citationId": "aafp_functional_dyspepsia_2020",
+          "title": "Functional Dyspepsia: Evaluation and Management",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2020/0115/p84.pdf",
+          "sectionTitle": "Evaluation and endoscopy considerations",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2020,
+          "lastUpdatedYear": 2020,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/dyspepsia.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Peptic Ulcer",
+      "normalizedCondition": "Peptic ulcer disease",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_cg184_peptic_ulcer_interventions",
+          "title": "Gastro-oesophageal reflux disease and dyspepsia in adults: investigation and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg184/chapter/Recommendations",
+          "sectionTitle": "1.7 Interventions for peptic ulcer disease",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "nice_cg184_h_pylori_testing",
+          "title": "Gastro-oesophageal reflux disease and dyspepsia in adults: investigation and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg184/chapter/Recommendations",
+          "sectionTitle": "1.7.1 and 1.7.4 \u2014 H. pylori testing and retesting in peptic ulcer disease",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2014,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "aafp_peptic_ulcer_h_pylori_2015",
+          "title": "Diagnosis and Treatment of Peptic Ulcer Disease and H. pylori Infection",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2015/0215/p236.pdf",
+          "sectionTitle": "Diagnosis and H. pylori testing",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2015,
+          "lastUpdatedYear": 2015,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/pud_h_pylori.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Bronchial Asthma",
+      "normalizedCondition": "Asthma",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng245_asthma_initial_assessment",
+          "title": "Asthma: diagnosis, monitoring and chronic asthma management (BTS, NICE, SIGN)",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng245/chapter/recommendations",
+          "sectionTitle": "1.1 Initial clinical assessment",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2024,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng245_asthma_objective_tests",
+          "title": "Asthma: diagnosis, monitoring and chronic asthma management (BTS, NICE, SIGN)",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng245/chapter/recommendations",
+          "sectionTitle": "1.2 Objective tests for diagnosing asthma",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2024,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "High Blood Pressure",
+      "normalizedCondition": "Hypertension",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng136_hypertension_overview",
+          "title": "Hypertension in adults: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng136",
+          "sectionTitle": "Overview",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2026,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng136_hypertension_diagnosis",
+          "title": "Hypertension in adults: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng136/chapter/recommendations",
+          "sectionTitle": "1.1 Measuring blood pressure and 1.2 Diagnosing hypertension",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2026,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Migraine",
+      "normalizedCondition": "Migraine",
+      "status": "source_verified_with_population_limit",
+      "populationLimit": "NICE CG150 applies to people aged 12 years and over.",
+      "citations": [
+        {
+          "citationId": "nice_cg150_migraine_diagnosis",
+          "title": "Headaches in over 12s: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg150/chapter/recommendations",
+          "sectionTitle": "1.2 Diagnosis \u2014 migraine with or without aura",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2012,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_cg150_migraine_public_diagnosis",
+          "title": "Headaches in over 12s: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg150/ifp/chapter/Diagnosis",
+          "sectionTitle": "Diagnosis",
+          "sourceType": "patient_information",
+          "publisher": "NICE",
+          "publishedYear": 2012,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Gastroenteritis",
+      "normalizedCondition": "Acute diarrhoea/gastroenteritis in children",
+      "status": "source_verified_with_population_limit",
+      "populationLimit": "The WHO guidance applies to children up to age 10 and must not be generalized to adult gastroenteritis.",
+      "citations": [
+        {
+          "citationId": "who_pneumonia_diarrhoea_children_guideline_2024_diarrhoea",
+          "title": "Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789240103412",
+          "sectionTitle": "Guideline overview \u2014 diarrhoea",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2024,
+          "lastUpdatedYear": 2024,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "who_childhood_conditions_diarrhoea_2012",
+          "title": "Recommendations for management of common childhood conditions",
+          "doi": null,
+          "url": "https://www.who.int/publications/i/item/9789241502825",
+          "sectionTitle": "Management of diarrhoea",
+          "sourceType": "clinical_guideline",
+          "publisher": "WHO",
+          "publishedYear": 2012,
+          "lastUpdatedYear": 2012,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "cdc_paediatric_gastroenteritis_2003",
+          "title": "Managing Acute Gastroenteritis Among Children: Oral Rehydration, Maintenance, and Nutritional Therapy",
+          "doi": null,
+          "url": "https://www.cdc.gov/mmwr/PDF/rr/rr5216.pdf",
+          "sectionTitle": "Assessment and management of acute diarrhoea",
+          "sourceType": "public_health_guidance",
+          "publisher": "CDC",
+          "publishedYear": 2003,
+          "lastUpdatedYear": 2003,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/pediatric_gastroenteritis.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Common Cold",
+      "normalizedCondition": "Acute cough associated with an upper respiratory tract infection",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng120_common_cold_recommendations",
+          "title": "Cough (acute): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng120/chapter/recommendations",
+          "sectionTitle": "1.1 Managing acute cough",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng120_common_cold_evidence",
+          "title": "Cough (acute): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng120/chapter/Summary-of-the-evidence",
+          "sectionTitle": "Acute cough associated with an upper respiratory tract infection",
+          "sourceType": "evidence_summary",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Varicose Vein",
+      "normalizedCondition": "Varicose veins",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_cg168_varicose_veins_recommendations",
+          "title": "Varicose veins: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg168/chapter/1-recommendations",
+          "sectionTitle": "1.1 Information, 1.2 Referral and 1.3 Assessment",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2013,
+          "lastUpdatedYear": 2013,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "nice_cg168_varicose_veins_introduction",
+          "title": "Varicose veins: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg168/chapter/introduction",
+          "sectionTitle": "Introduction",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2013,
+          "lastUpdatedYear": 2013,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "aafp_varicose_veins_2019",
+          "title": "Varicose Veins: Diagnosis and Treatment",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2019/0601/p682.pdf",
+          "sectionTitle": "Diagnosis and treatment",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/varicose_veins.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Hypothyroidism",
+      "normalizedCondition": "Hypothyroidism",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng145_thyroid_testing",
+          "title": "Thyroid disease: assessment and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng145/chapter/recommendations",
+          "sectionTitle": "1.2 Investigating suspected thyroid dysfunction",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng145_hypothyroidism_management",
+          "title": "Thyroid disease: assessment and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng145/chapter/recommendations",
+          "sectionTitle": "1.3 Managing primary hypothyroidism and 1.4 Follow-up and monitoring",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Hyperthyroidism",
+      "normalizedCondition": "Hyperthyroidism / thyrotoxicosis",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng145_hyperthyroidism_testing",
+          "title": "Thyroid disease: assessment and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng145/chapter/recommendations",
+          "sectionTitle": "1.6 Tests for people with confirmed thyrotoxicosis",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng145_hyperthyroidism_monitoring",
+          "title": "Thyroid disease: assessment and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng145/chapter/recommendations",
+          "sectionTitle": "1.7 Monitoring after treatment and 1.8 Subclinical hyperthyroidism",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Osteoarthritis",
+      "normalizedCondition": "Osteoarthritis",
+      "status": "source_verified_with_population_limit",
+      "populationLimit": "NICE NG226 applies to people aged over 16.",
+      "citations": [
+        {
+          "citationId": "nice_ng226_osteoarthritis_diagnosis",
+          "title": "Osteoarthritis in over 16s: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng226/chapter/recommendations",
+          "sectionTitle": "1.1 Diagnosis",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2022,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng226_osteoarthritis_context",
+          "title": "Osteoarthritis in over 16s: diagnosis and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng226/chapter/context",
+          "sectionTitle": "Context",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2022,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "(Vertigo) Paroxysmal Positional Vertigo",
+      "normalizedCondition": "Benign paroxysmal positional vertigo (BPPV)",
+      "status": "source_verified_with_population_limit",
+      "populationLimit": "NICE NG127 recommendation applies to adults over 16.",
+      "citations": [
+        {
+          "citationId": "nice_ng127_bppv_recommendations",
+          "title": "Suspected neurological conditions: recognition and referral",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16",
+          "sectionTitle": "1.2.6 Vertigo on head movement",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_qs198_bppv_hallpike",
+          "title": "Suspected neurological conditions: recognition and referral",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/qs198/resources/suspected-neurological-conditions-recognition-and-referral-pdf-75545788558021",
+          "sectionTitle": "BPPV and Hallpike manoeuvre",
+          "sourceType": "quality_standard_resource",
+          "publisher": "NICE",
+          "publishedYear": 2021,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "aao_hnsf_bppv_executive_summary_2017",
+          "title": "Clinical Practice Guideline: Benign Paroxysmal Positional Vertigo (Update) Executive Summary",
+          "doi": "10.1177/0194599816689660",
+          "url": "https://journals.sagepub.com/doi/pdf/10.1177/0194599816689660",
+          "sectionTitle": "Diagnosis of posterior canal BPPV",
+          "sourceType": "clinical_guideline",
+          "publisher": "American Academy of Otolaryngology\u2013Head and Neck Surgery Foundation",
+          "publishedYear": 2017,
+          "lastUpdatedYear": 2017,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/pdf/bhattacharyya-et-al-2017-clinical-practice-guideline-benign-paroxysmal-positional-vertigo-(update)-executive-summary.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Acne",
+      "normalizedCondition": "Acne vulgaris",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng198_acne_overview",
+          "title": "Acne vulgaris: management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng198",
+          "sectionTitle": "Overview",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2021,
+          "lastUpdatedYear": 2026,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng198_acne_recommendations",
+          "title": "Acne vulgaris: management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng198/chapter/Recommendations",
+          "sectionTitle": "1.1 Information and support and 1.4 Referral to specialist care",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2021,
+          "lastUpdatedYear": 2026,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "aafp_acne_vulgaris_2019",
+          "title": "Acne Vulgaris: Diagnosis and Treatment",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2019/1015/p475.pdf",
+          "sectionTitle": "Diagnosis and treatment",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2019,
+          "lastUpdatedYear": 2019,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/acne.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Hypoglycemia",
+      "normalizedCondition": "Hypoglycaemia in adults with type 2 diabetes",
+      "status": "source_verified_with_scope_limit",
+      "populationLimit": "This evidence is for adults with type 2 diabetes and not for unexplained hypoglycaemia.",
+      "citations": [
+        {
+          "citationId": "nice_ng28_hypoglycaemia_blood_glucose_management",
+          "title": "Type 2 diabetes in adults: management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng28/chapter/Blood-glucose-management",
+          "sectionTitle": "Blood-glucose management and hypoglycaemia risk",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2015,
+          "lastUpdatedYear": 2026,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "nice_ng28_hypoglycaemia_overview",
+          "title": "Type 2 diabetes in adults: management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng28",
+          "sectionTitle": "Overview",
+          "sourceType": "clinical_guideline_section",
+          "publisher": "NICE",
+          "publishedYear": 2015,
+          "lastUpdatedYear": 2026,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "ada_abridged_hypoglycaemia_2024",
+          "title": "Section 6: Glycemic Goals and Hypoglycemia \u2014 Standards of Care in Diabetes\u20142024",
+          "doi": "10.2337/cd24-a006",
+          "url": "https://diabetesjournals.org/clinical/article-pdf/42/2/196/756131/diaclincd24a006.pdf",
+          "sectionTitle": "Hypoglycemia assessment, prevention, and treatment",
+          "sourceType": "clinical_guideline",
+          "publisher": "American Diabetes Association",
+          "publishedYear": 2024,
+          "lastUpdatedYear": 2024,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/pdf/diaclincd24a006.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Urinary Tract Infection",
+      "normalizedCondition": "Lower urinary tract infection",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng109_lower_uti_recommendations",
+          "title": "Urinary tract infection (lower): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng109/chapter/Recommendations",
+          "sectionTitle": "1.1 Managing lower urinary tract infection",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2018,
+          "lastUpdatedYear": 2018,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng112_recurrent_uti",
+          "title": "Urinary tract infection (recurrent): antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng112",
+          "sectionTitle": "Overview",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2018,
+          "lastUpdatedYear": 2024,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Psoriasis",
+      "normalizedCondition": "Psoriasis",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_cg153_psoriasis_recommendations",
+          "title": "Psoriasis: assessment and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg153/chapter/recommendations",
+          "sectionTitle": "1.1 Principles of care and 1.2 Assessment and referral",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2012,
+          "lastUpdatedYear": 2017,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "nice_cg153_psoriasis_topical_treatment",
+          "title": "Psoriasis: assessment and management",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/cg153/ifp/chapter/Initial-treatment-with-topical-medication",
+          "sectionTitle": "Initial treatment with topical medication",
+          "sourceType": "patient_information",
+          "publisher": "NICE",
+          "publishedYear": 2012,
+          "lastUpdatedYear": 2017,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "aafp_psoriasis_recognition_management_2023",
+          "title": "Psoriasis: Recognition and Management Strategies",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2023/1200/psoriasis.pdf",
+          "sectionTitle": "Recognition and management strategies",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2023,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/psoriasis.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Impetigo",
+      "normalizedCondition": "Impetigo",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ng153_impetigo_recommendations",
+          "title": "Impetigo: antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng153/chapter/Recommendations",
+          "sectionTitle": "1.1 Managing impetigo",
+          "sourceType": "clinical_guideline",
+          "publisher": "NICE",
+          "publishedYear": 2020,
+          "lastUpdatedYear": 2020,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_ng153_impetigo_visual_summary",
+          "title": "Impetigo: antimicrobial prescribing",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ng153/resources/visual-summary-pdf-7084853533",
+          "sectionTitle": "Visual summary",
+          "sourceType": "clinical_guideline_resource",
+          "publisher": "NICE",
+          "publishedYear": 2020,
+          "lastUpdatedYear": 2020,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "sa_health_impetigo_clinical_practice_guideline_2025",
+          "title": "Impetigo: Clinical Practice Guideline",
+          "doi": null,
+          "url": "https://www.sahealth.sa.gov.au/wps/wcm/connect/2ec41078-4eb5-4cc2-8213-427d4d0b445a/Impetigo%2B-%2BClinical%2BPractice%2BGuideline.pdf?MOD=AJPERES",
+          "sectionTitle": "Investigation; Management and treatment plan",
+          "sourceType": "clinical_practice_guideline",
+          "publisher": "SA Health (Government of South Australia)",
+          "publishedYear": 2025,
+          "lastUpdatedYear": 2025,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "supplementary_source_verified_claim_mapping_pending",
+          "localPath": "knowledge-sources/wave1/updated-short-documents/12_impetigo_sahealth_2025.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Conjunctivitis",
+      "normalizedCondition": "Acute conjunctivitis",
+      "status": "source_verified_with_source_scope_note",
+      "sourceScopeNote": "Two section-level citations are from one WHO South-East Asia Regional Office clinical manual; no independent NICE/WHO clinical guideline was identified in this pass.",
+      "citations": [
+        {
+          "citationId": "who_searo_district_clinician_manual_viral_conjunctivitis",
+          "title": "District Clinician Manual: Hospital Care",
+          "doi": null,
+          "url": "https://iris.who.int/bitstream/handle/10665/350624/9789290228905-eng.pdf?sequence=1",
+          "sectionTitle": "Acute viral conjunctivitis",
+          "sourceType": "clinical_manual",
+          "publisher": "WHO",
+          "publishedYear": 2021,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "who_searo_district_clinician_manual_bacterial_conjunctivitis",
+          "title": "District Clinician Manual: Hospital Care",
+          "doi": null,
+          "url": "https://iris.who.int/bitstream/handle/10665/350624/9789290228905-eng.pdf?sequence=1",
+          "sectionTitle": "Bacterial conjunctivitis",
+          "sourceType": "clinical_manual_section",
+          "publisher": "WHO",
+          "publishedYear": 2021,
+          "lastUpdatedYear": 2021,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "aafp_red_eye_primary_care_2010",
+          "title": "Diagnosis and Management of Red Eye in Primary Care",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2010/0115/p137.pdf",
+          "sectionTitle": "Conjunctivitis evaluation",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2010,
+          "lastUpdatedYear": 2010,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/red_eye.pdf"
+        }
+      ]
+    },
+    {
+      "condition": "Haemorrhoids (piles)",
+      "normalizedCondition": "Haemorrhoids (piles)",
+      "status": "source_verified",
+      "citations": [
+        {
+          "citationId": "nice_ta128_haemorrhoids_clinical_need",
+          "title": "Stapled haemorrhoidopexy for the treatment of haemorrhoids",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/ta128/chapter/clinical-need-and-practice",
+          "sectionTitle": "2 Clinical need and practice",
+          "sourceType": "technology_appraisal_guidance",
+          "publisher": "NICE",
+          "publishedYear": 2007,
+          "lastUpdatedYear": 2007,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "nice_htg447_haemorrhoids_indications",
+          "title": "Radiofrequency treatment for haemorrhoids",
+          "doi": null,
+          "url": "https://www.nice.org.uk/guidance/htg447/chapter/2-Indications-and-current-treatments",
+          "sectionTitle": "2 Indications and current treatments",
+          "sourceType": "healthtech_guidance",
+          "publisher": "NICE",
+          "publishedYear": 2017,
+          "lastUpdatedYear": 2017,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        }
+      ]
+    },
+    {
+      "condition": "Allergic rhinitis",
+      "normalizedCondition": "Allergic rhinitis",
+      "status": "source_verified",
+      "sourceScopeNote": "NICE CKS pages were removed because they returned HTTP 403 to automated checks. These publicly accessible specialty-guideline sources are a documented exception to the NICE/WHO-only source preference; they still require clinical review before runtime use.",
+      "citations": [
+        {
+          "citationId": "aria_eaaci_allergic_rhinitis_2020",
+          "title": "Next-generation Allergic Rhinitis and Its Impact on Asthma (ARIA) guidelines for allergic rhinitis based on GRADE and real-world evidence",
+          "doi": "10.1016/j.jaci.2019.06.049",
+          "url": "https://aria.med.up.pt/former-aria-guidelines",
+          "sectionTitle": "ARIA Guidelines (2020 Revision)",
+          "sourceType": "clinical_practice_guideline",
+          "publisher": "ARIA-EAACI",
+          "publishedYear": 2020,
+          "lastUpdatedYear": 2020,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "source_verified"
+        },
+        {
+          "citationId": "aaaai_acaai_rhinitis_practice_parameter_2020",
+          "title": "Rhinitis 2020: A practice parameter update",
+          "doi": "10.1016/j.jaci.2020.07.007",
+          "url": "https://www.aaaai.org/Aaaai/media/Media-Library-PDFs/Allergist%20Resources/Statements%20and%20Practice%20Parameters/Rhinitis-2020-A-practice-parameter-update.pdf",
+          "sectionTitle": "Executive Summary and Diagnosis",
+          "sourceType": "clinical_practice_parameter",
+          "publisher": "AAAAI/ACAAI",
+          "publishedYear": 2020,
+          "lastUpdatedYear": 2020,
+          "lastCheckedAt": "2026-09-03",
+          "evidenceStatus": "superseded_by_full_tree_curated_source"
+        },
+        {
+          "citationId": "aafp_allergic_rhinitis_rapid_review_2023",
+          "title": "Allergic Rhinitis: Rapid Evidence Review",
+          "doi": null,
+          "url": "https://www.aafp.org/pubs/afp/issues/2023/0500/allergic-rhinitis.pdf",
+          "sectionTitle": "Diagnosis and diagnostic testing",
+          "sourceType": "clinical_review",
+          "publisher": "American Academy of Family Physicians",
+          "publishedYear": 2023,
+          "lastUpdatedYear": 2023,
+          "lastCheckedAt": "2026-09-06",
+          "evidenceStatus": "source_verified",
+          "localPath": "knowledge-sources/wave1/candidate-validation/rhinitis.pdf"
+        }
+      ]
+    }
+  ],
+  "nextConditions": [],
+  "derivedFrom": "citation-registry.wave1.full-tree.json",
+  "supersessions": [
+    {
+      "supersededCitationId": "aaaai_acaai_rhinitis_practice_parameter_2020",
+      "replacementCitationId": "aafp_allergic_rhinitis_rapid_review_2023",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_cg153_psoriasis_recommendations",
+      "replacementCitationId": "aafp_psoriasis_recognition_management_2023",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_cg168_varicose_veins_recommendations",
+      "replacementCitationId": "aafp_varicose_veins_2019",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_cg184_gord_endoscopy",
+      "replacementCitationId": "aafp_functional_dyspepsia_2020",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_cg184_gord_recommendations",
+      "replacementCitationId": "aafp_gerd_common_questions_2015",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_cg184_h_pylori_testing",
+      "replacementCitationId": "aafp_peptic_ulcer_h_pylori_2015",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_cg184_peptic_ulcer_interventions",
+      "replacementCitationId": "aafp_peptic_ulcer_h_pylori_2015",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_ng198_acne_recommendations",
+      "replacementCitationId": "aafp_acne_vulgaris_2019",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_ng28_hypoglycaemia_blood_glucose_management",
+      "replacementCitationId": "ada_abridged_hypoglycaemia_2024",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_ng28_hypoglycaemia_overview",
+      "replacementCitationId": "ada_abridged_hypoglycaemia_2024",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "nice_qs198_bppv_hallpike",
+      "replacementCitationId": "aao_hnsf_bppv_executive_summary_2017",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "who_childhood_conditions_diarrhoea_2012",
+      "replacementCitationId": "cdc_paediatric_gastroenteritis_2003",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "who_malaria_guidelines_2025_diagnosis",
+      "replacementCitationId": "cdc_malaria_diagnosis_treatment_algorithm_2026",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "who_pneumonia_diarrhoea_children_guideline_2024",
+      "replacementCitationId": "aafp_paediatric_cap_rapid_review_2021",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "who_pneumonia_diarrhoea_children_guideline_2024_diarrhoea",
+      "replacementCitationId": "cdc_paediatric_gastroenteritis_2003",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "who_searo_district_clinician_manual_bacterial_conjunctivitis",
+      "replacementCitationId": "aafp_red_eye_primary_care_2010",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "who_searo_district_clinician_manual_viral_conjunctivitis",
+      "replacementCitationId": "aafp_red_eye_primary_care_2010",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "who_tb_module2_screening_2021",
+      "replacementCitationId": "cdc_igra_guidance_2010",
+      "status": "approved_full_tree_replacement"
+    },
+    {
+      "supersededCitationId": "aafp_paediatric_cap_rapid_review_2021",
+      "replacementCitationId": "canadian_paediatric_society_uncomplicated_pneumonia_2024",
+      "status": "approved_full_tree_replacement"
+    }
+  ]
+}

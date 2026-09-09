@@ -9,6 +9,7 @@ server:
   # Railway provides PORT. SERVER_PORT is retained for local configuration.
   port: "${PORT:${SERVER_PORT:8080}}"
 app:
+  stage4-validation-secret: "${STAGE4_VALIDATION_SECRET:development-only-stage4-secret-change-before-production}"
   jwt:
     secret: "${JWT_SECRET:replace-this-with-a-secure-at-least-32-character-secret}"
     access-token-minutes: "${JWT_ACCESS_TOKEN_MINUTES:60}"

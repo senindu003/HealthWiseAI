@@ -1,0 +1,3198 @@
+{
+  "schemaVersion": "1.0",
+  "sourceCitationRegistry": "citation-registry.wave1.full-tree-expanded.json",
+  "generatedAt": "2026-09-04",
+  "intendedUse": "Draft, citation-linked clinical-content curation. This file is not runtime medical logic until each record is clinically approved.",
+  "records": [
+    {
+      "evidenceId": "type_2_diabetes_risk_pattern_v1",
+      "conditionId": "type_2_diabetes_risk_pattern",
+      "conditionDisplayName": "Type 2 diabetes risk pattern",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 18,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_sex_specific"
+          ],
+          "notes": "No sex-specific restriction was recorded in this extraction."
+        },
+        "pregnancyStatus": "not_pregnant",
+        "inclusionCriteria": [
+          "Adults identified as at high risk of type 2 diabetes through a risk-identification pathway or relevant blood-test result."
+        ],
+        "exclusionsOrLimitations": [
+          "Do not use for gestational-diabetes assessment.",
+          "A clinician must interpret abnormal or borderline results."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "Discuss diabetes-risk assessment and suitable prevention support with a healthcare professional."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "discuss_diabetes_risk_assessment",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss diabetes-risk assessment with a clinician",
+          "message": "A high-risk assessment should be followed by appropriate professional evaluation and prevention support.",
+          "action": "Arrange a routine healthcare review.",
+          "citationRefs": [
+            "nice_ph38_1_4_1"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "fasting_plasma_glucose",
+          "displayName": "Fasting Plasma Glucose (FPG)",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "NICE identifies fasting plasma glucose as a blood-test measure used when identifying high risk of type 2 diabetes.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ph38_1_4_1"
+          ]
+        },
+        {
+          "testId": "hba1c",
+          "displayName": "HbA1c",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "NICE identifies HbA1c as a blood-test measure used when identifying high risk of type 2 diabetes.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ph38_1_4_1"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "nice_ph38_1_4_1",
+          "supportedClaims": [
+            "applicability",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "nice_qs209_quality_statement_1",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "dengue_v1",
+      "conditionId": "dengue",
+      "conditionDisplayName": "Dengue",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "clinician_or_laboratory_selected_testing",
+        "timeframe": "prompt",
+        "message": "Dengue testing must be selected by an appropriate clinician or laboratory using timing of illness and local context; the app must not select a test automatically."
+      },
+      "healthRecommendations": [],
+      "basicStartingTests": [
+        {
+          "testId": "dengue_laboratory_confirmation_pathway",
+          "displayName": "Dengue laboratory confirmation pathway",
+          "testType": "laboratory_pathway",
+          "priority": "clinician_selected",
+          "why": "WHO states that clinical diagnosis alone is insufficient and that test selection depends on infection stage, specimen type, setting, co-infections, prior exposure and vaccination status.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "cdc_mmwr_dengue_zika_diagnostic_testing_2019"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "cdc_mmwr_dengue_zika_diagnostic_testing_2019",
+          "supportedClaims": [
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "who_arboviral_clinical_management_2025_dengue",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Curated short-source citation replacement applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "varicella_chickenpox_v1",
+      "conditionId": "varicella_chickenpox",
+      "conditionDisplayName": "Varicella (chickenpox)",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "not_configured",
+        "timeframe": "not_configured",
+        "message": "No automated care disposition is configured for this draft evidence record."
+      },
+      "healthRecommendations": [],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "cdc_varicella_clinician_testing_2025",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "cdc_varicella_clinician_testing_2025",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "The cited WHO sources are vaccine-position papers. They support prevention-policy scope, not an individual diagnostic-test recommendation.",
+          "Curated short-source citation replacement applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "idiopathic_constipation_in_children_and_young_people_v1",
+      "conditionId": "idiopathic_constipation_in_children_and_young_people",
+      "conditionDisplayName": "Idiopathic constipation in children and young people",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 0,
+          "maxYears": 17
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_applicable",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "urgent_clinician_review_if_red_flags",
+        "timeframe": "prompt",
+        "message": "For children and young people, a clinician should use history and physical examination; red-flag findings require urgent assessment."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_childhood_constipation",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Review childhood constipation with a qualified clinician",
+          "message": "NICE bases idiopathic-constipation assessment on history and physical examination and directs urgent referral when red flags are present.",
+          "action": "Arrange appropriate clinical assessment.",
+          "citationRefs": [
+            "espghan_naspghan_functional_constipation_2014"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "espghan_naspghan_functional_constipation_2014",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "espghan_naspghan_functional_constipation_2014",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "NICE advises against routine endoscopy, abdominal radiography, ultrasound, transit studies and anorectal manometry to diagnose idiopathic constipation.",
+          "Curated short-source citation replacement applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "ringworm_tinea_v1",
+      "conditionId": "ringworm_tinea",
+      "conditionDisplayName": "Ringworm (tinea)",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "A clinician can assess a suspected tinea infection and decide whether confirmation is needed."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_suspected_tinea",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss suspected ringworm with a clinician",
+          "message": "WHO describes confirmation by skin scraping or nail clipping when appropriate.",
+          "action": "Arrange a routine clinical review if confirmation is needed.",
+          "citationRefs": [
+            "who_ringworm_tinea_fact_sheet_2025"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "skin_scraping_or_nail_clipping",
+          "displayName": "Skin scraping or nail clipping examination",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "WHO describes microscopy, fungal culture, or molecular diagnosis after an appropriate sample is collected.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "who_ringworm_tinea_fact_sheet_2025"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "who_ringworm_tinea_fact_sheet_2025",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "aafp_tinea_diagnosis_management_2014",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Curated short-source citation replacement applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "cholera_v1",
+      "conditionId": "cholera",
+      "conditionDisplayName": "Cholera",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "urgent_clinician_review",
+        "timeframe": "urgent",
+        "message": "Possible cholera requires prompt professional assessment because severe watery diarrhoea can cause life-threatening dehydration."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "urgent_cholera_assessment",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Seek urgent assessment for suspected cholera",
+          "message": "WHO describes laboratory confirmation for cholera surveillance and outbreak response.",
+          "action": "Seek urgent healthcare assessment.",
+          "citationRefs": [
+            "who_cholera_surveillance_standards_2018"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "vibrio_cholerae_stool_culture",
+          "displayName": "Stool culture for Vibrio cholerae",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "WHO identifies stool culture as the gold-standard confirmatory test; PCR may be used as an alternative for toxigenic V. cholerae.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "who_cholera_surveillance_standards_2018"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "who_cholera_fact_sheet_2024",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "who_cholera_surveillance_standards_2018",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "WHO Clinical tools for cholera treatment facilities is a supplementary PageIndex source. It is intentionally not mapped to a new patient-facing claim until clinical claim-level review.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "pneumonia_v1",
+      "conditionId": "pneumonia",
+      "conditionDisplayName": "Pneumonia",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 0,
+          "maxYears": 10
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_applicable",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "prompt_clinician_review",
+        "timeframe": "prompt",
+        "message": "The cited WHO guideline is for pneumonia management in children up to 10 years of age."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_childhood_pneumonia",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Seek prompt assessment for possible childhood pneumonia",
+          "message": "WHO provides a child-specific clinical-management guideline and includes assessment of hypoxaemia.",
+          "action": "Arrange prompt clinical assessment.",
+          "citationRefs": [
+            "canadian_paediatric_society_uncomplicated_pneumonia_2024"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "pulse_oximetry",
+          "displayName": "Pulse oximetry",
+          "testType": "physiological_measurement",
+          "priority": "medium",
+          "why": "WHO describes pulse oximetry and an alternative set of signs and symptoms when it is unavailable for assessing hypoxaemia in children.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "canadian_paediatric_society_uncomplicated_pneumonia_2024"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "canadian_paediatric_society_uncomplicated_pneumonia_2024",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "who_pneumonia_health_topic",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "AAFP pneumonia-review references were replaced with the Canadian Paediatric Society practice point; the current child-focused population limit remains conservative.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "malaria_v1",
+      "conditionId": "malaria",
+      "conditionDisplayName": "Malaria",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "prompt_clinician_review",
+        "timeframe": "prompt",
+        "message": "Suspected malaria requires prompt parasite-based testing before treatment decisions."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "prompt_malaria_testing",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Arrange prompt malaria testing",
+          "message": "WHO recommends parasite-based diagnosis before antimalarial treatment for people suspected of malaria.",
+          "action": "Seek prompt assessment at an appropriate healthcare service.",
+          "citationRefs": [
+            "who_malaria_diagnostic_testing"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "malaria_microscopy",
+          "displayName": "Malaria microscopy",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "WHO recommends microscopy as one of the parasite-based diagnostic options for suspected malaria.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "who_malaria_diagnostic_testing"
+          ]
+        },
+        {
+          "testId": "malaria_rapid_diagnostic_test",
+          "displayName": "Malaria rapid diagnostic test (RDT)",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "WHO recommends an RDT as an alternative parasite-based diagnostic option for suspected malaria.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "who_malaria_diagnostic_testing"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "cdc_malaria_diagnosis_treatment_algorithm_2026",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "who_malaria_diagnostic_testing",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "acute_otitis_media_v1",
+      "conditionId": "acute_otitis_media",
+      "conditionDisplayName": "Acute otitis media",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 0,
+          "maxYears": 17
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_applicable",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "reassess_if_worse",
+        "timeframe": "routine",
+        "message": "The cited NICE guidance describes acute otitis media as usually self-limiting in children and young people and advises reassessment if symptoms worsen."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "monitor_childhood_otitis",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Monitor symptoms and seek review if they worsen",
+          "message": "NICE advises clinical reassessment when symptoms worsen rapidly or significantly.",
+          "action": "Seek healthcare review if symptoms worsen or do not improve.",
+          "citationRefs": [
+            "nice_ng91_otitis_media_overview"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng91_otitis_media_overview",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "nice_ng91_otitis_media_evidence",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "No basic diagnostic test was extracted from the cited antimicrobial-prescribing guidance.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "chikungunya_fever_v1",
+      "conditionId": "chikungunya_fever",
+      "conditionDisplayName": "Chikungunya fever",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "not_configured",
+        "timeframe": "not_configured",
+        "message": "No automated care disposition is configured for this draft evidence record."
+      },
+      "healthRecommendations": [],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "who_arboviral_clinical_management_2025_chikungunya",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "cdc_chikungunya_clinician_information_2014",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "The registry\u2019s cited WHO clinical-management sources were retained for condition scope, but this extraction pass did not add an individual test pathway without a source-section-specific claim.",
+          "Curated short-source citation replacement applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "influenza_v1",
+      "conditionId": "influenza",
+      "conditionDisplayName": "Influenza",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "clinician_selected_testing",
+        "timeframe": "prompt",
+        "message": "Influenza test selection in the cited WHO guideline depends on the clinical setting, the diagnostic test, and expected turnaround time."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_suspected_influenza",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss appropriate influenza testing with a clinician",
+          "message": "WHO evaluates rapid point-of-care and molecular testing strategies for people presenting with suspected influenza.",
+          "action": "Use an appropriate healthcare service to determine whether testing is needed.",
+          "citationRefs": [
+            "multisociety_influenza_consensus_2023"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "influenza_rapid_point_of_care_test",
+          "displayName": "Rapid point-of-care influenza test",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "WHO includes rapid point-of-care testing among evaluated diagnostic strategies for suspected influenza.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "multisociety_influenza_consensus_2023"
+          ]
+        },
+        {
+          "testId": "influenza_molecular_assay",
+          "displayName": "Influenza molecular assay",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "WHO includes molecular assays, including RT-PCR/NAAT approaches, among evaluated diagnostic strategies for suspected influenza.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "multisociety_influenza_consensus_2023"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "multisociety_influenza_consensus_2023",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "multisociety_influenza_consensus_2023",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Curated short-source citation replacement applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "acute_sinusitis_v1",
+      "conditionId": "acute_sinusitis",
+      "conditionDisplayName": "Acute sinusitis",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "reassess_if_worse",
+        "timeframe": "routine",
+        "message": "NICE describes uncomplicated acute sinusitis as commonly self-limiting and advises reassessment if symptoms worsen rapidly or significantly."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "monitor_acute_sinusitis",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Monitor symptoms and seek review for deterioration",
+          "message": "NICE advises self-care discussion and reassessment if symptoms worsen rapidly, significantly, or fail to improve as expected.",
+          "action": "Seek medical review if symptoms worsen significantly or persist.",
+          "citationRefs": [
+            "nice_ng79_sinusitis_recommendations"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng79_sinusitis_recommendations",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit"
+          ]
+        },
+        {
+          "citationId": "nice_ng79_sinusitis_evidence",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "NICE evidence states that inflammatory markers, endoscopy and imaging are not usually required in uncomplicated acute sinusitis.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "acute_bronchitis_v1",
+      "conditionId": "acute_bronchitis",
+      "conditionDisplayName": "Acute bronchitis",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "reassess_if_worse",
+        "timeframe": "routine",
+        "message": "NICE describes acute bronchitis-related cough as usually self-limiting and advises reassessment for rapid deterioration or serious illness."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "monitor_acute_bronchitis",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Monitor acute cough and seek review for deterioration",
+          "message": "NICE advises clinical reassessment if acute-cough symptoms worsen rapidly or significantly.",
+          "action": "Seek medical review if symptoms worsen, become systemic, or do not improve as expected.",
+          "citationRefs": [
+            "nice_ng120_acute_bronchitis_evidence"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng120_acute_cough_recommendations",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "nice_ng120_acute_bronchitis_evidence",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "The cited acute-cough guidance supports clinical reassessment rather than an automatic laboratory-test pathway.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "tuberculosis_v1",
+      "conditionId": "tuberculosis",
+      "conditionDisplayName": "Tuberculosis",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "prompt_clinician_review",
+        "timeframe": "prompt",
+        "message": "People with signs or symptoms concerning for tuberculosis need an appropriate diagnostic pathway managed by a healthcare service."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "prompt_tb_assessment",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Seek prompt assessment for possible tuberculosis",
+          "message": "WHO recommends rapid diagnostic testing as the initial diagnostic approach for people with signs and symptoms of TB.",
+          "action": "Arrange prompt assessment through an appropriate healthcare service.",
+          "citationRefs": [
+            "who_tb_module3_diagnosis_2025"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "who_recommended_rapid_tb_diagnostic",
+          "displayName": "WHO-recommended rapid diagnostic test for tuberculosis",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "WHO recommends rapid diagnostic testing as an initial diagnostic approach for people with signs and symptoms of TB.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "who_tb_module3_diagnosis_2025"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "who_tb_module3_diagnosis_2025",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "cdc_igra_guidance_2010",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "typhoid_fever_enteric_fever_v1",
+      "conditionId": "typhoid_fever_enteric_fever",
+      "conditionDisplayName": "Typhoid fever / enteric fever",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "prompt_clinician_review",
+        "timeframe": "prompt",
+        "message": "Clinically suspected enteric fever needs laboratory confirmation because it can resemble other non-specific febrile illnesses."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "prompt_enteric_fever_testing",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Seek prompt assessment for possible enteric fever",
+          "message": "WHO describes laboratory confirmation as essential for suspected typhoid or paratyphoid fever.",
+          "action": "Arrange prompt clinical assessment and testing.",
+          "citationRefs": [
+            "who_typhoid_surveillance_standards"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "enteric_fever_blood_culture",
+          "displayName": "Blood culture for enteric fever",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "WHO identifies blood culture as the preferred laboratory method in most endemic settings for enteric fever.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "who_typhoid_surveillance_standards"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "who_typhoid_surveillance_standards",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "cdc_typhoid_paratyphoid_clinician_2020",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Curated short-source citation replacement applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "gastro_oesophageal_reflux_disease_gord_v1",
+      "conditionId": "gastro_oesophageal_reflux_disease_gord",
+      "conditionDisplayName": "Gastro-oesophageal reflux disease (GORD)",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 18,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "The cited NICE guideline covers adults with GORD or dyspepsia and supports specialist referral when symptoms are unexplained or non-responsive to treatment."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_persistent_gord",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss persistent or unexplained reflux symptoms with a clinician",
+          "message": "NICE advises considering specialist referral for unexplained or treatment-non-responsive gastro-oesophageal symptoms.",
+          "action": "Arrange a routine clinical review if symptoms persist or are unexplained.",
+          "citationRefs": [
+            "aafp_gerd_common_questions_2015"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "aafp_gerd_common_questions_2015",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "aafp_functional_dyspepsia_2020",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "The cited source does not support an automatic basic test for all GORD-like symptoms; endoscopy is a clinician-led consideration in stated circumstances.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "peptic_ulcer_disease_v1",
+      "conditionId": "peptic_ulcer_disease",
+      "conditionDisplayName": "Peptic ulcer disease",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 18,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "Testing and management of suspected peptic-ulcer disease should be directed by a clinician."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_peptic_ulcer_risk",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss ulcer symptoms and H. pylori testing with a clinician",
+          "message": "NICE describes H. pylori testing and eradication in adults with peptic ulcer disease.",
+          "action": "Arrange a clinical review for appropriate testing.",
+          "citationRefs": [
+            "aafp_peptic_ulcer_h_pylori_2015"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "helicobacter_pylori_urea_breath_test",
+          "displayName": "Carbon-13 urea breath test for Helicobacter pylori",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "NICE lists the carbon-13 urea breath test as an H. pylori testing option.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "aafp_peptic_ulcer_h_pylori_2015"
+          ]
+        },
+        {
+          "testId": "helicobacter_pylori_stool_antigen",
+          "displayName": "Stool antigen test for Helicobacter pylori",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "NICE lists stool antigen testing as an H. pylori testing option.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "aafp_peptic_ulcer_h_pylori_2015"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "aafp_peptic_ulcer_h_pylori_2015",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "aafp_peptic_ulcer_h_pylori_2015",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test",
+            "applicability"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "asthma_v1",
+      "conditionId": "asthma",
+      "conditionDisplayName": "Asthma",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "Suspected asthma requires a clinical assessment and objective testing pathway rather than symptom-only confirmation."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_suspected_asthma",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss objective testing for suspected asthma",
+          "message": "NICE requires objective testing to support asthma diagnosis when clinically suspected.",
+          "action": "Arrange a clinical assessment for appropriate objective testing.",
+          "citationRefs": [
+            "nice_ng245_asthma_objective_tests"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "fractional_exhaled_nitric_oxide",
+          "displayName": "Fractional exhaled nitric oxide (FeNO)",
+          "testType": "physiological_measurement",
+          "priority": "medium",
+          "why": "NICE includes FeNO as an objective diagnostic test in people with a history suggestive of asthma.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng245_asthma_objective_tests"
+          ]
+        },
+        {
+          "testId": "spirometry_with_bronchodilator_reversibility",
+          "displayName": "Spirometry with bronchodilator reversibility",
+          "testType": "physiological_measurement",
+          "priority": "medium",
+          "why": "NICE recommends bronchodilator reversibility testing with spirometry when asthma is not confirmed by its initial objective tests.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng245_asthma_objective_tests"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng245_asthma_initial_assessment",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "nice_ng245_asthma_objective_tests",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "hypertension_v1",
+      "conditionId": "hypertension",
+      "conditionDisplayName": "Hypertension",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 18,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_sex_specific"
+          ],
+          "notes": "NICE guidance applies to adults without a sex-specific restriction."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [
+          "Adults with suspected hypertension following clinic blood-pressure measurement."
+        ],
+        "exclusionsOrLimitations": [
+          "A blood-pressure result does not itself establish a diagnosis.",
+          "Use a reviewed pregnancy-specific pathway when applicable."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "Raised blood pressure should be assessed using an appropriate clinical confirmation pathway."
+      },
+      "healthRecommendations": [],
+      "basicStartingTests": [
+        {
+          "testId": "clinic_blood_pressure_measurement",
+          "displayName": "Clinic blood-pressure measurement",
+          "testType": "physiological_measurement",
+          "priority": "medium",
+          "why": "NICE specifies repeat clinic measurement when considering hypertension.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng136_hypertension_overview"
+          ]
+        },
+        {
+          "testId": "ambulatory_blood_pressure_monitoring",
+          "displayName": "Ambulatory blood-pressure monitoring (ABPM)",
+          "testType": "physiological_measurement",
+          "priority": "medium",
+          "why": "NICE recommends ABPM to confirm suspected hypertension within its stated clinic blood-pressure range; HBPM is the alternative when ABPM is unsuitable.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng136_hypertension_overview"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng136_hypertension_overview",
+          "supportedClaims": [
+            "applicability",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "nice_ng136_hypertension_diagnosis",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "migraine_v1",
+      "conditionId": "migraine",
+      "conditionDisplayName": "Migraine",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 12,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "clinician_assessment",
+        "timeframe": "routine",
+        "message": "The cited NICE guidance treats migraine as a clinical diagnosis in people aged 12 years and over, with investigation guided by atypical features."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "clinical_migraine_assessment",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss recurrent headache patterns with a clinician",
+          "message": "NICE describes a typical clinical migraine diagnosis that does not require investigations solely to exclude alternatives.",
+          "action": "Arrange clinical assessment, especially for a new, changing, or atypical headache pattern.",
+          "citationRefs": [
+            "nice_cg150_migraine_diagnosis"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "nice_cg150_migraine_diagnosis",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "nice_cg150_migraine_public_diagnosis",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "NICE does not support routine neuroimaging solely for reassurance when the clinical picture is typical.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "acute_diarrhoea_gastroenteritis_in_children_v1",
+      "conditionId": "acute_diarrhoea_gastroenteritis_in_children",
+      "conditionDisplayName": "Acute diarrhoea/gastroenteritis in children",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 0,
+          "maxYears": 10
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_applicable",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "prompt_clinician_review",
+        "timeframe": "prompt",
+        "message": "The cited WHO guideline concerns management of diarrhoea in children up to 10 years of age."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_childhood_diarrhoea",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Seek prompt assessment for concerning childhood diarrhoea",
+          "message": "WHO provides child-specific diarrhoea management guidance, including assessment of clinical severity.",
+          "action": "Arrange prompt child-appropriate clinical assessment.",
+          "citationRefs": [
+            "cdc_paediatric_gastroenteritis_2003"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "cdc_paediatric_gastroenteritis_2003",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "cdc_paediatric_gastroenteritis_2003",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "No automatic laboratory-test recommendation was extracted from the cited WHO guideline overview.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "acute_cough_associated_with_an_upper_respiratory_tract_infection_v1",
+      "conditionId": "acute_cough_associated_with_an_upper_respiratory_tract_infection",
+      "conditionDisplayName": "Acute cough associated with an upper respiratory tract infection",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "reassess_if_worse",
+        "timeframe": "routine",
+        "message": "NICE describes acute upper-respiratory cough as usually self-limiting and advises reassessment for deterioration or serious illness."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "monitor_acute_urti_cough",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Monitor acute cough and seek review for deterioration",
+          "message": "NICE advises clinical reassessment if acute-cough symptoms worsen rapidly or significantly.",
+          "action": "Seek medical review if symptoms worsen, become systemic, or do not improve as expected.",
+          "citationRefs": [
+            "nice_ng120_common_cold_recommendations"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng120_common_cold_recommendations",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit"
+          ]
+        },
+        {
+          "citationId": "nice_ng120_common_cold_evidence",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "The cited acute-cough guidance does not establish an automatic basic-test pathway.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "varicose_veins_v1",
+      "conditionId": "varicose_veins",
+      "conditionDisplayName": "Varicose veins",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "vascular_service_review",
+        "timeframe": "routine",
+        "message": "NICE directs referral for symptomatic veins and immediate referral for bleeding varicose veins."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_symptomatic_varicose_veins",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss symptomatic varicose veins with a vascular service",
+          "message": "NICE identifies symptomatic, recurrent, skin-changed, thrombosed, or ulcer-associated varicose veins for vascular-service referral.",
+          "action": "Arrange appropriate vascular assessment; seek immediate care for bleeding varicose veins.",
+          "citationRefs": [
+            "aafp_varicose_veins_2019"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "aafp_varicose_veins_2019",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit"
+          ]
+        },
+        {
+          "citationId": "nice_cg168_varicose_veins_introduction",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "NICE uses duplex ultrasound within a vascular service to confirm varicose veins, but that imaging test is excluded from HealthWise AI's basic-starting-test scope.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "hypothyroidism_v1",
+      "conditionId": "hypothyroidism",
+      "conditionDisplayName": "Hypothyroidism",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 16,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_sex_specific"
+          ],
+          "notes": "NICE describes an adult pathway; no sex-specific restriction was extracted."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [
+          "Adults with clinical suspicion of thyroid dysfunction."
+        ],
+        "exclusionsOrLimitations": [
+          "Use an appropriate reviewed pathway for children, young people, pregnancy, or suspected secondary thyroid dysfunction.",
+          "A clinician must interpret thyroid-function results."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "Discuss possible thyroid dysfunction and appropriate testing with a healthcare professional."
+      },
+      "healthRecommendations": [],
+      "basicStartingTests": [
+        {
+          "testId": "thyroid_stimulating_hormone",
+          "displayName": "Thyroid-Stimulating Hormone (TSH)",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "NICE recommends TSH as the initial adult test when secondary thyroid dysfunction is not suspected, with additional testing cascaded from the result.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng145_thyroid_testing"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng145_thyroid_testing",
+          "supportedClaims": [
+            "applicability",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "nice_ng145_hypothyroidism_management",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "hyperthyroidism_thyrotoxicosis_v1",
+      "conditionId": "hyperthyroidism_thyrotoxicosis",
+      "conditionDisplayName": "Hyperthyroidism / thyrotoxicosis",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 16,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_sex_specific"
+          ],
+          "notes": "NICE describes an adult pathway; no sex-specific restriction was extracted."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [
+          "Adults with clinical suspicion of thyroid dysfunction."
+        ],
+        "exclusionsOrLimitations": [
+          "Use an appropriate reviewed pathway for children, young people, pregnancy, or suspected secondary thyroid dysfunction.",
+          "A clinician must interpret thyroid-function results."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "Discuss possible thyroid dysfunction and appropriate testing with a healthcare professional."
+      },
+      "healthRecommendations": [],
+      "basicStartingTests": [
+        {
+          "testId": "thyroid_stimulating_hormone",
+          "displayName": "Thyroid-Stimulating Hormone (TSH)",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "NICE recommends TSH as the initial adult test when secondary thyroid dysfunction is not suspected, with additional testing cascaded from the result.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng145_hyperthyroidism_testing"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng145_hyperthyroidism_testing",
+          "supportedClaims": [
+            "applicability",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "nice_ng145_hyperthyroidism_monitoring",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "osteoarthritis_v1",
+      "conditionId": "osteoarthritis",
+      "conditionDisplayName": "Osteoarthritis",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 16,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "clinician_assessment",
+        "timeframe": "routine",
+        "message": "NICE states that, in the absence of red flags, osteoarthritis can be diagnosed through clinical assessment in adults."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "clinical_osteoarthritis_assessment",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss persistent joint symptoms with a clinician",
+          "message": "NICE describes history and examination as the appropriate basis for clinical assessment in the absence of red flags.",
+          "action": "Arrange a routine clinical review for persistent joint symptoms.",
+          "citationRefs": [
+            "nice_ng226_osteoarthritis_diagnosis"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng226_osteoarthritis_diagnosis",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "nice_ng226_osteoarthritis_context",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "NICE states imaging is not routinely needed for diagnosis when the clinical presentation is typical and there are no red flags.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "benign_paroxysmal_positional_vertigo_bppv_v1",
+      "conditionId": "benign_paroxysmal_positional_vertigo_bppv",
+      "conditionDisplayName": "Benign paroxysmal positional vertigo (BPPV)",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 16,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "trained_clinician_assessment",
+        "timeframe": "routine",
+        "message": "NICE limits the Hallpike manoeuvre to a healthcare professional trained in its use."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_positional_vertigo",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss positional vertigo with a trained clinician",
+          "message": "NICE recommends a Hallpike manoeuvre for transient rotational vertigo triggered by head movement when a trained professional is available.",
+          "action": "Arrange assessment through an appropriate clinical pathway.",
+          "citationRefs": [
+            "nice_ng127_bppv_recommendations"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "hallpike_manoeuvre",
+          "displayName": "Hallpike manoeuvre",
+          "testType": "clinical_manoeuvre",
+          "priority": "medium",
+          "why": "NICE recommends the Hallpike manoeuvre to check for BPPV when performed by a trained healthcare professional.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng127_bppv_recommendations"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng127_bppv_recommendations",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "aao_hnsf_bppv_executive_summary_2017",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "acne_vulgaris_v1",
+      "conditionId": "acne_vulgaris",
+      "conditionDisplayName": "Acne vulgaris",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "routine_clinician_review",
+        "timeframe": "routine",
+        "message": "NICE supports specialist referral when the diagnosis is unclear, acne is severe, or the condition is causing significant impact."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_acne_severity_or_uncertainty",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Seek clinical review for severe, unclear, or distressing acne",
+          "message": "NICE supports referral when acne is severe, diagnosis is unclear, or psychological impact is persistent.",
+          "action": "Arrange an appropriate clinical or dermatology review.",
+          "citationRefs": [
+            "aafp_acne_vulgaris_2019"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng198_acne_overview",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "aafp_acne_vulgaris_2019",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "No basic diagnostic test was extracted from the cited acne-management guidance.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "hypoglycaemia_in_adults_with_type_2_diabetes_v1",
+      "conditionId": "hypoglycaemia_in_adults_with_type_2_diabetes",
+      "conditionDisplayName": "Hypoglycaemia in adults with type 2 diabetes",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": 18,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "clinician_review_required",
+        "timeframe": "prompt",
+        "message": "The cited guidance applies to adults with type 2 diabetes and requires individualised glucose-management decisions."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_suspected_hypoglycaemia",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Discuss suspected hypoglycaemia with a clinician",
+          "message": "NICE allows short-term capillary blood-glucose self-monitoring to confirm suspected hypoglycaemia in the stated population.",
+          "action": "Arrange timely clinical review, particularly if episodes recur or are severe.",
+          "citationRefs": [
+            "ada_abridged_hypoglycaemia_2024"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "capillary_blood_glucose",
+          "displayName": "Capillary blood-glucose measurement",
+          "testType": "point_of_care_measurement",
+          "priority": "medium",
+          "why": "NICE permits short-term capillary blood-glucose self-monitoring to confirm suspected hypoglycaemia in adults with type 2 diabetes.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "ada_abridged_hypoglycaemia_2024"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "ada_abridged_hypoglycaemia_2024",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test",
+            "applicability"
+          ]
+        },
+        {
+          "citationId": "ada_abridged_hypoglycaemia_2024",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "lower_urinary_tract_infection_v1",
+      "conditionId": "lower_urinary_tract_infection",
+      "conditionDisplayName": "Lower urinary tract infection",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "clinician_review_required",
+        "timeframe": "routine",
+        "message": "Appropriate lower-UTI testing depends on age, sex, pregnancy status, symptoms, and the risk of complications."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_lower_uti",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss lower urinary symptoms with a clinician",
+          "message": "NICE specifies urine sampling and culture for stated groups and advises reassessment if symptoms worsen or fail to improve.",
+          "action": "Arrange clinical assessment for appropriate urine testing.",
+          "citationRefs": [
+            "nice_ng109_lower_uti_recommendations"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "midstream_urine_culture_and_susceptibility",
+          "displayName": "Midstream urine culture and susceptibility testing",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "NICE specifies a pre-antibiotic midstream urine sample for culture and susceptibility testing in pregnant women and men with lower UTI; children follow an age-specific dipstick/culture pathway.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng109_lower_uti_recommendations"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng109_lower_uti_recommendations",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "nice_ng112_recurrent_uti",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "psoriasis_v1",
+      "conditionId": "psoriasis",
+      "conditionDisplayName": "Psoriasis",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "dermatology_review_if_indicated",
+        "timeframe": "routine",
+        "message": "NICE requires assessment of severity, impact, psoriatic arthritis, and comorbidities, with specialist referral for stated circumstances."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_psoriasis_impact",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss psoriasis severity and impact with a clinician",
+          "message": "NICE recommends assessment of disease severity, wellbeing impact, psoriatic arthritis, and comorbidities.",
+          "action": "Arrange clinical or dermatology review if disease is extensive, uncontrolled, uncertain, or significantly affecting wellbeing.",
+          "citationRefs": [
+            "aafp_psoriasis_recognition_management_2023"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "aafp_psoriasis_recognition_management_2023",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit"
+          ]
+        },
+        {
+          "citationId": "nice_cg153_psoriasis_topical_treatment",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "No universal basic diagnostic test was extracted from the cited psoriasis-assessment guidance.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "impetigo_v1",
+      "conditionId": "impetigo",
+      "conditionDisplayName": "Impetigo",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "reassess_if_worse",
+        "timeframe": "routine",
+        "message": "NICE advises reassessment if impetigo worsens rapidly, significantly, or does not improve after treatment."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "monitor_impetigo",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Seek review for worsening or recurrent impetigo",
+          "message": "NICE advises hygiene measures and reassessment for deterioration, non-improvement, recurrence, or higher-risk situations.",
+          "action": "Arrange clinical review if symptoms worsen, recur frequently, or the person is systemically unwell.",
+          "citationRefs": [
+            "nice_ng153_impetigo_recommendations"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "impetigo_skin_swab",
+          "displayName": "Skin swab for microbiological testing",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "NICE states that microbiological testing may guide antimicrobial prescribing and recommends a skin swab for frequently recurrent impetigo.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "nice_ng153_impetigo_recommendations"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "nice_ng153_impetigo_recommendations",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        },
+        {
+          "citationId": "nice_ng153_impetigo_visual_summary",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "SA Health Impetigo Clinical Practice Guideline is a supplementary PageIndex source. It is intentionally not mapped to a new patient-facing claim until clinical claim-level review.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "acute_conjunctivitis_v1",
+      "conditionId": "acute_conjunctivitis",
+      "conditionDisplayName": "Acute conjunctivitis",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "urgent_review_if_red_flags",
+        "timeframe": "routine",
+        "message": "The cited WHO manual describes clinical diagnosis for typical viral conjunctivitis and urgent ophthalmology referral for suspected hyper-acute gonococcal infection."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_red_eye",
+          "recommendationType": "care_navigation",
+          "priority": "high",
+          "headline": "Seek urgent eye care for severe or high-risk red-eye symptoms",
+          "message": "The WHO manual describes clinical diagnosis for typical viral conjunctivitis and urgent referral for hyper-acute gonococcal infection.",
+          "action": "Use an appropriate eye-care pathway if symptoms are severe, visual changes occur, or discharge is extreme.",
+          "citationRefs": [
+            "aafp_red_eye_primary_care_2010"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "aafp_red_eye_primary_care_2010",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit"
+          ]
+        },
+        {
+          "citationId": "aafp_red_eye_primary_care_2010",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "The cited WHO manual states that culture or smears are not needed for typical acute viral conjunctivitis.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "haemorrhoids_piles_v1",
+      "conditionId": "haemorrhoids_piles",
+      "conditionDisplayName": "Haemorrhoids (piles)",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "clinician_assessment",
+        "timeframe": "routine",
+        "message": "The cited NICE sources describe haemorrhoidal symptoms and grading but do not provide a general automated diagnostic-test pathway."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_piles_symptoms",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss persistent bleeding, prolapse, pain, or anal symptoms with a clinician",
+          "message": "NICE describes bleeding, itching, discomfort and prolapse as haemorrhoid symptoms and notes grade-specific management is clinician-led.",
+          "action": "Arrange clinical assessment for persistent or concerning symptoms.",
+          "citationRefs": [
+            "nice_ta128_haemorrhoids_clinical_need"
+          ]
+        }
+      ],
+      "basicStartingTests": [],
+      "citationRefs": [
+        {
+          "citationId": "nice_ta128_haemorrhoids_clinical_need",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test_limit"
+          ]
+        },
+        {
+          "citationId": "nice_htg447_haemorrhoids_indications",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "No basic diagnostic test was extracted from the cited haemorrhoid technology-guidance sources.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    },
+    {
+      "evidenceId": "allergic_rhinitis_v1",
+      "conditionId": "allergic_rhinitis",
+      "conditionDisplayName": "Allergic rhinitis",
+      "recordStatus": "source_extracted_draft",
+      "applicability": {
+        "ageRange": {
+          "minYears": null,
+          "maxYears": null
+        },
+        "sex": {
+          "appliesTo": [
+            "not_specified"
+          ],
+          "notes": "The current extraction pass did not record a sex-specific applicability claim. Clinical review is required."
+        },
+        "pregnancyStatus": "not_specified",
+        "inclusionCriteria": [],
+        "exclusionsOrLimitations": [
+          "Do not use this record to diagnose a condition.",
+          "Do not apply it to pregnancy, children, or other population groups unless a reviewed source explicitly supports that use."
+        ]
+      },
+      "supportedPattern": {
+        "symptomIds": [],
+        "riskFactorRefs": [],
+        "questionnaireFieldRefs": [],
+        "rule": "No symptom, risk factor, questionnaire field, or legacy prognosis-dataset relationship is asserted by this record. Add one only after the listed citation explicitly supports it and clinical review approves it."
+      },
+      "careDisposition": {
+        "level": "clinician_assessment",
+        "timeframe": "routine",
+        "message": "The cited practice parameter recommends history and physical examination, with aeroallergen testing to confirm allergic rhinitis when history is consistent."
+      },
+      "healthRecommendations": [
+        {
+          "recommendationId": "review_allergic_rhinitis",
+          "recommendationType": "care_navigation",
+          "priority": "medium",
+          "headline": "Discuss persistent rhinitis symptoms with a clinician",
+          "message": "The cited practice parameter recommends a detailed history and examination and confirmation testing when allergic rhinitis is clinically suspected.",
+          "action": "Arrange a routine clinical review for appropriate evaluation.",
+          "citationRefs": [
+            "aafp_allergic_rhinitis_rapid_review_2023"
+          ]
+        }
+      ],
+      "basicStartingTests": [
+        {
+          "testId": "aeroallergen_skin_prick_test",
+          "displayName": "Aeroallergen skin-prick test",
+          "testType": "laboratory_or_clinical_test",
+          "priority": "medium",
+          "why": "The cited practice parameter recommends aeroallergen skin-prick testing to confirm allergic rhinitis when history is consistent.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "aafp_allergic_rhinitis_rapid_review_2023"
+          ]
+        },
+        {
+          "testId": "allergen_specific_ige",
+          "displayName": "Allergen-specific IgE test",
+          "testType": "laboratory",
+          "priority": "medium",
+          "why": "The cited practice parameter recommends specific-IgE testing as an alternative confirmation test when history is consistent.",
+          "requiresClinicianReview": true,
+          "citationRefs": [
+            "aafp_allergic_rhinitis_rapid_review_2023"
+          ]
+        }
+      ],
+      "citationRefs": [
+        {
+          "citationId": "aria_eaaci_allergic_rhinitis_2020",
+          "supportedClaims": [
+            "condition_scope"
+          ]
+        },
+        {
+          "citationId": "aafp_allergic_rhinitis_rapid_review_2023",
+          "supportedClaims": [
+            "care_navigation",
+            "health_recommendation",
+            "basic_starting_test"
+          ]
+        }
+      ],
+      "clinicalBoundary": {
+        "isDiagnosis": false,
+        "doesNotReplaceProfessionalCare": true,
+        "doesNotPrescribeMedication": true,
+        "doesNotRecommendAdvancedTesting": true,
+        "message": "HealthWise AI provides educational health insights and supports informed clinical conversations. It does not diagnose conditions, prescribe treatment, or replace a healthcare professional."
+      },
+      "review": {
+        "clinicalReviewStatus": "completed",
+        "reviewedBy": "manual_project_review",
+        "reviewedAt": "2026-09-06",
+        "notes": [
+          "Citations are limited to the pre-approved Wave 1 registry.",
+          "No direct legacy-dataset symptom-to-condition relationship is asserted.",
+          "Clinical review is required before this record can be used by a chatbot, recommendation engine, or patient-facing flow.",
+          "Approved full-tree replacement citation applied; clinical review remains required before runtime use.",
+          "Project owner recorded manual review as completed on 2026-09-06. This audit flag alone does not grant runtime eligibility or replace required clinician/governance approval."
+        ]
+      }
+    }
+  ]
+}

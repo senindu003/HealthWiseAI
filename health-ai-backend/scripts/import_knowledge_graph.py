@@ -34,7 +34,9 @@ def main() -> int:
             "Validated bundle: "
             f"{len(bundle.catalogue.get('symptoms', []))} symptoms, "
             f"{len(bundle.registry.get('conditions', []))} conditions, "
-            f"{len(bundle.evidence.get('records', []))} evidence records."
+            f"{len(bundle.evidence.get('records', []))} evidence records, "
+            f"{len(bundle.candidate_symptom_evidence_mappings.get('mappings', []))} non-runtime candidate mappings, "
+            f"{len(bundle.reviewed_symptom_evidence_mappings.get('mappings', []))} reviewed runtime mappings."
         )
         return 0
 

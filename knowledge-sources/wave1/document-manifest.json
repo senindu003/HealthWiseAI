@@ -1,0 +1,1221 @@
+{
+  "schemaVersion": "1.0",
+  "registry": "citation-registry.wave1.nice-who.json",
+  "purpose": "Wave 1 PageIndex source-document inventory; not patient data and not clinical runtime logic.",
+  "documents": [
+    {
+      "documentId": "www_nice_org_uk_guidance_ph38_chapter_recommendations_c00bacaeab4c",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ph38/chapter/recommendations",
+      "citationIds": [
+        "nice_ph38_1_4_1"
+      ],
+      "publisher": "NICE",
+      "title": "Type 2 diabetes: prevention in people at high risk",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ph38_chapter_recommendations_c00bacaeab4c.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ph38/resources/type-2-diabetes-prevention-in-people-at-high-risk-pdf-1996304192197",
+      "finalUrl": "https://www.nice.org.uk/guidance/ph38/chapter/recommendations",
+      "contentHash": "sha256:ada8c9a67c17b7dedc18a6e99d91ec419b4b2a77b1cbe078e81e08616a9f9003",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ph38_chapter_recommendations_c00bacaeab4c",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_qs209_chapter_quality_statement_1_preventing_type_2_diabete_520dee0cee4a",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/qs209/chapter/Quality-statement-1-Preventing-type-2-diabetes",
+      "citationIds": [
+        "nice_qs209_quality_statement_1"
+      ],
+      "publisher": "NICE",
+      "title": "Quality statement 1: Preventing type 2 diabetes",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_qs209_chapter_quality_statement_1_preventing_type_2_diabete_520dee0cee4a.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/qs209/resources/type-2-diabetes-in-adults-pdf-75547422824389",
+      "finalUrl": "https://www.nice.org.uk/guidance/qs209/chapter/Quality-statement-1-Preventing-type-2-diabetes",
+      "contentHash": "sha256:1293de2bb19584b743e171c380bcaa7713d67e6539e0738364b73998b6208a5c",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_qs209_chapter_quality_statement_1_preventing_type_2_diabete_520dee0cee4a",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_b09394_d06181da46fa",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/B09394",
+      "citationIds": [
+        "who_dengue_lab_testing_2025"
+      ],
+      "publisher": "WHO",
+      "title": "Laboratory testing for dengue virus: interim guidance, April 2025",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/B09394-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/B09394",
+      "contentHash": "sha256:e2c8b1a1ffad3594b15e8622041c66aff45294e52e971b915d268d5aaff91f4d",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_b09394_d06181da46fa",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/7f5d3370-9990-426d-a848-9225f3ecbc48/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/7f5d3370-9990-426d-a848-9225f3ecbc48/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "B09394-eng.pdf"
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_9789240111110_a2f555e25299",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/9789240111110",
+      "citationIds": [
+        "who_arboviral_clinical_management_2025_dengue",
+        "who_arboviral_clinical_management_2025_chikungunya"
+      ],
+      "publisher": "WHO",
+      "title": "WHO guidelines for clinical management of arboviral diseases: dengue, chikungunya, Zika and yellow fever",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789240111110-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/9789240111110",
+      "contentHash": "sha256:cbbe4513ef91cc6bf84a2c2fe73e78e3727da3fefb7c928723ed6ebf477935ea",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_9789240111110_a2f555e25299",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/634a55a5-327e-459b-a633-0650fe8ad6c9/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/634a55a5-327e-459b-a633-0650fe8ad6c9/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "9789240111110-eng.pdf"
+    },
+    {
+      "documentId": "www_who_int_teams_immunization_vaccines_and_biologicals_policies_position_papers_var_038f74390af6",
+      "canonicalSourceUrl": "https://www.who.int/teams/immunization-vaccines-and-biologicals/policies/position-papers/varicella",
+      "citationIds": [
+        "who_varicella_position_paper_2025"
+      ],
+      "publisher": "WHO",
+      "title": "WHO position paper on varicella vaccines – November 2025",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/WER10047-567-590.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/teams/immunization-vaccines-and-biologicals/policies/position-papers/varicella",
+      "contentHash": "sha256:de4f48fc5cf0b949d3eb461b652ffccf4fdfdbf3a4533b755e36fcfbf6e7efc0",
+      "pageIndexDocumentId": "www_who_int_teams_immunization_vaccines_and_biologicals_policies_position_papers_var_038f74390af6",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/226f9646-0621-4c28-8ce5-0a6de5c3b0b7/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/226f9646-0621-4c28-8ce5-0a6de5c3b0b7/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "WER10047-567-590.pdf"
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_who_wer_8925_265_288_38beeefd2b2f",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/who-wer-8925-265-288",
+      "citationIds": [
+        "who_varicella_herpes_zoster_position_paper_2014"
+      ],
+      "publisher": "WHO",
+      "title": "Varicella and herpes zoster vaccines: WHO position paper, June 2014",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/WER8925.PDF",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/who-wer-8925-265-288",
+      "contentHash": "sha256:1b7294a61eb58a0dd86b08dfe4dc6624993ed516c205f273fdbc34262d67534a",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_who_wer_8925_265_288_38beeefd2b2f",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/73cbb891-41a3-43a8-9a1b-3a50e1f5e658/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/73cbb891-41a3-43a8-9a1b-3a50e1f5e658/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "WER8925.PDF"
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_cg99_chapter_recommendations_1a2a8e610045",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/cg99/chapter/Recommendations",
+      "citationIds": [
+        "nice_cg99_constipation_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Constipation in children and young people: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_cg99_chapter_recommendations_1a2a8e610045.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/cg99/resources/constipation-in-children-and-young-people-diagnosis-and-management-pdf-975757753285",
+      "finalUrl": "https://www.nice.org.uk/guidance/cg99/chapter/Recommendations",
+      "contentHash": "sha256:027f7cbaa21da1133c216ac818a7782f1e259620e542787ebe0a87e34b0c0d40",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_cg99_chapter_recommendations_1a2a8e610045",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_qs62_6db7659ac256",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/qs62",
+      "citationIds": [
+        "nice_qs62_constipation_children_overview"
+      ],
+      "publisher": "NICE",
+      "title": "Constipation in children and young people",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_qs62_6db7659ac256.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/qs62/resources/constipation-in-children-and-young-people-pdf-2098784282821",
+      "finalUrl": "https://www.nice.org.uk/guidance/qs62",
+      "contentHash": "sha256:777c54fdd550e2007d8eb840d7fb854cb2b38f22af55f9a0bd14a9ec16a3cb7f",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_qs62_6db7659ac256",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_who_int_news_room_fact_sheets_detail_ringworm_28tinea_29_3a4073c4c95d",
+      "canonicalSourceUrl": "https://www.who.int/news-room/fact-sheets/detail/ringworm-%28tinea%29",
+      "citationIds": [
+        "who_ringworm_tinea_fact_sheet_2025"
+      ],
+      "publisher": "WHO",
+      "title": "Ringworm (tinea)",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_who_int_news_room_fact_sheets_detail_ringworm_28tinea_29_3a4073c4c95d.html-render.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/news-room/fact-sheets/detail/ringworm-%28tinea%29",
+      "contentHash": "sha256:82695e627f878338a5201923c7235d54e647c63bec1cdadfecb3a93a7b161139",
+      "pageIndexDocumentId": "www_who_int_news_room_fact_sheets_detail_ringworm_28tinea_29_3a4073c4c95d",
+      "status": "pdf_rendered_from_official_html",
+      "error": null,
+      "officialPdfCandidates": [],
+      "pdfDownloadErrors": [],
+      "sourceOriginFormat": "official_html",
+      "officialHtmlPath": "knowledge-sources/wave1/html/www_who_int_news_room_fact_sheets_detail_ringworm_28tinea_29_3a4073c4c95d.html",
+      "renderingTool": "xhtml2pdf local renderer (external assets disabled)",
+      "renderedAt": "2026-09-06T03:18:43.972051+00:00",
+      "pageCount": 6,
+      "pageIndexInputPolicy": "full_document_only_no_page_slicing"
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_9789240122529_a99600a7e89f",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/9789240122529",
+      "citationIds": [
+        "who_fungal_disease_blueprint_2026"
+      ],
+      "publisher": "WHO",
+      "title": "Blueprint for strengthening responses to fungal disease and antifungal resistance",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789240122529-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/9789240122529",
+      "contentHash": "sha256:79f32104330b371be5436eb6b06447a92af9fa0cec125beaa122c1329532da2d",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_9789240122529_a99600a7e89f",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/e528e6f6-eb69-4e22-9f7c-e3606b5c3cec/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/e528e6f6-eb69-4e22-9f7c-e3606b5c3cec/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "9789240122529-eng.pdf"
+    },
+    {
+      "documentId": "www_who_int_news_room_fact_sheets_detail_cholera_b2035616c3c6",
+      "canonicalSourceUrl": "https://www.who.int/news-room/fact-sheets/detail/cholera",
+      "citationIds": [
+        "who_cholera_fact_sheet_2024"
+      ],
+      "publisher": "WHO",
+      "title": "Cholera",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_who_int_news_room_fact_sheets_detail_cholera_b2035616c3c6.html-render.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/news-room/fact-sheets/detail/cholera",
+      "contentHash": "sha256:e296b65f7d7c4e4f547bc46d66b5b6d94f4b93163948b3993849d84a9bff2f9e",
+      "pageIndexDocumentId": "www_who_int_news_room_fact_sheets_detail_cholera_b2035616c3c6",
+      "status": "pdf_rendered_from_official_html",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://www.who.int/news-room/fact-sheets/detail/\\\"https:/www.gtfcc.org/wp-content/uploads/2019/10/gtfcc-ending-cholera-a-global-roadmap-to-2030.pdf\\\"",
+        "https://www.who.int/news-room/fact-sheets/detail/\\\"https:/cdn.who.int/media/docs/default-source/dco/wer_36_2024_cholera-annual-report-for-2023_bilingual-proof.pdf?sfvrsn=86fb1faf_1\\\""
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://www.who.int/news-room/fact-sheets/detail/\\\"https:/www.gtfcc.org/wp-content/uploads/2019/10/gtfcc-ending-cholera-a-global-roadmap-to-2030.pdf\\\"",
+          "error": "HTTPError: HTTP Error 403: Forbidden"
+        },
+        {
+          "url": "https://www.who.int/news-room/fact-sheets/detail/\\\"https:/cdn.who.int/media/docs/default-source/dco/wer_36_2024_cholera-annual-report-for-2023_bilingual-proof.pdf?sfvrsn=86fb1faf_1\\\"",
+          "error": "HTTPError: HTTP Error 403: Forbidden"
+        }
+      ],
+      "sourceOriginFormat": "official_html",
+      "officialHtmlPath": "knowledge-sources/wave1/html/www_who_int_news_room_fact_sheets_detail_cholera_b2035616c3c6.html",
+      "renderingTool": "xhtml2pdf local renderer (external assets disabled)",
+      "renderedAt": "2026-09-06T03:18:46.637643+00:00",
+      "pageCount": 6,
+      "pageIndexInputPolicy": "full_document_only_no_page_slicing"
+    },
+    {
+      "documentId": "www_who_int_docs_default_source_immunization_vpd_surveillance_vpd_surveillance_stand_1350718e80c3",
+      "canonicalSourceUrl": "https://www.who.int/docs/default-source/immunization/vpd_surveillance/vpd-surveillance-standards-publication/b-w/who-surveillancevaccinepreventable-02-cholera-bw-r2.pdf",
+      "citationIds": [
+        "who_cholera_surveillance_standards_2018"
+      ],
+      "publisher": "WHO",
+      "title": "Vaccine-preventable diseases surveillance standards: Cholera",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_who_int_docs_default_source_immunization_vpd_surveillance_vpd_surveillance_stand_1350718e80c3.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/docs/default-source/immunization/vpd_surveillance/vpd-surveillance-standards-publication/b-w/who-surveillancevaccinepreventable-02-cholera-bw-r2.pdf",
+      "contentHash": "sha256:37ff267570060b1e1940a9f4c09a733a3b3123979ee9e379de0f7e9d907d59e0",
+      "pageIndexDocumentId": "www_who_int_docs_default_source_immunization_vpd_surveillance_vpd_surveillance_stand_1350718e80c3",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_9789240103412_02dade0b4e5e",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/9789240103412",
+      "citationIds": [
+        "who_pneumonia_diarrhoea_children_guideline_2024",
+        "who_pneumonia_diarrhoea_children_guideline_2024_diarrhoea"
+      ],
+      "publisher": "WHO",
+      "title": "Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789240103412-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/9789240103412",
+      "contentHash": "sha256:12876606e78ede37f4744b76b1dbfe0de00d25b12b0d90eca0a0cf0e53d631cf",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_9789240103412_02dade0b4e5e",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/bddcc725-8ffd-4d38-bec4-d6ead2904911/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/bddcc725-8ffd-4d38-bec4-d6ead2904911/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "9789240103412-eng.pdf"
+    },
+    {
+      "documentId": "www_who_int_health_topics_pneumonia_22cbb97fb189",
+      "canonicalSourceUrl": "https://www.who.int/health-topics/pneumonia/",
+      "citationIds": [
+        "who_pneumonia_health_topic"
+      ],
+      "publisher": "WHO",
+      "title": "Pneumonia",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_who_int_health_topics_pneumonia_22cbb97fb189.html-render.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/health-topics/pneumonia/",
+      "contentHash": "sha256:d217c1ab2ac8da80aaa4b058545158d970c9ff5a1cb8ba94549ee6da221268d6",
+      "pageIndexDocumentId": "www_who_int_health_topics_pneumonia_22cbb97fb189",
+      "status": "pdf_rendered_from_official_html",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/bddcc725-8ffd-4d38-bec4-d6ead2904911/content",
+        "https://iris.who.int/server/api/core/bitstreams/3ae5bd43-7196-43d2-8c77-be8725e21823/content",
+        "https://iris.who.int/server/api/core/bitstreams/7386da0b-eb0a-4bff-b117-711283bf529a/content",
+        "https://iris.who.int/server/api/core/bitstreams/560050e6-e20c-4a78-aa0a-5643d09dc325/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/bddcc725-8ffd-4d38-bec4-d6ead2904911/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        },
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/3ae5bd43-7196-43d2-8c77-be8725e21823/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        },
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/7386da0b-eb0a-4bff-b117-711283bf529a/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        },
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/560050e6-e20c-4a78-aa0a-5643d09dc325/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "sourceOriginFormat": "official_html",
+      "officialHtmlPath": "knowledge-sources/wave1/html/www_who_int_health_topics_pneumonia_22cbb97fb189.html",
+      "renderingTool": "xhtml2pdf local renderer (external assets disabled)",
+      "renderedAt": "2026-09-06T03:18:49.531372+00:00",
+      "pageCount": 6,
+      "pageIndexInputPolicy": "full_document_only_no_page_slicing"
+    },
+    {
+      "documentId": "www_who_int_publications_detail_redirect_guidelines_for_malaria_af52cc27192f",
+      "canonicalSourceUrl": "https://www.who.int/publications-detail-redirect/guidelines-for-malaria",
+      "citationIds": [
+        "who_malaria_guidelines_2025_diagnosis"
+      ],
+      "publisher": "WHO",
+      "title": "WHO guidelines for malaria",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/B09514-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications-detail-redirect/guidelines-for-malaria",
+      "contentHash": "sha256:41c1cb923973ab0d5556d83951ec43374d200c60e4c21a196007dd3c9151ce72",
+      "pageIndexDocumentId": "www_who_int_publications_detail_redirect_guidelines_for_malaria_af52cc27192f",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/26a6af2d-060c-4449-8207-1f25e63c6cc3/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/26a6af2d-060c-4449-8207-1f25e63c6cc3/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "B09514-eng.pdf"
+    },
+    {
+      "documentId": "www_who_int_activities_diagnostic_testing_for_malaria_114f6720bc3f",
+      "canonicalSourceUrl": "https://www.who.int/activities/diagnostic-testing-for-malaria",
+      "citationIds": [
+        "who_malaria_diagnostic_testing"
+      ],
+      "publisher": "WHO",
+      "title": "Diagnostic testing for malaria",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_who_int_activities_diagnostic_testing_for_malaria_114f6720bc3f.html-render.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/activities/diagnostic-testing-for-malaria",
+      "contentHash": "sha256:84aae54730ca7e75a08aabb9daf6aa593c238e98713f461b8d2e0978cb6ba865",
+      "pageIndexDocumentId": "www_who_int_activities_diagnostic_testing_for_malaria_114f6720bc3f",
+      "status": "pdf_rendered_from_official_html",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/0070782f-c7c4-4b0d-b653-c340798b8eb9/content",
+        "https://iris.who.int/server/api/core/bitstreams/b553dbee-fc67-494c-b742-9e8cbe75d179/content",
+        "https://iris.who.int/server/api/core/bitstreams/4b5cf8c1-a225-4dba-acb5-bdb87081fcdd/content",
+        "https://iris.who.int/server/api/core/bitstreams/a9a8afca-eec4-4d19-ac77-88934d9f57b2/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/0070782f-c7c4-4b0d-b653-c340798b8eb9/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        },
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/b553dbee-fc67-494c-b742-9e8cbe75d179/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        },
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/4b5cf8c1-a225-4dba-acb5-bdb87081fcdd/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        },
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/a9a8afca-eec4-4d19-ac77-88934d9f57b2/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "sourceOriginFormat": "official_html",
+      "officialHtmlPath": "knowledge-sources/wave1/html/www_who_int_activities_diagnostic_testing_for_malaria_114f6720bc3f.html",
+      "renderingTool": "xhtml2pdf local renderer (external assets disabled)",
+      "renderedAt": "2026-09-06T03:18:52.243950+00:00",
+      "pageCount": 5,
+      "pageIndexInputPolicy": "full_document_only_no_page_slicing"
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng91_7b2e4343aaf4",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng91",
+      "citationIds": [
+        "nice_ng91_otitis_media_overview"
+      ],
+      "publisher": "NICE",
+      "title": "Otitis media (acute): antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng91_7b2e4343aaf4.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng91/resources/otitis-media-acute-antimicrobial-prescribing-pdf-1837750121413",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng91",
+      "contentHash": "sha256:a2a080da8eef0a78f66663a53e7f98934e29d5e9a3f8684e9c75ff53aaf9b1af",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng91_7b2e4343aaf4",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng91_chapter_summary_of_the_evidence_b149f141d0e1",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng91/chapter/Summary-of-the-evidence",
+      "citationIds": [
+        "nice_ng91_otitis_media_evidence"
+      ],
+      "publisher": "NICE",
+      "title": "Otitis media (acute): antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng91_chapter_summary_of_the_evidence_b149f141d0e1.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng91/resources/otitis-media-acute-antimicrobial-prescribing-pdf-1837750121413",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng91/chapter/Summary-of-the-evidence",
+      "contentHash": "sha256:a2a080da8eef0a78f66663a53e7f98934e29d5e9a3f8684e9c75ff53aaf9b1af",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng91_chapter_summary_of_the_evidence_b149f141d0e1",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_sea_cd_180_999119736b99",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/sea-cd-180",
+      "citationIds": [
+        "who_searo_chikungunya_clinical_management"
+      ],
+      "publisher": "WHO",
+      "title": "Guidelines on Clinical Management of Chikungunya Fever",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/B3234.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/sea-cd-180",
+      "contentHash": "sha256:9f9caf9d023385a8a8acf21f6dcceb5bb2ee82c41fe1dfdcdb048efad4705062",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_sea_cd_180_999119736b99",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/e311de95-7b1d-4bc2-8190-c16aa48ae6a8/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/e311de95-7b1d-4bc2-8190-c16aa48ae6a8/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "B3234.pdf"
+    },
+    {
+      "documentId": "iris_who_int_bitstream_handle_10665_378872_9789240097759_eng_pdf_f6ee307aa8b5",
+      "canonicalSourceUrl": "https://iris.who.int/bitstream/handle/10665/378872/9789240097759-eng.pdf",
+      "citationIds": [
+        "who_influenza_clinical_practice_guideline_2024"
+      ],
+      "publisher": "WHO",
+      "title": "Clinical practice guidelines for influenza",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789240097759-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": null,
+      "contentHash": "sha256:c845b39c8d6add9d5be54fb1ad7e7f1d806a3bb42d2f7465a147cd43dbab1f9b",
+      "pageIndexDocumentId": "iris_who_int_bitstream_handle_10665_378872_9789240097759_eng_pdf_f6ee307aa8b5",
+      "status": "pdf_downloaded",
+      "error": null,
+      "manualImport": true,
+      "manualFilename": "9789240097759-eng.pdf"
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_9789240040816_0926345c65cf",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/9789240040816",
+      "citationIds": [
+        "who_influenza_clinical_management_2022"
+      ],
+      "publisher": "WHO",
+      "title": "Guidelines for the clinical management of severe illness from influenza virus infections",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789240040816-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/9789240040816",
+      "contentHash": "sha256:00042e66886b883a8bb1575a2885518a75deb38d139224899840280f6523883d",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_9789240040816_0926345c65cf",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/fced1001-09f4-417c-8590-5caea0ef4188/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/fced1001-09f4-417c-8590-5caea0ef4188/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "9789240040816-eng.pdf"
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng79_chapter_recommendations_48d0c2c606bc",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng79/chapter/Recommendations",
+      "citationIds": [
+        "nice_ng79_sinusitis_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Sinusitis (acute): antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng79_chapter_recommendations_48d0c2c606bc.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng79/resources/sinusitis-acute-antimicrobial-prescribing-pdf-1837642625989",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng79/chapter/Recommendations",
+      "contentHash": "sha256:683b0aa348e26b091d8b69e7b142c8d288721bf411d6dd2d3b4b69351ae81c09",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng79_chapter_recommendations_48d0c2c606bc",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng79_chapter_summary_of_the_evidence_e41b4ffaa2f6",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng79/chapter/Summary-of-the-evidence",
+      "citationIds": [
+        "nice_ng79_sinusitis_evidence"
+      ],
+      "publisher": "NICE",
+      "title": "Sinusitis (acute): antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng79_chapter_summary_of_the_evidence_e41b4ffaa2f6.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng79/resources/sinusitis-acute-antimicrobial-prescribing-pdf-1837642625989",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng79/chapter/Summary-of-the-evidence",
+      "contentHash": "sha256:683b0aa348e26b091d8b69e7b142c8d288721bf411d6dd2d3b4b69351ae81c09",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng79_chapter_summary_of_the_evidence_e41b4ffaa2f6",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng120_chapter_recommendations_a4498355fc6a",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng120/chapter/recommendations",
+      "citationIds": [
+        "nice_ng120_acute_cough_recommendations",
+        "nice_ng120_common_cold_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Cough (acute): antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng120_chapter_recommendations_a4498355fc6a.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng120/resources/cough-acute-antimicrobial-prescribing-pdf-66141652166341",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng120/chapter/recommendations",
+      "contentHash": "sha256:786b5d3966b029588b1accd876b522083f76ffea8d2ccb46896c3409d437a65c",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng120_chapter_recommendations_a4498355fc6a",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng120_chapter_summary_of_the_evidence_2f5b17c670cd",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng120/chapter/Summary-of-the-evidence",
+      "citationIds": [
+        "nice_ng120_acute_bronchitis_evidence",
+        "nice_ng120_common_cold_evidence"
+      ],
+      "publisher": "NICE",
+      "title": "Cough (acute): antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng120_chapter_summary_of_the_evidence_2f5b17c670cd.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng120/resources/cough-acute-antimicrobial-prescribing-pdf-66141652166341",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng120/chapter/Summary-of-the-evidence",
+      "contentHash": "sha256:786b5d3966b029588b1accd876b522083f76ffea8d2ccb46896c3409d437a65c",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng120_chapter_summary_of_the_evidence_2f5b17c670cd",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_9789240107984_efbeb65eb9ae",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/9789240107984",
+      "citationIds": [
+        "who_tb_module3_diagnosis_2025"
+      ],
+      "publisher": "WHO",
+      "title": "WHO consolidated guidelines on tuberculosis: module 3: diagnosis",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789240107984-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/9789240107984",
+      "contentHash": "sha256:c560e5d6276722d526d8137c491966352f87268b6ee9984b7775ac4495690929",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_9789240107984_efbeb65eb9ae",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/ae20e43e-17fd-4951-b475-3e36e166e7ae/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/ae20e43e-17fd-4951-b475-3e36e166e7ae/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "9789240107984-eng.pdf"
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_9789240022676_ece4c2515f4d",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/9789240022676",
+      "citationIds": [
+        "who_tb_module2_screening_2021"
+      ],
+      "publisher": "WHO",
+      "title": "WHO consolidated guidelines on tuberculosis: module 2: screening: systematic screening for tuberculosis disease",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789240022676-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/9789240022676",
+      "contentHash": "sha256:fe6b4fd444dd15ce421f3920311b1786ec48ae94df841d9c03524b2614be51f3",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_9789240022676_ece4c2515f4d",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/0633a78b-581c-47f2-a148-bad704cc0e50/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/0633a78b-581c-47f2-a148-bad704cc0e50/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "9789240022676-eng.pdf"
+    },
+    {
+      "documentId": "www_who_int_docs_default_source_immunization_vpd_surveillance_vpd_surveillance_stand_492def3bbe74",
+      "canonicalSourceUrl": "https://www.who.int/docs/default-source/immunization/vpd_surveillance/vpd-surveillance-standards-publication/who-surveillancevaccinepreventable-21-typhoid-r2.pdf?download=true&sfvrsn=993904a6_10",
+      "citationIds": [
+        "who_typhoid_surveillance_standards"
+      ],
+      "publisher": "WHO",
+      "title": "Typhoid and other invasive salmonellosis",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_who_int_docs_default_source_immunization_vpd_surveillance_vpd_surveillance_stand_492def3bbe74.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/docs/default-source/immunization/vpd_surveillance/vpd-surveillance-standards-publication/who-surveillancevaccinepreventable-21-typhoid-r2.pdf?download=true&sfvrsn=993904a6_10",
+      "contentHash": "sha256:ca43b3d305357ba1af770d0d0ea4cfe7021b41b6144abaabfaa4b851d1122d45",
+      "pageIndexDocumentId": "www_who_int_docs_default_source_immunization_vpd_surveillance_vpd_surveillance_stand_492def3bbe74",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_who_int_publications_i_item_9789241502825_6875bb4a5037",
+      "canonicalSourceUrl": "https://www.who.int/publications/i/item/9789241502825",
+      "citationIds": [
+        "who_childhood_conditions_typhoid_2012",
+        "who_childhood_conditions_diarrhoea_2012"
+      ],
+      "publisher": "WHO",
+      "title": "Recommendations for management of common childhood conditions",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789241502825_eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.who.int/publications/i/item/9789241502825",
+      "contentHash": "sha256:d394e03df9a425c0b28bc12f1402ae78f79a0c7be6467eb410a56a01d264dfe7",
+      "pageIndexDocumentId": "www_who_int_publications_i_item_9789241502825_6875bb4a5037",
+      "status": "pdf_downloaded",
+      "error": null,
+      "officialPdfCandidates": [
+        "https://iris.who.int/server/api/core/bitstreams/b9f75861-794a-46f2-bf57-e6022a64426f/content"
+      ],
+      "pdfDownloadErrors": [
+        {
+          "url": "https://iris.who.int/server/api/core/bitstreams/b9f75861-794a-46f2-bf57-e6022a64426f/content",
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1035)>"
+        }
+      ],
+      "manualImport": true,
+      "manualFilename": "9789241502825_eng.pdf"
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_cg184_chapter_recommendations_2082ec504d3b",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/cg184/chapter/Recommendations",
+      "citationIds": [
+        "nice_cg184_gord_recommendations",
+        "nice_cg184_gord_endoscopy",
+        "nice_cg184_peptic_ulcer_interventions",
+        "nice_cg184_h_pylori_testing"
+      ],
+      "publisher": "NICE",
+      "title": "Gastro-oesophageal reflux disease and dyspepsia in adults: investigation and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_cg184_chapter_recommendations_2082ec504d3b.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/cg184/resources/gastrooesophageal-reflux-disease-and-dyspepsia-in-adults-investigation-and-management-pdf-35109812699845",
+      "finalUrl": "https://www.nice.org.uk/guidance/cg184/chapter/Recommendations",
+      "contentHash": "sha256:e4f9476c02ab84f37c43cc08fb345543aaf04e7ea984c47816f8b1c72c0d3fab",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_cg184_chapter_recommendations_2082ec504d3b",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng245_chapter_recommendations_7e192f395cc8",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng245/chapter/recommendations",
+      "citationIds": [
+        "nice_ng245_asthma_initial_assessment",
+        "nice_ng245_asthma_objective_tests"
+      ],
+      "publisher": "NICE",
+      "title": "Asthma: diagnosis, monitoring and chronic asthma management (BTS, NICE, SIGN)",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng245_chapter_recommendations_7e192f395cc8.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng245/resources/asthma-diagnosis-monitoring-and-chronic-asthma-management-bts-nice-sign-pdf-66143958279109",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng245/chapter/recommendations",
+      "contentHash": "sha256:5e0101a680f6c4a74561af802cf5dd0c182283c7f22a27338737e85d37334d1c",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng245_chapter_recommendations_7e192f395cc8",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng136_3ec828044a2b",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng136",
+      "citationIds": [
+        "nice_ng136_hypertension_overview"
+      ],
+      "publisher": "NICE",
+      "title": "Hypertension in adults: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng136_3ec828044a2b.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng136/resources/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng136",
+      "contentHash": "sha256:07f00ff626bb0aa930912fdf66cb0d05d2be6fca69469dbbce66233b063f6348",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng136_3ec828044a2b",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng136_chapter_recommendations_be6c8987fa62",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng136/chapter/recommendations",
+      "citationIds": [
+        "nice_ng136_hypertension_diagnosis"
+      ],
+      "publisher": "NICE",
+      "title": "Hypertension in adults: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng136_chapter_recommendations_be6c8987fa62.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng136/resources/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng136/chapter/recommendations",
+      "contentHash": "sha256:07f00ff626bb0aa930912fdf66cb0d05d2be6fca69469dbbce66233b063f6348",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng136_chapter_recommendations_be6c8987fa62",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_cg150_chapter_recommendations_982041fc03cf",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/cg150/chapter/recommendations",
+      "citationIds": [
+        "nice_cg150_migraine_diagnosis"
+      ],
+      "publisher": "NICE",
+      "title": "Headaches in over 12s: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_cg150_chapter_recommendations_982041fc03cf.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/cg150/resources/headaches-in-over-12s-diagnosis-and-management-pdf-35109624582853",
+      "finalUrl": "https://www.nice.org.uk/guidance/cg150/chapter/recommendations",
+      "contentHash": "sha256:c8ad01d68e99d335a156b88d9dfadd6c8d4b8ff6c534beae6ec86a78dc27ed6c",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_cg150_chapter_recommendations_982041fc03cf",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_cg150_ifp_chapter_diagnosis_b79414f39a16",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/cg150/ifp/chapter/Diagnosis",
+      "citationIds": [
+        "nice_cg150_migraine_public_diagnosis"
+      ],
+      "publisher": "NICE",
+      "title": "Headaches in over 12s: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_cg150_ifp_chapter_diagnosis_b79414f39a16.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/cg150/resources/headaches-pdf-243935625157",
+      "finalUrl": "https://www.nice.org.uk/guidance/cg150/ifp/chapter/Diagnosis",
+      "contentHash": "sha256:5592ece5fed96d560c7b2db64169d4a78ca8f5666aef752710d119718461a748",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_cg150_ifp_chapter_diagnosis_b79414f39a16",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_cg168_chapter_1_recommendations_bee31f1ac82b",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/cg168/chapter/1-recommendations",
+      "citationIds": [
+        "nice_cg168_varicose_veins_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Varicose veins: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_cg168_chapter_1_recommendations_bee31f1ac82b.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/cg168/resources/varicose-veins-diagnosis-and-management-pdf-35109698485957",
+      "finalUrl": "https://www.nice.org.uk/guidance/cg168/chapter/Recommendations",
+      "contentHash": "sha256:f0e43252f3d2bfb0096f2ccd3f5acddcaec6d22d1247072bc506f290a8b846ce",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_cg168_chapter_1_recommendations_bee31f1ac82b",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_cg168_chapter_introduction_efef9b804260",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/cg168/chapter/introduction",
+      "citationIds": [
+        "nice_cg168_varicose_veins_introduction"
+      ],
+      "publisher": "NICE",
+      "title": "Varicose veins: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_cg168_chapter_introduction_efef9b804260.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/cg168/resources/varicose-veins-diagnosis-and-management-pdf-35109698485957",
+      "finalUrl": "https://www.nice.org.uk/guidance/cg168/chapter/introduction",
+      "contentHash": "sha256:f0e43252f3d2bfb0096f2ccd3f5acddcaec6d22d1247072bc506f290a8b846ce",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_cg168_chapter_introduction_efef9b804260",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng145_chapter_recommendations_a551162ef16f",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng145/chapter/recommendations",
+      "citationIds": [
+        "nice_ng145_thyroid_testing",
+        "nice_ng145_hypothyroidism_management",
+        "nice_ng145_hyperthyroidism_testing",
+        "nice_ng145_hyperthyroidism_monitoring"
+      ],
+      "publisher": "NICE",
+      "title": "Thyroid disease: assessment and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng145_chapter_recommendations_a551162ef16f.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng145/resources/thyroid-disease-assessment-and-management-pdf-66141781496773",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng145/chapter/recommendations",
+      "contentHash": "sha256:2dd5a41407b66cca9f253db0bd2b4acde8cc7caef0128c10a7e5a98789ac2d55",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng145_chapter_recommendations_a551162ef16f",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng226_chapter_recommendations_ffcf0b143df4",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng226/chapter/recommendations",
+      "citationIds": [
+        "nice_ng226_osteoarthritis_diagnosis"
+      ],
+      "publisher": "NICE",
+      "title": "Osteoarthritis in over 16s: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng226_chapter_recommendations_ffcf0b143df4.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng226/resources/osteoarthritis-in-over-16s-diagnosis-and-management-pdf-66143839026373",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng226/chapter/recommendations",
+      "contentHash": "sha256:d57bce81117e359aafbc81b48f245105492a33969ce1c102860abb099443eb78",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng226_chapter_recommendations_ffcf0b143df4",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng226_chapter_context_e1b6aae42db0",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng226/chapter/context",
+      "citationIds": [
+        "nice_ng226_osteoarthritis_context"
+      ],
+      "publisher": "NICE",
+      "title": "Osteoarthritis in over 16s: diagnosis and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng226_chapter_context_e1b6aae42db0.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng226/resources/osteoarthritis-in-over-16s-diagnosis-and-management-pdf-66143839026373",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng226/chapter/context",
+      "contentHash": "sha256:d57bce81117e359aafbc81b48f245105492a33969ce1c102860abb099443eb78",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng226_chapter_context_e1b6aae42db0",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng127_chapter_recommendations_for_adults_aged_over_16_2441595a2890",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16",
+      "citationIds": [
+        "nice_ng127_bppv_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Suspected neurological conditions: recognition and referral",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng127_chapter_recommendations_for_adults_aged_over_16_2441595a2890.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng127/resources/suspected-neurological-conditions-recognition-and-referral-pdf-66141663923653",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16",
+      "contentHash": "sha256:991dc4d6e8871faa78cd72419d07a6684d6b8716056053100d1fd82df3c667ea",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng127_chapter_recommendations_for_adults_aged_over_16_2441595a2890",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_qs198_resources_suspected_neurological_conditions_recogniti_26fca6caced5",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/qs198/resources/suspected-neurological-conditions-recognition-and-referral-pdf-75545788558021",
+      "citationIds": [
+        "nice_qs198_bppv_hallpike"
+      ],
+      "publisher": "NICE",
+      "title": "Suspected neurological conditions: recognition and referral",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_qs198_resources_suspected_neurological_conditions_recogniti_26fca6caced5.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.nice.org.uk/guidance/qs198/resources/suspected-neurological-conditions-recognition-and-referral-pdf-75545788558021",
+      "contentHash": "sha256:925e6b996f44b5ff5cca83c3c684f901768bfbdacd796177ccd90a9af34c23d4",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_qs198_resources_suspected_neurological_conditions_recogniti_26fca6caced5",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng198_98d1586db5f5",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng198",
+      "citationIds": [
+        "nice_ng198_acne_overview"
+      ],
+      "publisher": "NICE",
+      "title": "Acne vulgaris: management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng198_98d1586db5f5.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng198/resources/acne-vulgaris-management-pdf-66142088866501",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng198",
+      "contentHash": "sha256:de7ba9c2c0aa043bf6e891d880a4785fb7cfaf2c951989f2186c03cf2b9f0005",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng198_98d1586db5f5",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng198_chapter_recommendations_66184de0d01d",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng198/chapter/Recommendations",
+      "citationIds": [
+        "nice_ng198_acne_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Acne vulgaris: management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng198_chapter_recommendations_66184de0d01d.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng198/resources/acne-vulgaris-management-pdf-66142088866501",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng198/chapter/Recommendations",
+      "contentHash": "sha256:de7ba9c2c0aa043bf6e891d880a4785fb7cfaf2c951989f2186c03cf2b9f0005",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng198_chapter_recommendations_66184de0d01d",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng28_chapter_blood_glucose_management_b19438abd172",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng28/chapter/Blood-glucose-management",
+      "citationIds": [
+        "nice_ng28_hypoglycaemia_blood_glucose_management"
+      ],
+      "publisher": "NICE",
+      "title": "Type 2 diabetes in adults: management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng28_chapter_blood_glucose_management_b19438abd172.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng28/resources/type-2-diabetes-in-adults-management-pdf-1837338615493",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng28/chapter/Blood-glucose-management",
+      "contentHash": "sha256:1a3be64ff05a3a01f50487eac05a3b6a61743fbb55584e78088c352b7cbc2e5b",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng28_chapter_blood_glucose_management_b19438abd172",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng28_6f78bdcdfedb",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng28",
+      "citationIds": [
+        "nice_ng28_hypoglycaemia_overview"
+      ],
+      "publisher": "NICE",
+      "title": "Type 2 diabetes in adults: management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng28_6f78bdcdfedb.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng28/resources/type-2-diabetes-in-adults-management-pdf-1837338615493",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng28",
+      "contentHash": "sha256:1a3be64ff05a3a01f50487eac05a3b6a61743fbb55584e78088c352b7cbc2e5b",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng28_6f78bdcdfedb",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng109_chapter_recommendations_6f9b5555c27c",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng109/chapter/Recommendations",
+      "citationIds": [
+        "nice_ng109_lower_uti_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Urinary tract infection (lower): antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng109_chapter_recommendations_6f9b5555c27c.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng109/resources/urinary-tract-infection-lower-antimicrobial-prescribing-pdf-66141546350533",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng109/chapter/Recommendations",
+      "contentHash": "sha256:63123c8b2c7638cfe96e967a114b178f9c0c145d754b7c53af76f2990b1d2ecf",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng109_chapter_recommendations_6f9b5555c27c",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng112_d6e76c4b9a33",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng112",
+      "citationIds": [
+        "nice_ng112_recurrent_uti"
+      ],
+      "publisher": "NICE",
+      "title": "Urinary tract infection (recurrent): antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng112_d6e76c4b9a33.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng112/resources/urinary-tract-infection-recurrent-antimicrobial-prescribing-pdf-66141595059397",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng112",
+      "contentHash": "sha256:23d4f73b39d9313ed89a629d10ecff40d151e1be950b85af51aeeccd2e5068eb",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng112_d6e76c4b9a33",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_cg153_chapter_recommendations_3ccfa7817016",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/cg153/chapter/recommendations",
+      "citationIds": [
+        "nice_cg153_psoriasis_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Psoriasis: assessment and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_cg153_chapter_recommendations_3ccfa7817016.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/cg153/resources/psoriasis-assessment-and-management-pdf-35109629621701",
+      "finalUrl": "https://www.nice.org.uk/guidance/cg153/chapter/recommendations",
+      "contentHash": "sha256:4674713c6d145d8c470816ff9584281459cc5a24b1d04874a7b86a2e5c462657",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_cg153_chapter_recommendations_3ccfa7817016",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_cg153_ifp_chapter_initial_treatment_with_topical_medication_c5fd03a41ea5",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/cg153/ifp/chapter/Initial-treatment-with-topical-medication",
+      "citationIds": [
+        "nice_cg153_psoriasis_topical_treatment"
+      ],
+      "publisher": "NICE",
+      "title": "Psoriasis: assessment and management",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_cg153_ifp_chapter_initial_treatment_with_topical_medication_c5fd03a41ea5.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/cg153/resources/psoriasis-assessment-and-management-pdf-244056557509",
+      "finalUrl": "https://www.nice.org.uk/guidance/cg153/ifp/chapter/Initial-treatment-with-topical-medication",
+      "contentHash": "sha256:a24d23394c0b20680d06f1776739651458f92a16b09301d747f6bcc1bc1444a8",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_cg153_ifp_chapter_initial_treatment_with_topical_medication_c5fd03a41ea5",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng153_chapter_recommendations_e58394a84303",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng153/chapter/Recommendations",
+      "citationIds": [
+        "nice_ng153_impetigo_recommendations"
+      ],
+      "publisher": "NICE",
+      "title": "Impetigo: antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng153_chapter_recommendations_e58394a84303.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ng153/resources/impetigo-antimicrobial-prescribing-pdf-66141838603717",
+      "finalUrl": "https://www.nice.org.uk/guidance/ng153/chapter/Recommendations",
+      "contentHash": "sha256:c3c31d147a01ace83e9d1b9390850a62a8ba86fcdb4cfa2735f30063227ba759",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng153_chapter_recommendations_e58394a84303",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ng153_resources_visual_summary_pdf_7084853533_a410ceda5563",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ng153/resources/visual-summary-pdf-7084853533",
+      "citationIds": [
+        "nice_ng153_impetigo_visual_summary"
+      ],
+      "publisher": "NICE",
+      "title": "Impetigo: antimicrobial prescribing",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ng153_resources_visual_summary_pdf_7084853533_a410ceda5563.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.nice.org.uk/guidance/ng153/resources/visual-summary-pdf-7084853533",
+      "contentHash": "sha256:5c54b3a4b20b4953a28681e4f6c76279ffb19de229c229c2f165f9abfd7597cb",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ng153_resources_visual_summary_pdf_7084853533_a410ceda5563",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "iris_who_int_bitstream_handle_10665_350624_9789290228905_eng_pdf_4c2ed557c4ec",
+      "canonicalSourceUrl": "https://iris.who.int/bitstream/handle/10665/350624/9789290228905-eng.pdf?sequence=1",
+      "citationIds": [
+        "who_searo_district_clinician_manual_viral_conjunctivitis",
+        "who_searo_district_clinician_manual_bacterial_conjunctivitis"
+      ],
+      "publisher": "WHO",
+      "title": "District Clinician Manual: Hospital Care",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/9789290228905-eng.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": null,
+      "contentHash": "sha256:b69df48535ebc2c4a82d4baf6f17029619def7b3d6f830b4380115623a47e250",
+      "pageIndexDocumentId": "iris_who_int_bitstream_handle_10665_350624_9789290228905_eng_pdf_4c2ed557c4ec",
+      "status": "pdf_downloaded",
+      "error": null,
+      "manualImport": true,
+      "manualFilename": "9789290228905-eng.pdf"
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_ta128_chapter_clinical_need_and_practice_7842f90beb88",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/ta128/chapter/clinical-need-and-practice",
+      "citationIds": [
+        "nice_ta128_haemorrhoids_clinical_need"
+      ],
+      "publisher": "NICE",
+      "title": "Stapled haemorrhoidopexy for the treatment of haemorrhoids",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_ta128_chapter_clinical_need_and_practice_7842f90beb88.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/ta128/resources/stapled-haemorrhoidopexy-for-the-treatment-of-haemorrhoids-pdf-82598140063429",
+      "finalUrl": "https://www.nice.org.uk/guidance/ta128/chapter/clinical-need-and-practice",
+      "contentHash": "sha256:bc60462c42616e364cffbfa306e2b0fea3002964dc54eaa9094e77cc57c5d995",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_ta128_chapter_clinical_need_and_practice_7842f90beb88",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "www_nice_org_uk_guidance_htg447_chapter_2_indications_and_current_treatments_6b80ee798981",
+      "canonicalSourceUrl": "https://www.nice.org.uk/guidance/htg447/chapter/2-Indications-and-current-treatments",
+      "citationIds": [
+        "nice_htg447_haemorrhoids_indications"
+      ],
+      "publisher": "NICE",
+      "title": "Radiofrequency treatment for haemorrhoids",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_nice_org_uk_guidance_htg447_chapter_2_indications_and_current_treatments_6b80ee798981.pdf",
+      "linkedPdfUrl": "https://www.nice.org.uk/guidance/htg447/resources/radiofrequency-treatment-for-haemorrhoids-pdf-1809594238010821",
+      "finalUrl": "https://www.nice.org.uk/guidance/htg447/chapter/2-Indications-and-current-treatments",
+      "contentHash": "sha256:3b6a10fbfdf66d6074c588e5a595a41665d93f460a8735dcdbd47c0bb6c01dd6",
+      "pageIndexDocumentId": "www_nice_org_uk_guidance_htg447_chapter_2_indications_and_current_treatments_6b80ee798981",
+      "status": "pdf_downloaded",
+      "error": null
+    },
+    {
+      "documentId": "aria_med_up_pt_former_aria_guidelines_4b23f3c4855c",
+      "canonicalSourceUrl": "https://aria.med.up.pt/former-aria-guidelines",
+      "citationIds": [
+        "aria_eaaci_allergic_rhinitis_2020"
+      ],
+      "publisher": "ARIA-EAACI",
+      "title": "Next-generation Allergic Rhinitis and Its Impact on Asthma (ARIA) guidelines for allergic rhinitis based on GRADE and real-world evidence",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/aria_med_up_pt_former_aria_guidelines_4b23f3c4855c.html-render.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://aria.med.up.pt/former-aria-guidelines",
+      "contentHash": "sha256:d80aa4294328133697633c9bc8527a45df1920c82fc6ea7a75e8491c74ffb18b",
+      "pageIndexDocumentId": "aria_med_up_pt_former_aria_guidelines_4b23f3c4855c",
+      "status": "pdf_rendered_from_official_html",
+      "error": null,
+      "officialPdfCandidates": [],
+      "pdfDownloadErrors": [],
+      "sourceOriginFormat": "official_html",
+      "officialHtmlPath": "knowledge-sources/wave1/html/aria_med_up_pt_former_aria_guidelines_4b23f3c4855c.html",
+      "renderingTool": "xhtml2pdf local renderer (external assets disabled)",
+      "renderedAt": "2026-09-06T03:18:53.043569+00:00",
+      "pageCount": 1,
+      "pageIndexInputPolicy": "full_document_only_no_page_slicing"
+    },
+    {
+      "documentId": "www_aaaai_org_aaaai_media_media_library_pdfs_allergist_20resources_statements_20and__8da58ad7d0e2",
+      "canonicalSourceUrl": "https://www.aaaai.org/Aaaai/media/Media-Library-PDFs/Allergist%20Resources/Statements%20and%20Practice%20Parameters/Rhinitis-2020-A-practice-parameter-update.pdf",
+      "citationIds": [
+        "aaaai_acaai_rhinitis_practice_parameter_2020"
+      ],
+      "publisher": "AAAAI/ACAAI",
+      "title": "Rhinitis 2020: A practice parameter update",
+      "sourceFormat": "pdf",
+      "localPath": "knowledge-sources/wave1/pdf/www_aaaai_org_aaaai_media_media_library_pdfs_allergist_20resources_statements_20and__8da58ad7d0e2.pdf",
+      "linkedPdfUrl": null,
+      "finalUrl": "https://www.aaaai.org/Aaaai/media/Media-Library-PDFs/Allergist%20Resources/Statements%20and%20Practice%20Parameters/Rhinitis-2020-A-practice-parameter-update.pdf",
+      "contentHash": "sha256:0c713bfc60646d5f9f293ea60c06d547259c157630732c5c7c3a93b0883cb3c2",
+      "pageIndexDocumentId": "www_aaaai_org_aaaai_media_media_library_pdfs_allergist_20resources_statements_20and__8da58ad7d0e2",
+      "status": "pdf_downloaded",
+      "error": null
+    }
+  ]
+}

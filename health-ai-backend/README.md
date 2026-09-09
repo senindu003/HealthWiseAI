@@ -42,12 +42,14 @@ Then import idempotently (safe to rerun):
 python scripts/import_knowledge_graph.py
 ```
 
-The importer creates only terminology, conditions, citations, and draft evidence
-nodes. It rejects direct legacy symptom-to-condition mappings and marks all
-draft tests/recommendations `runtimeEligible=false`. They remain unavailable to
-patient-facing recommendation flows until qualified clinical review approves a
-future release. `GET /api/v1/knowledge-graph/status` reports connectivity and
-aggregate counts only.
+The importer uses the final reviewed Wave 1 expanded bundle at the repository
+root: `citation-registry.wave1.full-tree-expanded.json` and
+`condition-evidence.wave1.full-tree-expanded.json`. It creates only terminology,
+conditions, citations, and evidence nodes. It rejects direct legacy
+symptom-to-condition mappings and keeps tests/recommendations
+`runtimeEligible=false`; review metadata alone never activates a patient-facing
+recommendation flow. `GET /api/v1/knowledge-graph/status` reports connectivity
+and aggregate counts only.
 
 The active client output limits are configurable through `GEMINI_MAX_OUTPUT_TOKENS`
 (default `4096`), `GROQ_MAX_TOKENS` (default `2048`), and
@@ -62,13 +64,13 @@ model available to that key, otherwise fallback cannot recover a primary outage.
 
 ## API
 
-`POST /api/v1/recommendations` accepts the three-stage frontend questionnaire and returns:
+`POST /api/v1/recommendations` accepts the three-stage frontend questionnaire and returns a citation-validated Stage 4 result. Each displayed item contains `citationMarkers` such as `[1]`; `references` contains the matching publisher, year, official URL, cited section, and page ranges. FastAPI signs the final validated result with `STAGE4_VALIDATION_SECRET`; Spring Boot must use the same secret and persists only that signed payload.
 
 ```json
-{"summary":"...","recommendations":[{"test_name":"...","category":"...","priority":"medium","reason_from_rules":"...","personalized_explanation":"..."}]}
+{"summary":"...","summaryCitationMarkers":["[1]"],"recommendations":[{"test_name":"...","citationMarkers":["[1]"]}],"references":[{"marker":"[1]","publisher":"NICE","pageRanges":[{"startPage":4,"endPage":4}]}]}
 ```
 
-Before the LangGraph evaluator is called, FastAPI applies a deterministic
+Before the grounded generator is called, FastAPI applies a deterministic
 questionnaire safety gate. It rejects impossible or unsupported biometric
 values, implausible sleep/exercise values, contradictory answers, oversized
 free text, and prompt-injection-like content with a `422` response. The

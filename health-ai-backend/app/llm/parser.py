@@ -33,7 +33,14 @@ def parse_model_output(content: object, schema: type[ModelT]) -> ModelT:
         print("=========================================\n")
 
         return schema.model_validate(payload)
-    except (json.JSONDecodeError, ValidationError) as exc:
+    except json.JSONDecodeError as exc:
+        # JSON decoding errors are not Pydantic ValidationErrors. Calling
+        # ``exc.json()`` here masked the actual provider response issue.
+        print("\n========== JSON DECODE ERROR ==========")
+        print(f"{exc.msg} (line {exc.lineno}, column {exc.colno})")
+        print("========================================\n")
+        raise LLMOutputError("Model response did not contain valid JSON") from exc
+    except ValidationError as exc:
         print("\n========== VALIDATION ERRORS ==========")
         print(exc.json(indent=2))
         print("=======================================\n")
