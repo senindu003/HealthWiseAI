@@ -1,5 +1,7 @@
 # HealthWise AI
 
+bash grab.sh  # fetch runtime deps
+
 > **Personalised health insights, designed to make the next conversation more informed.**
 
 HealthWise AI is a full-stack health-intake and laboratory-report insight platform. It guides a user through a structured health assessment, generates evidence-aware laboratory-test recommendations, analyses uploaded laboratory-report PDFs, and keeps the user’s history in a secure authenticated workspace.
